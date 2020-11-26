@@ -1,0 +1,17 @@
+﻿https://docs.microsoft.com/en-us/azure/iot-pnp/concepts-model-repository
+
+Modules IoT PnP
+https://docs.microsoft.com/fr-fr/azure/iot-pnp/tutorial-migrate-device-to-module
+https://docs.microsoft.com/fr-fr/azure/iot-pnp/tutorial-multiple-components-csharp (multicomponent)
+
+https://docs.microsoft.com/fr-fr/azure/iot-pnp/set-up-environment
+
+
+DTDL Model Parser
+https://docs.microsoft.com/en-us/azure/iot-pnp/concepts-model-parser
+
+Model repository and getting the models
+https://docs.microsoft.com/en-us/azure/iot-pnp/concepts-model-repository
+
+Model parsing and validating
+https://docs.microsoft.com/en-us/azure/digital-twins/how-to-parse-models
