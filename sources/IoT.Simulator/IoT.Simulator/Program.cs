@@ -172,7 +172,6 @@ namespace IoT.Simulator
 
             services.AddTransient<ITelemetryMessageService, SimpleTelemetryMessageService>();
             services.AddTransient<IErrorMessageService, SimpleErrorMessageService>();
-            services.AddTransient<ICommissioningMessageService, SimpleCommissioningMessageService>();
         }
 
         static void RegisterModuleSimulators(DeviceSettings deviceSettings, IServiceCollection services)
@@ -207,7 +206,6 @@ namespace IoT.Simulator
                             item.SimulationSettings,
                             serviceProvider.GetService<ITelemetryMessageService>(),
                             serviceProvider.GetService<IErrorMessageService>(),
-                            serviceProvider.GetService<ICommissioningMessageService>(),
                             loggerFactory);
 
                         services.AddSingleton<IModuleSimulationService, ModuleSimulationService>(iServiceProvider => simulator);

@@ -24,10 +24,9 @@ namespace IoT.Simulator.Services
 
         private ITelemetryMessageService _telemetryMessagingService;
         private IErrorMessageService _errorMessagingService;
-        private ICommissioningMessageService _commissioningMessagingService;
 
 
-        public ModuleSimulationService(ModuleSettings settings, SimulationSettingsModule simulationSettings, ITelemetryMessageService telemetryMessagingService, IErrorMessageService errorMessagingService, ICommissioningMessageService commissioningMessagingService, ILoggerFactory loggerFactory)
+        public ModuleSimulationService(ModuleSettings settings, SimulationSettingsModule simulationSettings, ITelemetryMessageService telemetryMessagingService, IErrorMessageService errorMessagingService, ILoggerFactory loggerFactory)
         {
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
@@ -41,9 +40,6 @@ namespace IoT.Simulator.Services
             if (errorMessagingService == null)
                 throw new ArgumentNullException(nameof(errorMessagingService));
 
-            if (commissioningMessagingService == null)
-                throw new ArgumentNullException(nameof(commissioningMessagingService));
-
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory));
 
@@ -55,7 +51,6 @@ namespace IoT.Simulator.Services
 
             _telemetryMessagingService = telemetryMessagingService;
             _errorMessagingService = errorMessagingService;
-            _commissioningMessagingService = commissioningMessagingService;
 
             _telemetryInterval = 10;
             _stopProcessing = false;
@@ -110,9 +105,6 @@ namespace IoT.Simulator.Services
 
             if (SimulationSettings.EnableErrorMessages)
                 SendDeviceToCloudErrorAsync(_moduleClient, ModuleSettings.DeviceId, ModuleSettings.ModuleId, SimulationSettings.ErrorFrecuency, _logger);
-
-            if (SimulationSettings.EnableCommissioningMessages)
-                SendDeviceToCloudCommissioningAsync(_moduleClient, ModuleSettings.DeviceId, ModuleSettings.ModuleId, SimulationSettings.CommissioningFrecuency, _logger);
 
             if (SimulationSettings.EnableReadingTwinProperties)
             {
@@ -217,45 +209,7 @@ namespace IoT.Simulator.Services
                     await Task.Delay(interval * 1000);
                 }
             }
-        }
-
-        //Commissioning messages
-        internal async Task SendDeviceToCloudCommissioningAsync(ModuleClient moduleClient, string deviceId, string moduleId, int interval, ILogger logger)
-        {
-            string logPrefix = "commissioning".BuildLogPrefix();
-            int counter = 1;
-            string messageString = string.Empty;
-
-            using (logger.BeginScope($"{logPrefix}::{ModuleSettings.ArtifactId}::COMMISSIONING MESSAGE"))
-            {
-                while (true)
-                {
-                    messageString = await _commissioningMessagingService.GetRandomizedMessageAsync(deviceId, moduleId);
-
-                    var message = new Message(Encoding.ASCII.GetBytes(messageString));
-                    message.Properties.Add("messagetype", "commissioning");
-
-                    // Add a custom application property to the message.
-                    // An IoT hub can filter on these properties without access to the message body.
-                    message.ContentType = "application/json";
-                    message.ContentEncoding = "utf-8";
-
-                    // Send the tlemetry message
-                    await moduleClient.SendEventAsync(message);
-
-                    logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Sent message: {messageString}.");
-                    logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::COUNTER: {counter}.");
-
-                    if (_stopProcessing)
-                    {
-                        logger.LogDebug($"{logPrefix}::STOP PROCESSING.");
-                        break;
-                    }
-
-                    await Task.Delay(interval * 1000);
-                }
-            }
-        }
+        }        
 
         #endregion
 
