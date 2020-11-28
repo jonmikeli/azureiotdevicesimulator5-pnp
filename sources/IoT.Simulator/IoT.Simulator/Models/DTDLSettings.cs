@@ -4,8 +4,14 @@ namespace IoT.Simulator.Models
 {
     public class DTDLSettings
     {
-        public DTDLModelItem DefaultModel { get; set; }
+        public string DefaultModelId { get; set; }
 
-        public IEnumerable<DTDLModelItem> Models { get; set; }
+        public IList<DTDLModelItem> Models { get; set; }
+
+        public DTDLSettings(string modelId, DTDLModelType type)
+        {
+            DefaultModelId = modelId;
+            Models = new List<DTDLModelItem> { new DTDLModelItem { ModelId = modelId, ModelType = type } }; 
+        }
     }
 }
