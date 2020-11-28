@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace IoT.Simulator.Models
 {
-    class ModelItem
+    public enum DTDLModelType
     {
+        Telemetry,
+        Error,
+        Warning,
+        Alert,
+        Commissioning,
+        System
     }
 }
