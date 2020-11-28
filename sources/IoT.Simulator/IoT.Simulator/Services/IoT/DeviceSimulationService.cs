@@ -175,12 +175,15 @@ namespace IoT.Simulator.Services
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device twin loaded.");
 
             DTDLSettings result = new DTDLSettings(twin.ModelId, DTDLModelType.Telemetry);
+            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Default DTDL model settings updated.");
 
             if (twin.Tags != null && twin.Tags.Contains(_TWIN_TAG_SUPPORTED_MODELS_PROPERTY_NAME))
             {
                 TwinCollection supportedModels = twin.Tags[_TWIN_TAG_SUPPORTED_MODELS_PROPERTY_NAME];
                 if (supportedModels != null)
                 {
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Other supported DTDL models loaded.");
+
                     JArray jSupportedModels = JArray.Parse(supportedModels.ToJson());
                     string itemModelId = string.Empty;
                     DTDLModelType itemModelType;
@@ -192,6 +195,8 @@ namespace IoT.Simulator.Services
                             result.Models.Single(i => i.ModelId == result.DefaultModelId).ModelType = itemModelType;
                         else
                             result.Models.Add(new DTDLModelItem { ModelId = itemModelId, ModelType = itemModelType });
+
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Additional supported DTDL model {itemModelId} of type {itemModelType.ToString()} added.");
                     }
                 }
             }
