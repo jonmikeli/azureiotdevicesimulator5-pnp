@@ -1,4 +1,5 @@
 ﻿using IoT.Simulator.Extensions;
+using IoT.Simulator.Models;
 
 using Newtonsoft.Json;
 
@@ -35,13 +36,22 @@ namespace IoT.Simulator.Settings
             }
         }
 
-        /// <summary>
-        /// IoT Plug and play ModelId
-        /// </summary>
         [JsonProperty("modelId")]
-        public string ModelId
+        public string DefaultModelId
         {
-            get;set;
-        }        
+            get
+            {
+                return DTDLSettings?.DefaultModelId;
+            }
+            set
+            {
+                if (DTDLSettings == null)
+                    DTDLSettings = new DTDLSettings(value, DTDLModelType.Telemetry);
+                else
+                    DTDLSettings.DefaultModelId = value;                
+            }
+        }
+
+        public DTDLSettings DTDLSettings { get; set; }
     }
 }

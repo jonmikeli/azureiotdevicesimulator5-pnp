@@ -32,7 +32,6 @@ namespace IoT.Simulator.Services
         private string _iotHub;
         private int _telemetryInterval;
         private bool _stopProcessing = false;
-        private DTDLSettings _dtdlSettings;
 
         private ITelemetryMessageService _telemetryMessagingService;
         private IErrorMessageService _errorMessagingService;
@@ -72,9 +71,7 @@ namespace IoT.Simulator.Services
 
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device simulator created.");
-
-            _dtdlSettings = GetDTDLModelSettings(_deviceId);
+            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device simulator created.");   
         }
 
         ~DeviceSimulationService()
@@ -98,8 +95,10 @@ namespace IoT.Simulator.Services
             {
                 IoTTools.CheckDeviceConnectionStringData(_deviceSettings.ConnectionString, _logger);
 
+                _deviceSettings.DTDLSettings = await GetDTDLModelSettingsAsync(_deviceId);
+
                 // Connect to the IoT hub using the MQTT protocol
-                if (!string.IsNullOrEmpty(_deviceSettings.ModelId))
+                if (!string.IsNullOrEmpty(_deviceSettings.DTDLSettings?.DefaultModelId))
                 {
                     _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettings.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt, new ClientOptions { ModelId = _deviceSettings.ModelId });
                     _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device client created.ModelId:{_deviceSettings.ModelId}");
