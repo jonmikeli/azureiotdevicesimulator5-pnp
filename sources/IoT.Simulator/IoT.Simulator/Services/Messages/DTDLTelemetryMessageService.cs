@@ -29,8 +29,12 @@ namespace IoT.Simulator.Services
 
         public async Task<string> GetMessageAsync()
         {
-            JObject messageBody = 
-            string messageString = File.ReadAllText(fileTemplatePath);
+            JObject jMessageBody = DTDLHelper.BuildMessageBodyFromModelId(_modelId);
+
+            if (jMessageBody == null)
+                throw new Exception("No message body has been build according to the model.");
+
+            string messageString = JsonConvert.SerializeObject(jMessageBody, Formatting.Indented);
 
             if (string.IsNullOrEmpty(messageString))
                 throw new ArgumentNullException(nameof(messageString), "DATA: The message to send is empty or not found.");
@@ -42,13 +46,13 @@ namespace IoT.Simulator.Services
         {
             string artifactId = string.IsNullOrEmpty(moduleId) ? deviceId : moduleId;
 
-            string logPrefix = "SimpleTelemetryMessageService".BuildLogPrefix();
+            string logPrefix = "DTDLTelemetryMessageService".BuildLogPrefix();
             string messageString = await GetMessageAsync();
 
             if (string.IsNullOrEmpty(messageString))
                 throw new ArgumentNullException(nameof(messageString), "DATA: The message to send is empty or not found.");
 
-            _logger.LogTrace($"{logPrefix}::{artifactId}::measureddata.json file loaded.");
+            _logger.LogTrace($"{logPrefix}::{artifactId}::Message body according to a given model has been loaded.");
 
             messageString = IoTTools.UpdateIds(messageString, deviceId, moduleId);
             _logger.LogTrace($"{logPrefix}::{artifactId}::DeviceId and moduleId updated in the message template.");
@@ -61,7 +65,7 @@ namespace IoT.Simulator.Services
             string artifactId = string.IsNullOrEmpty(moduleId) ? deviceId : moduleId;
 
             string messageString = await this.GetMessageAsync(deviceId, moduleId);
-            string logPrefix = "SimpleTelemetryMessageService".BuildLogPrefix();
+            string logPrefix = "DTDLTelemetryMessageService".BuildLogPrefix();
 
             //Randomize data           
             messageString = IoTTools.RandomizeData(messageString);

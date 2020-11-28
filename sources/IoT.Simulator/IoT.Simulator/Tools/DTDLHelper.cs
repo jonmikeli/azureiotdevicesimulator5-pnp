@@ -10,6 +10,12 @@ namespace IoT.Simulator.Tools
 {
     public class DTDLHelper
     {
+
+        public static JObject BuildMessageBodyFromModelId(string modelId)
+        {
+            throw new NotImplementedException();
+        }
+
         public static JObject BuildMessageBodyFromDTDL(JObject dtdl)
         {
             throw new NotImplementedException();
