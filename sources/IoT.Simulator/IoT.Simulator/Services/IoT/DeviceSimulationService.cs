@@ -1,22 +1,28 @@
 ﻿using IoT.Simulator.Extensions;
+using IoT.Simulator.Models;
 using IoT.Simulator.Settings;
 using IoT.Simulator.Tools;
+
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace IoT.Simulator.Services
 {
     public class DeviceSimulationService : ISimulationService
     {
+        private const string _TWIN_TAG_SUPPORTED_MODELS_PROPERTY_NAME = "";
         private readonly ILogger<DeviceSimulationService> _logger;
 
         private DeviceSettings _deviceSettings;
@@ -26,9 +32,10 @@ namespace IoT.Simulator.Services
         private string _iotHub;
         private int _telemetryInterval;
         private bool _stopProcessing = false;
+        private DTDLSettings _dtdlSettings;
 
         private ITelemetryMessageService _telemetryMessagingService;
-        private IErrorMessageService _errorMessagingService;        
+        private IErrorMessageService _errorMessagingService;
 
         public DeviceSimulationService(IOptions<DeviceSettings> deviceSettings, ITelemetryMessageService telemetryMessagingService, IErrorMessageService errorMessagingService, ILoggerFactory loggerFactory)
         {
@@ -66,6 +73,8 @@ namespace IoT.Simulator.Services
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device simulator created.");
+
+            _dtdlSettings = GetDTDLModelSettings(_deviceId);
         }
 
         ~DeviceSimulationService()
@@ -149,6 +158,45 @@ namespace IoT.Simulator.Services
             {
                 _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::ERROR::InitiateSimulationAsync:{ex.Message}.");
             }
+        }
+
+        private async Task<DTDLSettings> GetDTDLModelSettingsAsync(string deviceId)
+        {
+            if (string.IsNullOrEmpty(deviceId))
+                throw new ArgumentNullException(nameof(deviceId));
+
+            string logPrefix = "getdtdlmodelsettings".BuildLogPrefix();
+            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Getting the DTDL settings of the device.");
+
+            Twin twin = await _deviceClient.GetTwinAsync();
+            if (twin == null)
+                throw new Exception($"No device twin has been found for the device {deviceId}.");
+
+            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device twin loaded.");
+
+            DTDLSettings result = new DTDLSettings(twin.ModelId, DTDLModelType.Telemetry);
+
+            if (twin.Tags != null && twin.Tags.Contains(_TWIN_TAG_SUPPORTED_MODELS_PROPERTY_NAME))
+            {
+                TwinCollection supportedModels = twin.Tags[_TWIN_TAG_SUPPORTED_MODELS_PROPERTY_NAME];
+                if (supportedModels != null)
+                {
+                    JArray jSupportedModels = JArray.Parse(supportedModels.ToJson());
+                    string itemModelId = string.Empty;
+                    DTDLModelType itemModelType;
+                    foreach (var jModel in jSupportedModels)
+                    {
+                        itemModelId = jModel.Value<string>("modelId");
+                        itemModelType = jModel.Value<DTDLModelType>("modelType");
+                        if (itemModelId == result.DefaultModelId)
+                            result.Models.Single(i => i.ModelId == result.DefaultModelId).ModelType = itemModelType;
+                        else
+                            result.Models.Add(new DTDLModelItem { ModelId = itemModelId, ModelType = itemModelType });
+                    }
+                }
+            }
+
+            return result;
         }
 
         private void ConnectionStatusChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
@@ -238,7 +286,7 @@ namespace IoT.Simulator.Services
                     await Task.Delay(interval * 1000);
                 }
             }
-        }       
+        }
 
         //Latency tests
         internal async Task SendDeviceToCloudLatencyTestAsync(string deviceId, int interval)
