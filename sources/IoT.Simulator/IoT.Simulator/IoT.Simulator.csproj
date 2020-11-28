@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <Folder Include="Models\FileUpload\" />
+    <Folder Include="Tests\" />
   </ItemGroup>
 
   <ItemGroup>

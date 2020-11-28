@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,13 +59,15 @@ namespace IoT.Simulator.Tools
             if (string.IsNullOrEmpty(modelRepositoryPath))
                 throw new ArgumentNullException(nameof(modelRepositoryPath));
 
-            JObject result = null;
+            //TODO: to be replaced with a generic solution
+            JObject result = JObject.Parse(File.ReadAllText("DTDLTest.json"));
 
             //TODO add a cache system to optimize the calls
             //if cache contains the model and it's valid, send it
             //if not, request the repository and get the model. Put it in the cache and send the value.
 
             //Get the model from the given repository
+            
 
             //Cloud provider
 
