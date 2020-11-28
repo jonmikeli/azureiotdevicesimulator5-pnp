@@ -28,10 +28,9 @@ namespace IoT.Simulator.Services
         private bool _stopProcessing = false;
 
         private ITelemetryMessageService _telemetryMessagingService;
-        private IErrorMessageService _errorMessagingService;
-        private ICommissioningMessageService _commissioningMessagingService;
+        private IErrorMessageService _errorMessagingService;        
 
-        public DeviceSimulationService(IOptions<DeviceSettings> deviceSettings, ITelemetryMessageService telemetryMessagingService, IErrorMessageService errorMessagingService, ICommissioningMessageService commissioningMessagingService, ILoggerFactory loggerFactory)
+        public DeviceSimulationService(IOptions<DeviceSettings> deviceSettings, ITelemetryMessageService telemetryMessagingService, IErrorMessageService errorMessagingService, ILoggerFactory loggerFactory)
         {
             if (deviceSettings == null)
                 throw new ArgumentNullException(nameof(deviceSettings));
@@ -48,9 +47,6 @@ namespace IoT.Simulator.Services
             if (errorMessagingService == null)
                 throw new ArgumentNullException(nameof(errorMessagingService));
 
-            if (commissioningMessagingService == null)
-                throw new ArgumentNullException(nameof(commissioningMessagingService));
-
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory), "No logger factory has been provided.");
 
@@ -66,7 +62,6 @@ namespace IoT.Simulator.Services
 
             _telemetryMessagingService = telemetryMessagingService;
             _errorMessagingService = errorMessagingService;
-            _commissioningMessagingService = commissioningMessagingService;
 
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
@@ -130,9 +125,6 @@ namespace IoT.Simulator.Services
 
                 if (_simulationSettings.EnableErrorMessages)
                     SendDeviceToCloudErrorAsync(_deviceId, _simulationSettings.ErrorFrecuency);
-
-                if (_simulationSettings.EnableCommissioningMessages)
-                    SendDeviceToCloudCommissioningAsync(_deviceId, _simulationSettings.CommissioningFrecuency);
 
                 if (_simulationSettings.EnableReadingTwinProperties)
                 {
@@ -246,46 +238,7 @@ namespace IoT.Simulator.Services
                     await Task.Delay(interval * 1000);
                 }
             }
-        }
-
-        //Commissioning messages
-        internal async Task SendDeviceToCloudCommissioningAsync(string deviceId, int interval)
-        {
-            int counter = 0;
-            string messageString = string.Empty;
-            string logPrefix = "commissioning".BuildLogPrefix();
-
-            using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettings.ArtifactId}::COMMISSIONING MESSAGE"))
-            {
-                while (true)
-                {
-                    messageString = await _commissioningMessagingService.GetRandomizedMessageAsync(deviceId, string.Empty);
-
-                    var message = new Message(Encoding.ASCII.GetBytes(messageString));
-                    message.Properties.Add("messagetype", "commissioning");
-
-                    // Add a custom application property to the message.
-                    // An IoT hub can filter on these properties without access to the message body.
-                    message.ContentType = "application/json";
-                    message.ContentEncoding = "utf-8";
-
-                    // Send the tlemetry message
-                    await _deviceClient.SendEventAsync(message);
-                    counter++;
-
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sent message: {messageString}.");
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::COUNTER: {counter}.");
-
-                    if (_stopProcessing)
-                    {
-                        _logger.LogDebug($"{logPrefix}::STOP PROCESSING.");
-                        break;
-                    }
-
-                    await Task.Delay(interval * 1000);
-                }
-            }
-        }
+        }       
 
         //Latency tests
         internal async Task SendDeviceToCloudLatencyTestAsync(string deviceId, int interval)
