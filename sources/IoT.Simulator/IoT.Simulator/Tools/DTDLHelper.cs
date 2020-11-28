@@ -18,7 +18,7 @@ namespace IoT.Simulator.Tools
             JObject dtdlModel = GetDTDLFromModelId(modelId, locations);            
 
             if (dtdlModel == null)
-                throw new Exception($"No DTDL model with the id {modelId} has been provided at the provided location {}.");
+                throw new Exception($"No DTDL model with the id {modelId} has been provided at the provided locations.");
 
             //Build the JSON Message corresponding to the model
             return BuildMessageBodyFromDTDL(dtdlModel);
@@ -51,9 +51,25 @@ namespace IoT.Simulator.Tools
 
         public static JObject GetDTDLFromModelId(string modelId, string modelRepositoryPath)
         {
+            if (string.IsNullOrEmpty(modelId))
+                throw new ArgumentNullException(nameof(modelId));
+
+            if (string.IsNullOrEmpty(modelRepositoryPath))
+                throw new ArgumentNullException(nameof(modelRepositoryPath));
+
+            JObject result = null;
+
             //TODO add a cache system to optimize the calls
-            throw new NotImplementedException();
+            //if cache contains the model and it's valid, send it
+            //if not, request the repository and get the model. Put it in the cache and send the value.
+
             //Get the model from the given repository
+
+            //Cloud provider
+
+            //Local path?
+
+            return result;
         }
     }
 }
