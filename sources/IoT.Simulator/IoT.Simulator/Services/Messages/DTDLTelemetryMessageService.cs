@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace IoT.Simulator.Services
 {
@@ -11,18 +13,23 @@ namespace IoT.Simulator.Services
     public class DTDLTelemetryMessageService : ITelemetryMessageService
     {
         private ILogger _logger;
-        private string fileTemplatePath = @"./Messages/measureddata.json";
+        private string  _modelId;
 
-        public DTDLTelemetryMessageService(ILoggerFactory loggerFactory)
-        {
+        public DTDLTelemetryMessageService(ILoggerFactory loggerFactory, string modelId)
+        {            
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory));
 
-            _logger = loggerFactory.CreateLogger<SimpleTelemetryMessageService>();
+            if (string.IsNullOrEmpty(modelId))
+                throw new ArgumentNullException(nameof(modelId));
+
+            _logger = loggerFactory.CreateLogger<DTDLTelemetryMessageService>();
+            _modelId = modelId;
         }
 
         public async Task<string> GetMessageAsync()
         {
+            JObject messageBody = 
             string messageString = File.ReadAllText(fileTemplatePath);
 
             if (string.IsNullOrEmpty(messageString))
