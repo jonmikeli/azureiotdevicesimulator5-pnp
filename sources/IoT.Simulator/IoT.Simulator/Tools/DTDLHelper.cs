@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Azure.DigitalTwins.Parser;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using System;
@@ -14,21 +16,77 @@ namespace IoT.Simulator.Tools
     public class DTDLHelper
     {
 
-        public static JObject BuildMessageBodyFromModelId(string modelId, string[] locations)
-        {            
+        public static async Task<JObject> BuildMessageBodyFromModelId(string modelId, string[] locations)
+        {
             //Get the full DTDL model
-            JObject dtdlModel = GetDTDLFromModelId(modelId, locations);            
+            JObject dtdlModel = GetDTDLFromModelId(modelId, locations);
 
             if (dtdlModel == null)
                 throw new Exception($"No DTDL model with the id {modelId} has been provided at the provided locations.");
 
             //Build the JSON Message corresponding to the model
-            return BuildMessageBodyFromDTDL(dtdlModel);
+            return await BuildMessageBodyFromDTDLAsync(dtdlModel);
         }
 
-        public static JObject BuildMessageBodyFromDTDL(JObject dtdl)
+        //https://docs.microsoft.com/en-us/azure/iot-pnp/concepts-model-parser
+        public static async Task<JObject> BuildMessageBodyFromDTDLAsync(JObject dtdl)
         {
-            throw new NotImplementedException();
+            if (dtdl == null)
+                throw new ArgumentNullException(nameof(dtdl));
+
+            JObject result = null;
+
+            ModelParser parser = new ModelParser();
+            try
+            {
+                IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(new string[] { JsonConvert.SerializeObject(dtdl) });
+
+                //CONTENT
+                if (!dtdl.ContainsKey("contents"))
+                    throw new Exception("");
+
+                JArray contents = (JArray)dtdl["contents"];
+                //Look for telemetries (JSON)
+                var telemetries = contents.Select(i => i["@type"].Value<string>().ToLower() == "telemetry");
+                if (telemetries != null && telemetries.Any())
+                {
+                    result = new JObject();
+                    JObject tmp = null;
+                    foreach (var item in telemetries)
+                    {
+                        tmp = new JObject();
+                        tmp.Add(item["name"], "");
+
+                        switch (item["schema"].ToLower())
+                        {
+                            case "double":
+                                tmp.Add("", "");
+                                break;
+                            default:
+                                break;
+                        }
+
+                        result.Add(tmp);                        
+                    }
+                }
+
+
+                //Look for properties (JSON) - Reported properties
+                //var properties = contents.Select(i => i["@type"].Value<string>().ToLower() == "property");
+
+
+            }
+            catch (ParsingException pex)
+            {
+                //Console.WriteLine(pex.Message);
+                //foreach (var err in pex.Errors)
+                //{
+                //    Console.WriteLine(err.PrimaryID);
+                //    Console.WriteLine(err.Message);
+                //}
+            }
+
+            return result;
         }
 
         public static JObject GetDTDLFromModelId(string modelId, string[] locations)
@@ -67,7 +125,7 @@ namespace IoT.Simulator.Tools
             //if not, request the repository and get the model. Put it in the cache and send the value.
 
             //Get the model from the given repository
-            
+
 
             //Cloud provider
 
