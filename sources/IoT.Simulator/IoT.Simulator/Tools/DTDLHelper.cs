@@ -60,7 +60,7 @@ namespace IoT.Simulator.Tools
                 throw new ArgumentNullException(nameof(modelRepositoryPath));
 
             //TODO: to be replaced with a generic solution
-            JObject result = JObject.Parse(File.ReadAllText("DTDLTest.json"));
+            JObject result = JObject.Parse(File.ReadAllText("~/Tests/thermostat.json"));
 
             //TODO add a cache system to optimize the calls
             //if cache contains the model and it's valid, send it
