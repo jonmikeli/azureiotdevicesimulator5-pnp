@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace IoT.Simulator.Services
 {
@@ -138,7 +139,7 @@ namespace IoT.Simulator.Services
                 while (true)
                 {
                     //Randomize data
-                    messageString = await _telemetryMessagingService.GetRandomizedMessageAsync(deviceId, moduleId);
+                    messageString = await _dtdlMessagingService.GetRandomizedMessageAsync(deviceId, moduleId, ModuleSettings.DefaultModelId, ModuleSettings.SupportedModels.Single(i=>i.ModelId == ModuleSettings.DefaultModelId).ModelPath);
 
                     var message = new Message(Encoding.UTF8.GetBytes(messageString));
                     message.Properties.Add("messageType", "data");
@@ -166,44 +167,6 @@ namespace IoT.Simulator.Services
                 }
             }
         }
-
-        internal async Task SendDeviceToCloudErrorAsync(ModuleClient moduleClient, string deviceId, string moduleId, int interval, ILogger logger)
-        {
-            int counter = 1;
-            string logPrefix = "error".BuildLogPrefix();
-            string messageString = string.Empty;
-
-            using (logger.BeginScope($"{logPrefix}::{ModuleSettings.ArtifactId}::ERROR MESSAGE (SENT BY THE DEVICE)"))
-            {
-                while (true)
-                {
-                    messageString = await _errorMessagingService.GetRandomizedMessageAsync(deviceId, moduleId);
-
-                    var message = new Message(Encoding.ASCII.GetBytes(messageString));
-                    message.Properties.Add("messagetype", "error");
-
-                    // Add a custom application property to the message.
-                    // An IoT hub can filter on these properties without access to the message body.
-                    message.ContentType = "application/json";
-                    message.ContentEncoding = "utf-8";
-
-                    // Send the tlemetry message
-                    await moduleClient.SendEventAsync(message);
-                    counter++;
-
-                    logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Sent message: {messageString}.");
-                    logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::COUNTER: {counter}.");
-
-                    if (_stopProcessing)
-                    {
-                        logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::STOP PROCESSING.");
-                        break;
-                    }
-
-                    await Task.Delay(interval * 1000);
-                }
-            }
-        }        
 
         #endregion
 

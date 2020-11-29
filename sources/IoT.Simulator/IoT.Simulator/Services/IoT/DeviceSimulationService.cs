@@ -91,10 +91,10 @@ namespace IoT.Simulator.Services
                 IoTTools.CheckDeviceConnectionStringData(_deviceSettings.ConnectionString, _logger);
                 
                 // Connect to the IoT hub using the MQTT protocol
-                if (!string.IsNullOrEmpty(_deviceSettings.DTDLSettings.DefaultModelId))
+                if (!string.IsNullOrEmpty(_deviceSettings.DefaultModelId))
                 {
-                    _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettings.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt, new ClientOptions { ModelId = _deviceSettings.DTDLSettings.DefaultModelId });
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device client created.ModelId:{_deviceSettings.DTDLSettings.DefaultModelId}");
+                    _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettings.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt, new ClientOptions { ModelId = _deviceSettings.DefaultModelId });
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device client created.ModelId:{_deviceSettings.DefaultModelId}");
                 }
                 else
                 {
@@ -218,7 +218,7 @@ namespace IoT.Simulator.Services
                 while (true)
                 {
                     //Randomize data
-                    messageString = await _dtdlMessageService.GetMessageAsync(deviceId, string.Empty,modelId, modelPath);
+                    messageString = await _dtdlMessageService.GetMessageAsync(deviceId, string.Empty, _deviceSettings.DefaultModelId, _deviceSettings.SupportedModels.Single(i=>i.ModelId == _deviceSettings.DefaultModelId).ModelPath);
 
                     var message = new Message(Encoding.UTF8.GetBytes(messageString));
                     message.Properties.Add("messageType", "data");

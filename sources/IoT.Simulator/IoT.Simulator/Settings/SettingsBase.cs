@@ -4,6 +4,7 @@ using IoT.Simulator.Models;
 using Newtonsoft.Json;
 
 using System;
+using System.Collections.Generic;
 
 namespace IoT.Simulator.Settings
 {
@@ -36,22 +37,13 @@ namespace IoT.Simulator.Settings
             }
         }
 
-        [JsonProperty("modelId")]
+        [JsonProperty("defaultModelId")]
         public string DefaultModelId
         {
-            get
-            {
-                return DTDLSettings?.DefaultModelId;
-            }
-            set
-            {
-                if (DTDLSettings == null)
-                    DTDLSettings = new DTDLSettings(value, DTDLModelType.Telemetry);
-                else
-                    DTDLSettings.DefaultModelId = value;                
-            }
+            get; set;
         }
 
-        public DTDLSettings DTDLSettings { get; set; }
+        [JsonProperty("supportedModels")]
+        public IList<DTDLModelItem> SupportedModels { get; set; }
     }
 }

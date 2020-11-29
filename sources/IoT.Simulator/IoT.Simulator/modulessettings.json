@@ -2,7 +2,14 @@
  "modules":[
   {
     "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
-    "modelId": null,
+    "defaultModelId": null,
+    "supportedModels": [
+      {
+        "modelId": null,
+        "modelPath": "",
+        "modelType": "Telemetry"
+      }
+    ],
     "simulationSettings": {
       "enableLatencyTests": false,
       "latencyTestsFrecuency": 10,
