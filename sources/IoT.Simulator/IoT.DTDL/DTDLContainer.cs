@@ -23,6 +23,8 @@ namespace IoT.DTDL
     public class DTDLGeneratedData
     {
         public JArray Telemetries { get; set; }
-        public JArray Properties { get; set; }
+        public JArray ReadableProperties { get; set; }
+
+        public JArray WritableProperties { get; set; }
     }
 }

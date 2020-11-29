@@ -130,8 +130,6 @@ namespace IoT.DTDL
                     if (itemResult != null)
                         globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
 
-                    //Look for properties (JSON) - Reported properties
-                    //var properties = contents.Select(i => i["@type"].Value<string>().ToLower() == "property");
                 }
             }
             catch (ParsingException pex)
@@ -167,7 +165,8 @@ namespace IoT.DTDL
             result.DTDLGeneratedData.Telemetries = ExtractTelemetries(contents);
 
             //Look for properties (JSON)
-            //TODO
+            result.DTDLGeneratedData.ReadableProperties = ExtractReadableProperties(contents);
+            result.DTDLGeneratedData.WritableProperties = ExtractWritableProperties(contents);
 
             return result;
         }
