@@ -17,7 +17,7 @@ namespace IoT.Simulator.Tests
     public class DTDLTests
     {
         [TestMethod()]
-        public async Task GetTelemetries_OK()
+        public async Task GetTelemetries_Thermostat_OK()
         {
             string dtdlModelPath = @"./Tests/thermostat.json";
 
