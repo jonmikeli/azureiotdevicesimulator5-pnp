@@ -17,6 +17,7 @@ namespace IoT.DTDL
     //TYPES: https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md
     public class DTDLHelper
     {
+        #region Public method(s)
         public static async Task<Dictionary<string, DTDLContainer>> GetModelsAndBuildDynamicContentAsync(string modelId, string modelPath)
         {
             //Get the full DTDL model
@@ -118,9 +119,9 @@ namespace IoT.DTDL
 
             return globalResult;
         }
+        #endregion
 
-
-
+        #region Private method(s)
         private static DTDLContainer BuildDynamicContent(JObject dtdl)
         {
             if (dtdl == null)
@@ -325,7 +326,7 @@ namespace IoT.DTDL
 
             return result;
         }
-
+        #endregion
 
     }
 }
