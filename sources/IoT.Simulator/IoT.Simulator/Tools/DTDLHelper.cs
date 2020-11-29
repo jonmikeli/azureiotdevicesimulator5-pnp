@@ -16,7 +16,7 @@ namespace IoT.Simulator.Tools
     public class DTDLHelper
     {
 
-        public static async Task<JObject> BuildMessageBodyFromModelId(string modelId, string[] locations)
+        public static async Task<JArray> BuildMessageBodyFromModelId(string modelId, string[] locations)
         {
             //Get the full DTDL model
             JObject dtdlModel = GetDTDLFromModelId(modelId, locations);
@@ -29,12 +29,12 @@ namespace IoT.Simulator.Tools
         }
 
         //https://docs.microsoft.com/en-us/azure/iot-pnp/concepts-model-parser
-        public static async Task<JObject> BuildMessageBodyFromDTDLAsync(JObject dtdl)
+        public static async Task<JArray> BuildMessageBodyFromDTDLAsync(JObject dtdl)
         {
             if (dtdl == null)
                 throw new ArgumentNullException(nameof(dtdl));
 
-            JObject result = null;
+            JArray result = null;
 
             ModelParser parser = new ModelParser();
             try
@@ -50,7 +50,7 @@ namespace IoT.Simulator.Tools
                 var telemetries = contents.Where(i => i["@type"].Value<string>().ToLower() == "telemetry");
                 if (telemetries != null && telemetries.Any())
                 {
-                    result = new JObject();
+                    result = new JArray();
                     JObject tmp = null;
 
                     string tmpPropertyName = string.Empty;
