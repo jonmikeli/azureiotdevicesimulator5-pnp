@@ -23,7 +23,7 @@ namespace IoT.DTDL.Tests
 
             Assert.IsNotNull(dtdlModel);
 
-            var messageBody = await DTDLHelper.BuildMessageBodyFromDTDLAsync(dtdlModel);
+            var messageBody = await DTDLHelper.GetModelsAndBuildDynamicContent(dtdlModel);
 
             Assert.IsNotNull(messageBody);
         }

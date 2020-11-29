@@ -17,7 +17,7 @@ namespace IoT.DTDL
     //TYPES: https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md
     public class DTDLHelper
     {
-        public static async Task<Dictionary<string, DTDLContainer>> GetModelsAndBuildDynamicContent(string modelId, string modelPath)
+        public static async Task<Dictionary<string, DTDLContainer>> GetModelsAndBuildDynamicContentAsync(string modelId, string modelPath)
         {
             //Get the full DTDL model
             JToken dtdlModel = await GetDTDLFromModelIdAsync(modelId, modelPath);
