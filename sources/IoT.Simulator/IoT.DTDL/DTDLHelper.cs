@@ -126,13 +126,17 @@ namespace IoT.DTDL
 
                     //Look for telemetries (JSON)
                     itemResult = BuildDynamicContent(dtdl);                   
-                }
+                }                
                 catch (ParsingException pex)
                 {
                     if (itemResult == null)
                         itemResult = new DTDLContainer();
 
                     itemResult.ParsingErrors = pex.Errors.Select(i => i.Message);
+                }
+                catch (Exception ex)
+                {
+
                 }
                 finally
                 {
