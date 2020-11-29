@@ -127,9 +127,6 @@ namespace IoT.Simulator.Services
                 if (_simulationSettings.EnableTelemetryMessages)
                     SendDeviceToCloudMessagesAsync(_deviceId); //interval is a global variable changed by processes
 
-                if (_simulationSettings.EnableErrorMessages)
-                    SendDeviceToCloudErrorAsync(_deviceId, _simulationSettings.ErrorFrecuency);
-
                 if (_simulationSettings.EnableReadingTwinProperties)
                 {
                     //Twins
