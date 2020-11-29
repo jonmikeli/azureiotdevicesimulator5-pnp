@@ -149,7 +149,7 @@ namespace IoT.Simulator.Services
             }
         }
 
-        private async Task<DTDLSettings> GetDTDLModelSettingsAsync(string deviceId)
+        private async Task<CloudDTDLSettings> GetCloudDTDLModelSettingsAsync(string deviceId)
         {
             if (string.IsNullOrEmpty(deviceId))
                 throw new ArgumentNullException(nameof(deviceId));
@@ -163,7 +163,7 @@ namespace IoT.Simulator.Services
 
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device twin loaded.");
 
-            DTDLSettings result = new DTDLSettings { DefaultModelId = twin.ModelId };
+            CloudDTDLSettings result = new CloudDTDLSettings { DefaultModelId = twin.ModelId };
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Default DTDL model settings updated.");
 
             if (twin.Tags != null && twin.Tags.Contains(_TWIN_TAG_SUPPORTED_MODELS_PROPERTY_NAME))

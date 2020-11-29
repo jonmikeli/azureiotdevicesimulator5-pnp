@@ -2,7 +2,7 @@
 
 namespace IoT.Simulator.Models
 {
-    public class DTDLSettings
+    public class CloudDTDLSettings
     {
         public string DefaultModelId { get; set; }
 
