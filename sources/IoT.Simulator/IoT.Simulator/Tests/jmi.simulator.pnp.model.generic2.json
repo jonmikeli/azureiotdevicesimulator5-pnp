@@ -21,7 +21,7 @@
     "@context": "dtmi:dtdl:context;2",
     "@id": "dtmi:com:jmi:simulator:deviceinformation;1",
     "@type": "Interface",
-    "displaName": "Device Information",
+    "displayName": "Device Information",
     "contents": [
       {
         "@type": "Property",
@@ -61,7 +61,7 @@
       {
         "@type": "Property",
         "name": "firmwareLastUpdate",
-        "schema": "datetime"
+        "schema": "dateTime"
       }
     ]
   },
@@ -69,7 +69,7 @@
     "@id": "dtmi:com:jmi:simulator:devicemessages;1",
     "@type": "Interface",
     "@context": "dtmi:dtdl:context;2",
-    "displaName": "Device Messages",
+    "displayName": "Device Messages",
     "contents": [
       {
         "@type": "Telemetry",
