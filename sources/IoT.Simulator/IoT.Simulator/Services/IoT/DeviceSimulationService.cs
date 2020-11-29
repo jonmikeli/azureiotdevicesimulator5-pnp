@@ -102,9 +102,6 @@ namespace IoT.Simulator.Services
                     _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device client created.");
                 }
 
-                //Once the _deviceCLient is instantiated, we start updating the models
-                _deviceSettings.DTDLSettings = await GetDTDLModelSettingsAsync(_deviceId);
-
                 if (_simulationSettings.EnableTwinPropertiesDesiredChangesNotifications)
                 {
                     await _deviceClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertyChange, null);
@@ -166,7 +163,7 @@ namespace IoT.Simulator.Services
 
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device twin loaded.");
 
-            DTDLSettings result = new DTDLSettings(twin.ModelId, DTDLModelType.Telemetry);
+            DTDLSettings result = new DTDLSettings { DefaultModelId = twin.ModelId };
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Default DTDL model settings updated.");
 
             if (twin.Tags != null && twin.Tags.Contains(_TWIN_TAG_SUPPORTED_MODELS_PROPERTY_NAME))
@@ -184,7 +181,12 @@ namespace IoT.Simulator.Services
                         itemModelId = jModel.Value<string>("modelId");
                         itemModelType = jModel.Value<DTDLModelType>("modelType");
                         if (itemModelId == result.DefaultModelId)
-                            result.Models.Single(i => i.ModelId == result.DefaultModelId).ModelType = itemModelType;
+                        {
+                            if (result.Models.SingleOrDefault(i=>i.ModelId == result.DefaultModelId) != null)
+                                result.Models.Single(i => i.ModelId == result.DefaultModelId).ModelType = itemModelType;
+                            else
+                                result.Models.Add(new DTDLModelItem { ModelId = itemModelId, ModelType = itemModelType });
+                        }
                         else
                             result.Models.Add(new DTDLModelItem { ModelId = itemModelId, ModelType = itemModelType });
 
