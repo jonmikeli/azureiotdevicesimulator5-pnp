@@ -78,7 +78,7 @@ namespace IoT.Simulator.Tools
                                 break;
                         }
 
-                        result.Add(tmp);                        
+                        result.Add(tmp);
                     }
                 }
 
@@ -101,49 +101,125 @@ namespace IoT.Simulator.Tools
             return result;
         }
 
-        public static JObject GetDTDLFromModelId(string modelId, string[] locations)
+        public static async Task<Dictionary<string,JArray>> BuildMessageBodyFromDTDLAsync(JArray dtdlArray)
         {
-            if (string.IsNullOrEmpty(modelId))
-                throw new ArgumentNullException(nameof(modelId));
+            if (dtdlArray == null)
+                throw new ArgumentNullException(nameof(dtdlArray));
 
-            if (locations == null | !locations.Any())
-                throw new ArgumentNullException(nameof(locations));
+            Dictionary<string, JArray> globalResult = null;
+            JArray itemResult = null;
 
-            //Get the full DTDL model
-            JObject dtdlModel = null;
-            int i = 0;
-            while (dtdlModel == null && i < locations.Length)
+            ModelParser parser = new ModelParser();
+            try
             {
-                dtdlModel = GetDTDLFromModelId(modelId, locations[i]);
-                i++;
+                IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+                globalResult = new Dictionary<string, JArray>();
+
+                foreach (JObject dtdl in dtdlArray)
+                {
+                    //CONTENT
+                    if (!dtdl.ContainsKey("contents"))
+                        throw new Exception("");
+
+                    JArray contents = (JArray)dtdl["contents"];
+                    //Look for telemetries (JSON)
+                    var telemetries = contents.Where(i => i["@type"].Value<string>().ToLower() == "telemetry");
+                    if (telemetries != null && telemetries.Any())
+                    {
+                        itemResult = new JArray();
+                        JObject tmp = null;
+
+                        string tmpPropertyName = string.Empty;
+                        Random random = new Random(DateTime.Now.Millisecond);
+                        foreach (var item in telemetries)
+                        {
+                            tmp = new JObject();
+                            tmpPropertyName = item["name"].Value<string>();
+
+                            switch (item["schema"].Value<string>().ToLower())
+                            {
+                                case "double":
+                                    tmp.Add(tmpPropertyName, random.NextDouble());
+                                    break;
+                                case "datetime":
+                                    tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
+                                    break;
+                                case "string":
+                                    tmp.Add(tmpPropertyName, "string to be randomized");
+                                    break;
+                                case "integer":
+                                    tmp.Add(tmpPropertyName, random.Next());
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            itemResult.Add(tmp);
+                        }
+                    }
+
+                    globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
+                    //Look for properties (JSON) - Reported properties
+                    //var properties = contents.Select(i => i["@type"].Value<string>().ToLower() == "property");
+                }
             }
+            catch (ParsingException pex)
+            {
+                //Console.WriteLine(pex.Message);
+                //foreach (var err in pex.Errors)
+                //{
+                //    Console.WriteLine(err.PrimaryID);
+                //    Console.WriteLine(err.Message);
+                //}
+            }
+        
 
-            return dtdlModel;
+            return globalResult;
         }
 
-        public static JObject GetDTDLFromModelId(string modelId, string modelRepositoryPath)
+    public static JObject GetDTDLFromModelId(string modelId, string[] locations)
+    {
+        if (string.IsNullOrEmpty(modelId))
+            throw new ArgumentNullException(nameof(modelId));
+
+        if (locations == null | !locations.Any())
+            throw new ArgumentNullException(nameof(locations));
+
+        //Get the full DTDL model
+        JObject dtdlModel = null;
+        int i = 0;
+        while (dtdlModel == null && i < locations.Length)
         {
-            if (string.IsNullOrEmpty(modelId))
-                throw new ArgumentNullException(nameof(modelId));
-
-            if (string.IsNullOrEmpty(modelRepositoryPath))
-                throw new ArgumentNullException(nameof(modelRepositoryPath));
-
-            //TODO: to be replaced with a generic solution
-            JObject result = JObject.Parse(File.ReadAllText("~/Tests/thermostat.json"));
-
-            //TODO add a cache system to optimize the calls
-            //if cache contains the model and it's valid, send it
-            //if not, request the repository and get the model. Put it in the cache and send the value.
-
-            //Get the model from the given repository
-
-
-            //Cloud provider
-
-            //Local path?
-
-            return result;
+            dtdlModel = GetDTDLFromModelId(modelId, locations[i]);
+            i++;
         }
+
+        return dtdlModel;
     }
+
+    public static JObject GetDTDLFromModelId(string modelId, string modelRepositoryPath)
+    {
+        if (string.IsNullOrEmpty(modelId))
+            throw new ArgumentNullException(nameof(modelId));
+
+        if (string.IsNullOrEmpty(modelRepositoryPath))
+            throw new ArgumentNullException(nameof(modelRepositoryPath));
+
+        //TODO: to be replaced with a generic solution
+        JObject result = JObject.Parse(File.ReadAllText("~/Tests/thermostat.json"));
+
+        //TODO add a cache system to optimize the calls
+        //if cache contains the model and it's valid, send it
+        //if not, request the repository and get the model. Put it in the cache and send the value.
+
+        //Get the model from the given repository
+
+
+        //Cloud provider
+
+        //Local path?
+
+        return result;
+    }
+}
 }

@@ -40,12 +40,15 @@ namespace IoT.Simulator.Tests
             Assert.IsNotNull(dtdlModels);
             Assert.IsNotNull(dtdlModels.Count > 0);
 
-            foreach (JObject item in dtdlModels)
-            {
-                var messageBody = await DTDLHelper.BuildMessageBodyFromDTDLAsync(item);
+            var messageBody = await DTDLHelper.BuildMessageBodyFromDTDLAsync(dtdlModels);
 
-                Assert.IsNotNull(messageBody);
-            }                        
+            Assert.IsNotNull(messageBody);
+            Assert.IsTrue(messageBody.Count > 0);
+
+            foreach (var item in messageBody)
+            {
+                Assert.IsNotNull(item.Value);
+            }
         }
     }
 }
