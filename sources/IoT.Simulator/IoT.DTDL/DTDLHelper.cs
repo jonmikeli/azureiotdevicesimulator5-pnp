@@ -111,35 +111,36 @@ namespace IoT.DTDL
             DTDLContainer itemResult = null;
 
             ModelParser parser = new ModelParser();
-            try
+            foreach (JObject dtdl in dtdlArray)
             {
-                IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
-                globalResult = new Dictionary<string, DTDLContainer>();
-
-                foreach (JObject dtdl in dtdlArray)
+                try
                 {
+                    IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+                    globalResult = new Dictionary<string, DTDLContainer>();
+
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
                         throw new Exception("");
 
                     JArray contents = (JArray)dtdl["contents"];
-                    
-                    //Look for telemetries (JSON)
-                    itemResult = BuildDynamicContent(dtdl);
 
+                    //Look for telemetries (JSON)
+                    itemResult = BuildDynamicContent(dtdl);                   
+                }
+                catch (ParsingException pex)
+                {
+                    if (itemResult == null)
+                        itemResult = new DTDLContainer();
+
+                    itemResult.ParsingErrors = pex.Errors.Select(i => i.Message);
+                }
+                finally
+                {
                     if (itemResult != null)
                         globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
 
+                    itemResult = null;
                 }
-            }
-            catch (ParsingException pex)
-            {
-                //Console.WriteLine(pex.Message);
-                //foreach (var err in pex.Errors)
-                //{
-                //    Console.WriteLine(err.PrimaryID);
-                //    Console.WriteLine(err.Message);
-                //}
             }
 
 
