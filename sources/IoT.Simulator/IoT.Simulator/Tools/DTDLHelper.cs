@@ -69,10 +69,10 @@ namespace IoT.Simulator.Tools
                                 tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
                                 break;
                             case "string":
-                                tmp.Add(tmpPropertyName, random.NextDouble());
+                                tmp.Add(tmpPropertyName, "string to be randomized");
                                 break;
                             case "integer":
-                                tmp.Add(tmpPropertyName, random.NextDouble());
+                                tmp.Add(tmpPropertyName, random.Next());
                                 break;
                             default:
                                 break;
