@@ -15,30 +15,23 @@ namespace IoT.DTDL.Tests
     public class DTDLTests
     {
         [TestMethod()]
-        public async Task BuildMessageBodyFromDTDLAsync_Thermostat_OK()
+        public async Task GetModelsAndBuildDynamicContentAsync_Thermostat_OK()
         {
             string dtdlModelPath = @"./Tests/thermostat.json";
+            string modelId = "";
 
-            JObject dtdlModel = JObject.Parse(File.ReadAllText(dtdlModelPath));
-
-            Assert.IsNotNull(dtdlModel);
-
-            var messageBody = await DTDLHelper.GetModelsAndBuildDynamicContent(dtdlModel);
+            var messageBody = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
 
             Assert.IsNotNull(messageBody);
         }
 
         [TestMethod()]
-        public async Task ParseDTDLAndBuildDynamicContentAsync_Generic2_OK()
+        public async Task GetModelsAndBuildDynamicContentAsync_Generic2_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic2.json";
+            string modelId = "";
 
-            JArray dtdlModels = JArray.Parse(File.ReadAllText(dtdlModelPath));
-
-            Assert.IsNotNull(dtdlModels);
-            Assert.IsNotNull(dtdlModels.Count > 0);
-
-            var modelContainer = await DTDLHelper.ParseDTDLAndBuildDynamicContentAsync(dtdlModels);
+            var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
 
             Assert.IsNotNull(modelContainer);
             Assert.IsTrue(modelContainer.Count > 0);
