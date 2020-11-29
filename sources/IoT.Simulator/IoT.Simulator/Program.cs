@@ -170,8 +170,9 @@ namespace IoT.Simulator
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
 
-            services.AddTransient<ITelemetryMessageService, SimpleTelemetryMessageService>();
-            services.AddTransient<IErrorMessageService, SimpleErrorMessageService>();
+            services.AddTransient<IDTDLMessageService, DTDLMessageService>();
+            //services.AddTransient<ITelemetryMessageService, SimpleTelemetryMessageService>();
+            //services.AddTransient<IErrorMessageService, SimpleErrorMessageService>();
         }
 
         static void RegisterModuleSimulators(DeviceSettings deviceSettings, IServiceCollection services)
@@ -204,8 +205,7 @@ namespace IoT.Simulator
                         var simulator = new ModuleSimulationService(
                             item,
                             item.SimulationSettings,
-                            serviceProvider.GetService<ITelemetryMessageService>(),
-                            serviceProvider.GetService<IErrorMessageService>(),
+                            serviceProvider.GetService<IDTDLMessageService>(),
                             loggerFactory);
 
                         services.AddSingleton<IModuleSimulationService, ModuleSimulationService>(iServiceProvider => simulator);

@@ -22,11 +22,9 @@ namespace IoT.Simulator.Services
         private bool _stopProcessing;
         private ModuleClient _moduleClient;
 
-        private ITelemetryMessageService _telemetryMessagingService;
-        private IErrorMessageService _errorMessagingService;
+        private IDTDLMessageService _dtdlMessagingService;        
 
-
-        public ModuleSimulationService(ModuleSettings settings, SimulationSettingsModule simulationSettings, ITelemetryMessageService telemetryMessagingService, IErrorMessageService errorMessagingService, ILoggerFactory loggerFactory)
+        public ModuleSimulationService(ModuleSettings settings, SimulationSettingsModule simulationSettings, IDTDLMessageService dtdlMessagingService, ILoggerFactory loggerFactory)
         {
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
@@ -34,8 +32,8 @@ namespace IoT.Simulator.Services
             if (simulationSettings == null)
                 throw new ArgumentNullException(nameof(simulationSettings));
 
-            if (telemetryMessagingService == null)
-                throw new ArgumentNullException(nameof(telemetryMessagingService));
+            if (dtdlMessagingService == null)
+                throw new ArgumentNullException(nameof(dtdlMessagingService));
 
             if (errorMessagingService == null)
                 throw new ArgumentNullException(nameof(errorMessagingService));
@@ -49,8 +47,7 @@ namespace IoT.Simulator.Services
             SimulationSettings = simulationSettings;
             _logger = loggerFactory.CreateLogger<ModuleSimulationService>();
 
-            _telemetryMessagingService = telemetryMessagingService;
-            _errorMessagingService = errorMessagingService;
+            _dtdlMessagingService = dtdlMessagingService;
 
             _telemetryInterval = 10;
             _stopProcessing = false;

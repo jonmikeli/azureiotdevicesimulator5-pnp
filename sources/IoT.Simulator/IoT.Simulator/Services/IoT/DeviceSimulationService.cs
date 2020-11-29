@@ -33,10 +33,9 @@ namespace IoT.Simulator.Services
         private int _telemetryInterval;
         private bool _stopProcessing = false;
 
-        private ITelemetryMessageService _telemetryMessagingService;
-        private IErrorMessageService _errorMessagingService;
+        private IDTDLMessageService _dtdlMessageService;
 
-        public DeviceSimulationService(IOptions<DeviceSettings> deviceSettings, ITelemetryMessageService telemetryMessagingService, IErrorMessageService errorMessagingService, ILoggerFactory loggerFactory)
+        public DeviceSimulationService(IOptions<DeviceSettings> deviceSettings, IDTDLMessageService dtdlMessageService, ILoggerFactory loggerFactory)
         {
             if (deviceSettings == null)
                 throw new ArgumentNullException(nameof(deviceSettings));
@@ -47,11 +46,8 @@ namespace IoT.Simulator.Services
             if (deviceSettings.Value.SimulationSettings == null)
                 throw new ArgumentNullException("deviceSettings.Value.SimulationSettings");
 
-            if (telemetryMessagingService == null)
-                throw new ArgumentNullException(nameof(telemetryMessagingService));
-
-            if (errorMessagingService == null)
-                throw new ArgumentNullException(nameof(errorMessagingService));
+            if (dtdlMessageService == null)
+                throw new ArgumentNullException(nameof(dtdlMessageService));
 
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory), "No logger factory has been provided.");
@@ -66,8 +62,7 @@ namespace IoT.Simulator.Services
 
             _logger = loggerFactory.CreateLogger<DeviceSimulationService>();
 
-            _telemetryMessagingService = telemetryMessagingService;
-            _errorMessagingService = errorMessagingService;
+            _dtdlMessageService = dtdlMessageService;
 
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
@@ -226,7 +221,7 @@ namespace IoT.Simulator.Services
                 while (true)
                 {
                     //Randomize data
-                    messageString = await _telemetryMessagingService.GetRandomizedMessageAsync(deviceId, string.Empty);
+                    messageString = await _dtdlMessageService.GetMessageAsync(deviceId, string.Empty,modelId, modelPath);
 
                     var message = new Message(Encoding.UTF8.GetBytes(messageString));
                     message.Properties.Add("messageType", "data");
@@ -251,44 +246,6 @@ namespace IoT.Simulator.Services
                     }
 
                     await Task.Delay(_telemetryInterval * 1000);
-                }
-            }
-        }
-
-        internal async Task SendDeviceToCloudErrorAsync(string deviceId, int interval)
-        {
-            int counter = 0;
-            string messageString = string.Empty;
-            string logPrefix = "error".BuildLogPrefix();
-
-            using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettings.ArtifactId}::ERROR MESSAGE (SENT BY THE DEVICE)."))
-            {
-                while (true)
-                {
-                    messageString = await _errorMessagingService.GetRandomizedMessageAsync(deviceId, string.Empty);
-
-                    var message = new Message(Encoding.ASCII.GetBytes(messageString));
-                    message.Properties.Add("messagetype", "error");
-
-                    // Add a custom application property to the message.
-                    // An IoT hub can filter on these properties without access to the message body.
-                    message.ContentType = "application/json";
-                    message.ContentEncoding = "utf-8";
-
-                    // Send the tlemetry message
-                    await _deviceClient.SendEventAsync(message);
-                    counter++;
-
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sent message: {messageString}.");
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::COUNTER: {counter}.");
-
-                    if (_stopProcessing)
-                    {
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::STOP PROCESSING.");
-                        break;
-                    }
-
-                    await Task.Delay(interval * 1000);
                 }
             }
         }
