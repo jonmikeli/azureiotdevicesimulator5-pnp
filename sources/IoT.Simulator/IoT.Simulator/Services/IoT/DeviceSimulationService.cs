@@ -98,7 +98,7 @@ namespace IoT.Simulator.Services
                 // Connect to the IoT hub using the MQTT protocol
                 if (!string.IsNullOrEmpty(_deviceSettings.DTDLSettings.DefaultModelId))
                 {
-                    _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettings.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt, new ClientOptions { ModelId = _deviceSettings.ModelId });
+                    _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettings.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt, new ClientOptions { ModelId = _deviceSettings.DTDLSettings.DefaultModelId });
                     _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device client created.ModelId:{_deviceSettings.DTDLSettings.DefaultModelId}");
                 }
                 else

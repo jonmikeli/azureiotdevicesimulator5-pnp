@@ -47,20 +47,23 @@ namespace IoT.Simulator.Tools
 
                 JArray contents = (JArray)dtdl["contents"];
                 //Look for telemetries (JSON)
-                var telemetries = contents.Select(i => i["@type"].Value<string>().ToLower() == "telemetry");
+                var telemetries = contents.Where(i => i["@type"].Value<string>().ToLower() == "telemetry");
                 if (telemetries != null && telemetries.Any())
                 {
                     result = new JObject();
                     JObject tmp = null;
+
+                    string tmpPropertyName = string.Empty;
+                    Random random = new Random(DateTime.Now.Millisecond);
                     foreach (var item in telemetries)
                     {
                         tmp = new JObject();
-                        tmp.Add(item["name"], "");
+                        tmpPropertyName = item["name"].Value<string>();
 
-                        switch (item["schema"].ToLower())
+                        switch (item["schema"].Value<string>().ToLower())
                         {
                             case "double":
-                                tmp.Add("", "");
+                                tmp.Add(tmpPropertyName, random.NextDouble());
                                 break;
                             default:
                                 break;

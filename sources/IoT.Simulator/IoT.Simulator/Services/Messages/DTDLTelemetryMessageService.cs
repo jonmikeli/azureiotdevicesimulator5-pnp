@@ -29,7 +29,7 @@ namespace IoT.Simulator.Services
 
         public async Task<string> GetMessageAsync()
         {
-            JObject jMessageBody = DTDLHelper.BuildMessageBodyFromModelId(_modelId);
+            JObject jMessageBody = await DTDLHelper.BuildMessageBodyFromModelId(_modelId, null);
 
             if (jMessageBody == null)
                 throw new Exception("No message body has been build according to the model.");
