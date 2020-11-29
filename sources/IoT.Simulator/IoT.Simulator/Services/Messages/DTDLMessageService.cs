@@ -27,7 +27,7 @@ namespace IoT.Simulator.Services
             if (string.IsNullOrEmpty(modelId))
                 throw new ArgumentNullException(nameof(modelId));
 
-            _logger = loggerFactory.CreateLogger<DTDLTelemetryMessageService>();
+            _logger = loggerFactory.CreateLogger<DTDLMessageService>();
             _modelId = modelId;
             _modelPath = modelPath;
         }
