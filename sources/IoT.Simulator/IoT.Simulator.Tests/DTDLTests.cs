@@ -44,11 +44,6 @@ namespace IoT.Simulator.Tests
 
             Assert.IsNotNull(messageBody);
             Assert.IsTrue(messageBody.Count > 0);
-
-            foreach (var item in messageBody)
-            {
-                Assert.IsNotNull(item.Value);
-            }
         }
     }
 }
