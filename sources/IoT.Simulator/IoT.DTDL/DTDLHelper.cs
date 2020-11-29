@@ -102,7 +102,7 @@ namespace IoT.DTDL
             return result;
         }
 
-        public static async Task<Dictionary<string,JArray>> BuildMessageBodyFromDTDLAsync(JArray dtdlArray)
+        public static async Task<Dictionary<string, JArray>> BuildMessageBodyFromDTDLAsync(JArray dtdlArray)
         {
             if (dtdlArray == null)
                 throw new ArgumentNullException(nameof(dtdlArray));
@@ -152,7 +152,7 @@ namespace IoT.DTDL
                                     tmp.Add(tmpPropertyName, random.Next());
                                     break;
                                 case "boolean":
-                                    tmp.Add(tmpPropertyName, random.Next(0,1)==1 ? true: false);
+                                    tmp.Add(tmpPropertyName, random.Next(0, 1) == 1 ? true : false);
                                     break;
                                 case "date":
                                     tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
@@ -192,54 +192,59 @@ namespace IoT.DTDL
                 //    Console.WriteLine(err.Message);
                 //}
             }
-        
+
 
             return globalResult;
         }
 
-    public static JObject GetDTDLFromModelId(string modelId, string[] locations)
-    {
-        if (string.IsNullOrEmpty(modelId))
-            throw new ArgumentNullException(nameof(modelId));
-
-        if (locations == null | !locations.Any())
-            throw new ArgumentNullException(nameof(locations));
-
-        //Get the full DTDL model
-        JObject dtdlModel = null;
-        int i = 0;
-        while (dtdlModel == null && i < locations.Length)
+        private JObject ExtractTelemetry()
         {
-            dtdlModel = GetDTDLFromModelId(modelId, locations[i]);
-            i++;
+
         }
 
-        return dtdlModel;
+        public static JObject GetDTDLFromModelId(string modelId, string[] locations)
+        {
+            if (string.IsNullOrEmpty(modelId))
+                throw new ArgumentNullException(nameof(modelId));
+
+            if (locations == null | !locations.Any())
+                throw new ArgumentNullException(nameof(locations));
+
+            //Get the full DTDL model
+            JObject dtdlModel = null;
+            int i = 0;
+            while (dtdlModel == null && i < locations.Length)
+            {
+                dtdlModel = GetDTDLFromModelId(modelId, locations[i]);
+                i++;
+            }
+
+            return dtdlModel;
+        }
+
+        public static JObject GetDTDLFromModelId(string modelId, string modelRepositoryPath)
+        {
+            if (string.IsNullOrEmpty(modelId))
+                throw new ArgumentNullException(nameof(modelId));
+
+            if (string.IsNullOrEmpty(modelRepositoryPath))
+                throw new ArgumentNullException(nameof(modelRepositoryPath));
+
+            //TODO: to be replaced with a generic solution
+            JObject result = JObject.Parse(File.ReadAllText("~/Tests/thermostat.json"));
+
+            //TODO add a cache system to optimize the calls
+            //if cache contains the model and it's valid, send it
+            //if not, request the repository and get the model. Put it in the cache and send the value.
+
+            //Get the model from the given repository
+
+
+            //Cloud provider
+
+            //Local path?
+
+            return result;
+        }
     }
-
-    public static JObject GetDTDLFromModelId(string modelId, string modelRepositoryPath)
-    {
-        if (string.IsNullOrEmpty(modelId))
-            throw new ArgumentNullException(nameof(modelId));
-
-        if (string.IsNullOrEmpty(modelRepositoryPath))
-            throw new ArgumentNullException(nameof(modelRepositoryPath));
-
-        //TODO: to be replaced with a generic solution
-        JObject result = JObject.Parse(File.ReadAllText("~/Tests/thermostat.json"));
-
-        //TODO add a cache system to optimize the calls
-        //if cache contains the model and it's valid, send it
-        //if not, request the repository and get the model. Put it in the cache and send the value.
-
-        //Get the model from the given repository
-
-
-        //Cloud provider
-
-        //Local path?
-
-        return result;
-    }
-}
 }
