@@ -151,7 +151,26 @@ namespace IoT.Simulator.Tools
                                 case "integer":
                                     tmp.Add(tmpPropertyName, random.Next());
                                     break;
+                                case "boolean":
+                                    tmp.Add(tmpPropertyName, random.Next(0,1)==1 ? true: false);
+                                    break;
+                                case "date":
+                                    tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
+                                    break;
+                                case "duration":
+                                    tmp.Add(tmpPropertyName, random.Next());
+                                    break;
+                                case "float":
+                                    tmp.Add(tmpPropertyName, random.NextDouble());
+                                    break;
+                                case "long":
+                                    tmp.Add(tmpPropertyName, random.Next());
+                                    break;
+                                case "time":
+                                    tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
+                                    break;
                                 default:
+                                    tmp.Add(tmpPropertyName, "Coplex or not identified schema");
                                     break;
                             }
 
