@@ -29,5 +29,23 @@ namespace IoT.Simulator.Tests
 
             Assert.IsNotNull(messageBody);
         }
+
+        [TestMethod()]
+        public async Task GetTelemetries_Generic2_OK()
+        {
+            string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic2.json";
+
+            JArray dtdlModels = JArray.Parse(File.ReadAllText(dtdlModelPath));
+
+            Assert.IsNotNull(dtdlModels);
+            Assert.IsNotNull(dtdlModels.Count > 0);
+
+            foreach (JObject item in dtdlModels)
+            {
+                var messageBody = await DTDLHelper.BuildMessageBodyFromDTDLAsync(item);
+
+                Assert.IsNotNull(messageBody);
+            }                        
+        }
     }
 }
