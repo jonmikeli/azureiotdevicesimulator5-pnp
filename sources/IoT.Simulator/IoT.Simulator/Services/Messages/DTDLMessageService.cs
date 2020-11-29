@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using IoT.DTDL;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace IoT.Simulator.Services
 {
@@ -15,8 +17,9 @@ namespace IoT.Simulator.Services
     {
         private ILogger _logger;
         private string  _modelId;
+        private string _modelPath;
 
-        public DTDLMessageService(ILoggerFactory loggerFactory, string modelId)
+        public DTDLMessageService(ILoggerFactory loggerFactory, string modelId, string modelPath)
         {            
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory));
@@ -26,20 +29,29 @@ namespace IoT.Simulator.Services
 
             _logger = loggerFactory.CreateLogger<DTDLTelemetryMessageService>();
             _modelId = modelId;
+            _modelPath = modelPath;
         }
 
         public async Task<string> GetMessageAsync()
         {
 
-            JArray jMessageBody = await DTDLHelper.ParseDTDLAndBuildDynamicContentAsync(null);
+            var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(_modelId, _modelPath);
 
-            if (jMessageBody == null)
-                throw new Exception("No message body has been build according to the model.");
+            if (modelContainer == null)
+                throw new Exception($"No model container has been found corresponding to the parameters provided:: modelId: {_modelId} - modelPath: {_modelPath}");
 
-            string messageString = JsonConvert.SerializeObject(jMessageBody, Formatting.Indented);
+            var modelContent = modelContainer.SingleOrDefault(i => i.Key == _modelId);
+            if (modelContent.Equals(default(KeyValuePair<string, DTDLContainer>)))
+                throw new Exception($"No model corresponding to the modelId {_modelId} has been found.");
 
-            if (string.IsNullOrEmpty(messageString))
-                throw new ArgumentNullException(nameof(messageString), "DATA: The message to send is empty or not found.");
+            string messageString = string.Empty;
+            if (
+                modelContent.Value != null
+                && modelContent.Value.DTDLGeneratedData != null
+                && modelContent.Value.DTDLGeneratedData.Telemetries != null)
+                messageString = JsonConvert.SerializeObject(modelContent.Value.DTDLGeneratedData.Telemetries, Formatting.Indented);
+            else
+                throw new ArgumentException($"No telemetry has been built from the provided model::modelId: {_modelId} - modelPath: {_modelPath}");
 
             return messageString;
         }
