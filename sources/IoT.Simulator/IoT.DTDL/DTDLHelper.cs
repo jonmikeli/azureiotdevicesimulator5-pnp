@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IoT.Simulator.Tools
+namespace IoT.DTDL
 {
     //https://docs.microsoft.com/en-us/azure/iot-pnp/concepts-model-parser
     //TYPES: https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md

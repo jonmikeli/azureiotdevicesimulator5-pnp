@@ -45,6 +45,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IoT.DTDL\IoT.DTDL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings.Debug.json">
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
