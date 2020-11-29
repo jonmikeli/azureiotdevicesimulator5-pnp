@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,11 +17,10 @@ namespace IoT.DTDL
     //TYPES: https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md
     public class DTDLHelper
     {
-
-        public static async Task<JArray> BuildMessageBodyFromModelId(string modelId, string[] locations)
+        public static async Task<JArray> BuildMessageBodyFromModelId(string modelId, string modelPath)
         {
             //Get the full DTDL model
-            JObject dtdlModel = GetDTDLFromModelId(modelId, locations);
+            JObject dtdlModel = GetDTDLFromModelId(modelId, modelPath);
 
             if (dtdlModel == null)
                 throw new Exception($"No DTDL model with the id {modelId} has been provided at the provided locations.");
@@ -125,8 +125,8 @@ namespace IoT.DTDL
                     JArray contents = (JArray)dtdl["contents"];
 
                     //Look for telemetries (JSON)
-                    itemResult = BuildDynamicContent(dtdl);                   
-                }                
+                    itemResult = BuildDynamicContent(dtdl);
+                }
                 catch (ParsingException pex)
                 {
                     if (itemResult == null)
@@ -357,47 +357,33 @@ namespace IoT.DTDL
             return result;
         }
 
-        public static JObject GetDTDLFromModelId(string modelId, string[] locations)
+        public static async Task<JToken> GetDTDLFromModelId(string modelId, string modelPath)
         {
             if (string.IsNullOrEmpty(modelId))
                 throw new ArgumentNullException(nameof(modelId));
 
-            if (locations == null | !locations.Any())
-                throw new ArgumentNullException(nameof(locations));
+            if (string.IsNullOrEmpty(modelPath))
+                throw new ArgumentNullException(nameof(modelPath));
 
-            //Get the full DTDL model
-            JObject dtdlModel = null;
-            int i = 0;
-            while (dtdlModel == null && i < locations.Length)
+            JToken result = null;
+
+            if (modelPath.StartsWith("http"))
             {
-                dtdlModel = GetDTDLFromModelId(modelId, locations[i]);
-                i++;
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(modelPath);
+                    if (response != null)
+                    {
+                        response.EnsureSuccessStatusCode();
+                        var data = await response.Content.ReadAsStringAsync();
+
+                        if (data != null)
+                            result = JToken.Parse(data);
+                    }
+                }
             }
-
-            return dtdlModel;
-        }
-
-        public static JObject GetDTDLFromModelId(string modelId, string modelRepositoryPath)
-        {
-            if (string.IsNullOrEmpty(modelId))
-                throw new ArgumentNullException(nameof(modelId));
-
-            if (string.IsNullOrEmpty(modelRepositoryPath))
-                throw new ArgumentNullException(nameof(modelRepositoryPath));
-
-            //TODO: to be replaced with a generic solution
-            JObject result = JObject.Parse(File.ReadAllText("~/Tests/thermostat.json"));
-
-            //TODO add a cache system to optimize the calls
-            //if cache contains the model and it's valid, send it
-            //if not, request the repository and get the model. Put it in the cache and send the value.
-
-            //Get the model from the given repository
-
-
-            //Cloud provider
-
-            //Local path?
+            else
+                result = JObject.Parse(File.ReadAllText(modelPath));
 
             return result;
         }
