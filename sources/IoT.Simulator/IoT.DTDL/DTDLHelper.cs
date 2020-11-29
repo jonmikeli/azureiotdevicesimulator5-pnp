@@ -102,19 +102,19 @@ namespace IoT.DTDL
             return result;
         }
 
-        public static async Task<Dictionary<string, JArray>> BuildMessageBodyFromDTDLAsync(JArray dtdlArray)
+        public static async Task<Dictionary<string, DTDLContainer>> ParseDTDLAndBuildDynamicContentAsync(JArray dtdlArray)
         {
             if (dtdlArray == null)
                 throw new ArgumentNullException(nameof(dtdlArray));
 
-            Dictionary<string, JArray> globalResult = null;
-            JArray itemResult = null;
+            Dictionary<string, DTDLContainer> globalResult = null;
+            DTDLContainer itemResult = null;
 
             ModelParser parser = new ModelParser();
             try
             {
                 IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
-                globalResult = new Dictionary<string, JArray>();
+                globalResult = new Dictionary<string, DTDLContainer>();
 
                 foreach (JObject dtdl in dtdlArray)
                 {
@@ -123,62 +123,13 @@ namespace IoT.DTDL
                         throw new Exception("");
 
                     JArray contents = (JArray)dtdl["contents"];
+                    
                     //Look for telemetries (JSON)
-                    var telemetries = contents.Where(i => i["@type"].Value<string>().ToLower() == "telemetry");
-                    if (telemetries != null && telemetries.Any())
-                    {
-                        itemResult = new JArray();
-                        JObject tmp = null;
+                    itemResult = BuildDynamicContent(dtdl);
 
-                        string tmpPropertyName = string.Empty;
-                        Random random = new Random(DateTime.Now.Millisecond);
-                        foreach (var item in telemetries)
-                        {
-                            tmp = new JObject();
-                            tmpPropertyName = item["name"].Value<string>();
+                    if (itemResult != null)
+                        globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
 
-                            switch (item["schema"].Value<string>().ToLower())
-                            {
-                                case "double":
-                                    tmp.Add(tmpPropertyName, random.NextDouble());
-                                    break;
-                                case "datetime":
-                                    tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
-                                    break;
-                                case "string":
-                                    tmp.Add(tmpPropertyName, "string to be randomized");
-                                    break;
-                                case "integer":
-                                    tmp.Add(tmpPropertyName, random.Next());
-                                    break;
-                                case "boolean":
-                                    tmp.Add(tmpPropertyName, random.Next(0, 1) == 1 ? true : false);
-                                    break;
-                                case "date":
-                                    tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
-                                    break;
-                                case "duration":
-                                    tmp.Add(tmpPropertyName, random.Next());
-                                    break;
-                                case "float":
-                                    tmp.Add(tmpPropertyName, random.NextDouble());
-                                    break;
-                                case "long":
-                                    tmp.Add(tmpPropertyName, random.Next());
-                                    break;
-                                case "time":
-                                    tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
-                                    break;
-                                default:
-                                    tmp.Add(tmpPropertyName, "Coplex or not identified schema");
-                                    break;
-                            }
-
-                            itemResult.Add(tmp);
-                        }
-                    }
-
-                    globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
                     //Look for properties (JSON) - Reported properties
                     //var properties = contents.Select(i => i["@type"].Value<string>().ToLower() == "property");
                 }
@@ -197,9 +148,89 @@ namespace IoT.DTDL
             return globalResult;
         }
 
-        private JObject ExtractTelemetry()
-        {
 
+        private static DTDLContainer BuildDynamicContent(JObject dtdl)
+        {
+            if (dtdl == null)
+                throw new ArgumentNullException(nameof(dtdl));
+
+            DTDLContainer result = new DTDLContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };
+            result.DTDLGeneratedData = new DTDLGeneratedData();
+
+            //CONTENT
+            if (!dtdl.ContainsKey("contents"))
+                throw new Exception("");
+
+            JArray contents = (JArray)dtdl["contents"];
+
+            //Look for telemetries (JSON)
+            result.DTDLGeneratedData.Telemetries = ExtractTelemetries(contents);
+
+            //Look for properties (JSON)
+            //TODO
+
+            return result;
+        }
+
+        private static JArray ExtractTelemetries(JArray contents)
+        {
+            JArray result = null;
+            var telemetries = contents.Where(i => i["@type"].Value<string>().ToLower() == "telemetry");
+            if (telemetries != null && telemetries.Any())
+            {
+                result = new JArray();
+
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in telemetries)
+                {
+                    tmp = new JObject();
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    switch (item["schema"].Value<string>().ToLower())
+                    {
+                        case "double":
+                            tmp.Add(tmpPropertyName, random.NextDouble());
+                            break;
+                        case "datetime":
+                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
+                            break;
+                        case "string":
+                            tmp.Add(tmpPropertyName, "string to be randomized");
+                            break;
+                        case "integer":
+                            tmp.Add(tmpPropertyName, random.Next());
+                            break;
+                        case "boolean":
+                            tmp.Add(tmpPropertyName, random.Next(0, 1) == 1 ? true : false);
+                            break;
+                        case "date":
+                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
+                            break;
+                        case "duration":
+                            tmp.Add(tmpPropertyName, random.Next());
+                            break;
+                        case "float":
+                            tmp.Add(tmpPropertyName, random.NextDouble());
+                            break;
+                        case "long":
+                            tmp.Add(tmpPropertyName, random.Next());
+                            break;
+                        case "time":
+                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
+                            break;
+                        default:
+                            tmp.Add(tmpPropertyName, "Coplex or not identified schema");
+                            break;
+                    }
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
         }
 
         public static JObject GetDTDLFromModelId(string modelId, string[] locations)

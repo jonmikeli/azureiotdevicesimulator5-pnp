@@ -13,6 +13,7 @@ namespace IoT.DTDL
         //Model
         public string ModelId { get; set; }
         public JToken DTDL { get; set; }
+        public IEnumerable<string> ParsingErrors { get; set; }
 
         //Sample data
         public DTDLGeneratedData DTDLGeneratedData { get; set; }
