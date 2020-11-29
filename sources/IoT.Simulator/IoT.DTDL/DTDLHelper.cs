@@ -17,91 +17,59 @@ namespace IoT.DTDL
     //TYPES: https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md
     public class DTDLHelper
     {
-        public static async Task<JArray> BuildMessageBodyFromModelId(string modelId, string modelPath)
+        public static async Task<Dictionary<string, DTDLContainer>> GetModelsAndBuildDynamicContent(string modelId, string modelPath)
         {
             //Get the full DTDL model
-            JObject dtdlModel = GetDTDLFromModelId(modelId, modelPath);
+            JToken dtdlModel = await GetDTDLFromModelIdAsync(modelId, modelPath);
 
             if (dtdlModel == null)
                 throw new Exception($"No DTDL model with the id {modelId} has been provided at the provided locations.");
 
+            JArray jArrayDTDLModel=null;
+            if (dtdlModel is JObject)
+            {
+                jArrayDTDLModel = new JArray();
+                jArrayDTDLModel.Add(dtdlModel);
+            }
+            else if (dtdlModel is JArray)
+                jArrayDTDLModel = dtdlModel as JArray;
+
             //Build the JSON Message corresponding to the model
-            return await BuildMessageBodyFromDTDLAsync(dtdlModel);
+            return await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);
         }
 
-        //https://docs.microsoft.com/en-us/azure/iot-pnp/concepts-model-parser
-        public static async Task<JArray> BuildMessageBodyFromDTDLAsync(JObject dtdl)
+        public static async Task<JToken> GetDTDLFromModelIdAsync(string modelId, string modelPath)
         {
-            if (dtdl == null)
-                throw new ArgumentNullException(nameof(dtdl));
+            if (string.IsNullOrEmpty(modelId))
+                throw new ArgumentNullException(nameof(modelId));
 
-            JArray result = null;
+            if (string.IsNullOrEmpty(modelPath))
+                throw new ArgumentNullException(nameof(modelPath));
 
-            ModelParser parser = new ModelParser();
-            try
+            JToken result = null;
+
+            if (modelPath.StartsWith("http"))
             {
-                IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(new string[] { JsonConvert.SerializeObject(dtdl) });
-
-                //CONTENT
-                if (!dtdl.ContainsKey("contents"))
-                    throw new Exception("");
-
-                JArray contents = (JArray)dtdl["contents"];
-                //Look for telemetries (JSON)
-                var telemetries = contents.Where(i => i["@type"].Value<string>().ToLower() == "telemetry");
-                if (telemetries != null && telemetries.Any())
+                using (HttpClient httpClient = new HttpClient())
                 {
-                    result = new JArray();
-                    JObject tmp = null;
-
-                    string tmpPropertyName = string.Empty;
-                    Random random = new Random(DateTime.Now.Millisecond);
-                    foreach (var item in telemetries)
+                    var response = await httpClient.GetAsync(modelPath);
+                    if (response != null)
                     {
-                        tmp = new JObject();
-                        tmpPropertyName = item["name"].Value<string>();
+                        response.EnsureSuccessStatusCode();
+                        var data = await response.Content.ReadAsStringAsync();
 
-                        switch (item["schema"].Value<string>().ToLower())
-                        {
-                            case "double":
-                                tmp.Add(tmpPropertyName, random.NextDouble());
-                                break;
-                            case "datetime":
-                                tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
-                                break;
-                            case "string":
-                                tmp.Add(tmpPropertyName, "string to be randomized");
-                                break;
-                            case "integer":
-                                tmp.Add(tmpPropertyName, random.Next());
-                                break;
-                            default:
-                                break;
-                        }
-
-                        result.Add(tmp);
+                        if (data != null)
+                            result = JToken.Parse(data);
                     }
                 }
-
-
-                //Look for properties (JSON) - Reported properties
-                //var properties = contents.Select(i => i["@type"].Value<string>().ToLower() == "property");
-
-
             }
-            catch (ParsingException pex)
-            {
-                //Console.WriteLine(pex.Message);
-                //foreach (var err in pex.Errors)
-                //{
-                //    Console.WriteLine(err.PrimaryID);
-                //    Console.WriteLine(err.Message);
-                //}
-            }
+            else
+                result = JObject.Parse(File.ReadAllText(modelPath));
 
             return result;
         }
 
+        //https://docs.microsoft.com/en-us/azure/iot-pnp/concepts-model-parser
         public static async Task<Dictionary<string, DTDLContainer>> ParseDTDLAndBuildDynamicContentAsync(JArray dtdlArray)
         {
             if (dtdlArray == null)
@@ -150,6 +118,7 @@ namespace IoT.DTDL
 
             return globalResult;
         }
+
 
 
         private static DTDLContainer BuildDynamicContent(JObject dtdl)
@@ -357,35 +326,6 @@ namespace IoT.DTDL
             return result;
         }
 
-        public static async Task<JToken> GetDTDLFromModelId(string modelId, string modelPath)
-        {
-            if (string.IsNullOrEmpty(modelId))
-                throw new ArgumentNullException(nameof(modelId));
 
-            if (string.IsNullOrEmpty(modelPath))
-                throw new ArgumentNullException(nameof(modelPath));
-
-            JToken result = null;
-
-            if (modelPath.StartsWith("http"))
-            {
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    var response = await httpClient.GetAsync(modelPath);
-                    if (response != null)
-                    {
-                        response.EnsureSuccessStatusCode();
-                        var data = await response.Content.ReadAsStringAsync();
-
-                        if (data != null)
-                            result = JToken.Parse(data);
-                    }
-                }
-            }
-            else
-                result = JObject.Parse(File.ReadAllText(modelPath));
-
-            return result;
-        }
     }
 }
