@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using IoT.DTDL;
 
 namespace IoT.Simulator.Services
 {

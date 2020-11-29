@@ -29,7 +29,7 @@ namespace IoT.DTDL.Tests
         }
 
         [TestMethod()]
-        public async Task GetTelemetries_Generic2_OK()
+        public async Task ParseDTDLAndBuildDynamicContentAsync_Generic2_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic2.json";
 
@@ -38,10 +38,10 @@ namespace IoT.DTDL.Tests
             Assert.IsNotNull(dtdlModels);
             Assert.IsNotNull(dtdlModels.Count > 0);
 
-            var messageBody = await DTDLHelper.BuildMessageBodyFromDTDLAsync(dtdlModels);
+            var modelContainer = await DTDLHelper.ParseDTDLAndBuildDynamicContentAsync(dtdlModels);
 
-            Assert.IsNotNull(messageBody);
-            Assert.IsTrue(messageBody.Count > 0);
+            Assert.IsNotNull(modelContainer);
+            Assert.IsTrue(modelContainer.Count > 0);
         }
     }
 }
