@@ -233,6 +233,126 @@ namespace IoT.DTDL
             return result;
         }
 
+        private static JArray ExtractWritableProperties(JArray contents)
+        {
+            JArray result = null;
+            var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "property" && i["writable"].Value<string>().ToLower() == "true");
+            if (properties != null && properties.Any())
+            {
+                result = new JArray();
+
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in properties)
+                {
+                    tmp = new JObject();
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    switch (item["schema"].Value<string>().ToLower())
+                    {
+                        case "double":
+                            tmp.Add(tmpPropertyName, random.NextDouble());
+                            break;
+                        case "datetime":
+                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
+                            break;
+                        case "string":
+                            tmp.Add(tmpPropertyName, "string to be randomized");
+                            break;
+                        case "integer":
+                            tmp.Add(tmpPropertyName, random.Next());
+                            break;
+                        case "boolean":
+                            tmp.Add(tmpPropertyName, random.Next(0, 1) == 1 ? true : false);
+                            break;
+                        case "date":
+                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
+                            break;
+                        case "duration":
+                            tmp.Add(tmpPropertyName, random.Next());
+                            break;
+                        case "float":
+                            tmp.Add(tmpPropertyName, random.NextDouble());
+                            break;
+                        case "long":
+                            tmp.Add(tmpPropertyName, random.Next());
+                            break;
+                        case "time":
+                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
+                            break;
+                        default:
+                            tmp.Add(tmpPropertyName, "Coplex or not identified schema");
+                            break;
+                    }
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
+        private static JArray ExtractReadableProperties(JArray contents)
+        {
+            JArray result = null;
+            var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "property" && i["writable"].Value<string>().ToLower() == "false");
+            if (properties != null && properties.Any())
+            {
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in properties)
+                {
+                    tmp = new JObject();
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    switch (item["schema"].Value<string>().ToLower())
+                    {
+                        case "double":
+                            tmp.Add(tmpPropertyName, random.NextDouble());
+                            break;
+                        case "datetime":
+                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
+                            break;
+                        case "string":
+                            tmp.Add(tmpPropertyName, "string to be randomized");
+                            break;
+                        case "integer":
+                            tmp.Add(tmpPropertyName, random.Next());
+                            break;
+                        case "boolean":
+                            tmp.Add(tmpPropertyName, random.Next(0, 1) == 1 ? true : false);
+                            break;
+                        case "date":
+                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
+                            break;
+                        case "duration":
+                            tmp.Add(tmpPropertyName, random.Next());
+                            break;
+                        case "float":
+                            tmp.Add(tmpPropertyName, random.NextDouble());
+                            break;
+                        case "long":
+                            tmp.Add(tmpPropertyName, random.Next());
+                            break;
+                        case "time":
+                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
+                            break;
+                        default:
+                            tmp.Add(tmpPropertyName, "Coplex or not identified schema");
+                            break;
+                    }
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
         public static JObject GetDTDLFromModelId(string modelId, string[] locations)
         {
             if (string.IsNullOrEmpty(modelId))
