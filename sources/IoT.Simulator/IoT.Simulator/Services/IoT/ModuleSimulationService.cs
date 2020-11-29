@@ -35,9 +35,6 @@ namespace IoT.Simulator.Services
             if (dtdlMessagingService == null)
                 throw new ArgumentNullException(nameof(dtdlMessagingService));
 
-            if (errorMessagingService == null)
-                throw new ArgumentNullException(nameof(errorMessagingService));
-
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory));
 
