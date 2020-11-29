@@ -16,4 +16,22 @@
     <ProjectReference Include="..\IoT.Simulator\IoT.Simulator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Tests\jmi.simulator.pnp.model.generic.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\jmi.simulator.pnp.model.generic2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\simulator5-1 copy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\simulator5-1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\thermostat.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
