@@ -65,6 +65,15 @@ namespace IoT.Simulator.Tools
                             case "double":
                                 tmp.Add(tmpPropertyName, random.NextDouble());
                                 break;
+                            case "datetime":
+                                tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
+                                break;
+                            case "string":
+                                tmp.Add(tmpPropertyName, random.NextDouble());
+                                break;
+                            case "integer":
+                                tmp.Add(tmpPropertyName, random.NextDouble());
+                                break;
                             default:
                                 break;
                         }
