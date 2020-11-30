@@ -1,10 +1,15 @@
 {
   "connectionString": "HostName=iothubtestsedgepnp.azure-devices.net;DeviceId=simulator5;SharedAccessKey=9PUl2lovvijycVlibTPTbp5lemiI1LX522HbjB587cc=",
-  "defaultModelId": "dtmi:com:example:thermostat;1",
+  "defaultModelId": "dtmi:com:jmi:simulator:devicemessages;1",
   "supportedModels": [
     {
       "modelId": "dtmi:com:example:thermostat;1",
       "modelPath": "./Tests/thermostat.json",
+      "modelType": "Telemetry"
+    },
+    {
+      "modelId": "dtmi:com:jmi:simulator:devicemessages;1",
+      "modelPath": "./Tests/jmi.simulator.pnp.model.generic3.json",
       "modelType": "Telemetry"
     }
   ],
