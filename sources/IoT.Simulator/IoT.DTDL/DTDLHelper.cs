@@ -80,18 +80,20 @@ namespace IoT.DTDL
             DTDLContainer itemResult = null;
 
             ModelParser parser = new ModelParser();
+            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = null;
+            JArray contents = null;
             foreach (JObject dtdl in dtdlArray)
             {
                 try
                 {
-                    IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
                     globalResult = new Dictionary<string, DTDLContainer>();
-
+                    parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+                 
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
                         throw new Exception("");
 
-                    JArray contents = (JArray)dtdl["contents"];
+                    contents = (JArray)dtdl["contents"];
 
                     //Look for telemetries (JSON)
                     itemResult = BuildDynamicContent(dtdl);
@@ -105,7 +107,7 @@ namespace IoT.DTDL
                 }
                 catch (Exception ex)
                 {
-
+                    itemResult = null;
                 }
                 finally
                 {
