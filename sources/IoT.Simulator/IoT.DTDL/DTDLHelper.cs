@@ -65,7 +65,7 @@ namespace IoT.DTDL
                 }
             }
             else
-                result = JObject.Parse(File.ReadAllText(modelPath));
+                result = JToken.Parse(File.ReadAllText(modelPath));
 
             return result;
         }
