@@ -10,8 +10,6 @@ namespace IoT.Simulator.Settings
         public bool EnableTelemetryMessages { get; set; }
         [JsonProperty("telemetryFrecuency")]
         public int TelemetryFrecuency { get; set; }
-        [JsonProperty("telemetryModelId")]
-        public string TelemetryModelId { get; set; }
         [JsonProperty("telemetryLogColor")]
         public ConsoleColor TelemetryLogColor { get; set; }
 
@@ -19,8 +17,6 @@ namespace IoT.Simulator.Settings
         public bool EnableErrorMessages { get; set; }
         [JsonProperty("errorFrecuency")]
         public int ErrorFrecuency { get; set; }
-        [JsonProperty("errorModelId")]
-        public int ErrorModelId { get; set; }
         [JsonProperty("errorLogColor")]
         [JsonConverter(typeof(StringToConsoleColorConverter))]
         public ConsoleColor ErrorLogColor { get; set; }
