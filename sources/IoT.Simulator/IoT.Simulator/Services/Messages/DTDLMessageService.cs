@@ -61,8 +61,8 @@ namespace IoT.Simulator.Services
 
             _logger.LogTrace($"{logPrefix}::{artifactId}::Message body according to a given model has been loaded.");
 
-            messageString = IoTTools.UpdateIds(messageString, deviceId, moduleId);
-            _logger.LogTrace($"{logPrefix}::{artifactId}::DeviceId and moduleId updated in the message template.");
+            //messageString = IoTTools.UpdateIds(messageString, deviceId, moduleId);
+            //_logger.LogTrace($"{logPrefix}::{artifactId}::DeviceId and moduleId updated in the message template.");
 
             return messageString;
         }
