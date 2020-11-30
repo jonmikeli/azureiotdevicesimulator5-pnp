@@ -18,7 +18,7 @@ namespace IoT.DTDL.Tests
         public async Task GetModelsAndBuildDynamicContentAsync_Thermostat_OK()
         {
             string dtdlModelPath = @"./Tests/thermostat.json";
-            string modelId = "";
+            string modelId = "dtmi:com:example:thermostat;1";
 
             var messageBody = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
 
