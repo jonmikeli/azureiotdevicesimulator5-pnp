@@ -29,7 +29,7 @@ namespace IoT.DTDL.Tests
         public async Task GetModelsAndBuildDynamicContentAsync_Generic2_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic2.json";
-            string modelId = "";
+            string modelId = "dtmi:com:jmi:simulator5;1";
 
             var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
 
