@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Tests\jmi.simulator.pnp.model.generic3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Tests\jmi.simulator.pnp.model.generic2-errors.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
