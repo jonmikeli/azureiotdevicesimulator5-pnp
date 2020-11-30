@@ -24,6 +24,8 @@ namespace IoT.DTDL.Tests
 
             Assert.IsNotNull(modelContainer);
             Assert.IsTrue(modelContainer.Count > 0);
+
+            Assert.IsNotNull(modelContainer[modelId].DTDLGeneratedData);
         }
 
         [TestMethod()]
