@@ -45,7 +45,7 @@ namespace IoT.DTDL.Tests
         }
 
         [TestMethod()]
-        public async Task GetModelsAndBuildDynamicContentAsync_Generic2_ManyTelemetries_OK()
+        public async Task GetModelsAndBuildDynamicContentAsync_Generic3_ManyTelemetries_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic3.json";
             string modelId = "dtmi:com:jmi:simulator5;1";
