@@ -20,9 +20,10 @@ namespace IoT.DTDL.Tests
             string dtdlModelPath = @"./Tests/thermostat.json";
             string modelId = "dtmi:com:example:thermostat;1";
 
-            var messageBody = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
+            var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
 
-            Assert.IsNotNull(messageBody);
+            Assert.IsNotNull(modelContainer);
+            Assert.IsTrue(modelContainer.Count > 0);
         }
 
         [TestMethod()]
@@ -35,6 +36,8 @@ namespace IoT.DTDL.Tests
 
             Assert.IsNotNull(modelContainer);
             Assert.IsTrue(modelContainer.Count > 0);
+
+            Assert.IsNotNull(modelContainer[modelId].DTDLGeneratedData);
         }
 
         [TestMethod()]
@@ -47,6 +50,7 @@ namespace IoT.DTDL.Tests
 
             Assert.IsNotNull(modelContainer);
             Assert.IsTrue(modelContainer.Count > 0);
+            Assert.IsNotNull(modelContainer[modelId].DTDLGeneratedData);
         }
     }
 }
