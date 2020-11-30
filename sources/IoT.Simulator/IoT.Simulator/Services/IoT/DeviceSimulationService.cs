@@ -217,13 +217,13 @@ namespace IoT.Simulator.Services
 
             using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettings.ArtifactId}::MEASURED DATA"))
             {
+                var defaultModel = _deviceSettings.SupportedModels.SingleOrDefault(i => i.ModelId == _deviceSettings.DefaultModelId);
+                if (defaultModel == null)
+                    throw new Exception("No supported model corresponds to the default model Id.");
+
                 while (true)
                 {
-                    //Randomize data
-                    var defaultModel = _deviceSettings.SupportedModels.SingleOrDefault(i => i.ModelId == _deviceSettings.DefaultModelId);
-                    if (defaultModel == null)
-                        throw new Exception("No supported model corresponds to the default model Id.");
-
+                    //Randomize data                    
                     messageString = await _dtdlMessageService.GetMessageAsync(deviceId, string.Empty, _deviceSettings.DefaultModelId, defaultModel.ModelPath);
 
                     var message = new Message(Encoding.UTF8.GetBytes(messageString));

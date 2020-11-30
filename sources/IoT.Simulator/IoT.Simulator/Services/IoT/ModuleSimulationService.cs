@@ -133,13 +133,13 @@ namespace IoT.Simulator.Services
 
             using (logger.BeginScope($"{logPrefix}::{ModuleSettings.ArtifactId}::MEASURED DATA"))
             {
+                var defaultModel = ModuleSettings.SupportedModels.SingleOrDefault(i => i.ModelId == ModuleSettings.DefaultModelId);
+                if (defaultModel == null)
+                    throw new Exception("No supported model corresponds to the default model Id.");
+
                 while (true)
                 {
-                    //Randomize data
-                    var defaultModel = ModuleSettings.SupportedModels.SingleOrDefault(i => i.ModelId == ModuleSettings.DefaultModelId);
-                    if (defaultModel == null)
-                        throw new Exception("No supported model corresponds to the default model Id.");
-
+                    //Randomize data                    
                     messageString = await _dtdlMessagingService.GetRandomizedMessageAsync(deviceId, moduleId, ModuleSettings.DefaultModelId, defaultModel.ModelPath);
 
                     var message = new Message(Encoding.UTF8.GetBytes(messageString));
