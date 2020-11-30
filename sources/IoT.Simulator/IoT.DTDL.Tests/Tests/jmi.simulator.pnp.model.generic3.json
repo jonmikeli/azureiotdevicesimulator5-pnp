@@ -84,7 +84,7 @@
         {
           "@type": "Telemetry",
           "name": "rpm",
-          "schema": "int"
+          "schema": "integer"
         }
       ]
     }
