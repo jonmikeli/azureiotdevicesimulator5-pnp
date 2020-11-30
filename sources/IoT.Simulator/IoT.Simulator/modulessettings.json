@@ -2,11 +2,11 @@
  "modules":[
   {
     "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
-    "defaultModelId": null,
+    "defaultModelId": "dtmi:com:jmi:simulator5;1",
     "supportedModels": [
       {
-        "modelId": null,
-        "modelPath": "",
+        "modelId": "dtmi:com:example:thermostat;1",
+        "modelPath": "./Tests/thermostat.json",
         "modelType": "Telemetry"
       }
     ],

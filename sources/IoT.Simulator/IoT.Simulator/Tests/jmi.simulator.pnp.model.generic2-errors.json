@@ -3,7 +3,7 @@
       "@id": "dtmi:com:jmi:simulator5;1",
       "@type": "Interface",
       "@context": "dtmi:dtdl:context;2",
-      "displayName": "Simulator",
+      "displaName": "Simulator",
       "contents": [
         {
           "@type": "Component",
@@ -74,7 +74,8 @@
         {
           "@type": "Telemetry",
           "name": "temperature",
-          "schema": "double"
+          "schema": "double",
+          "unit": "degreesCelsius"
         }
       ]
     }

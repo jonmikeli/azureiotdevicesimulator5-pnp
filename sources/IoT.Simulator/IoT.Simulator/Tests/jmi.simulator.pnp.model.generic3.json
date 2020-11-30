@@ -75,6 +75,16 @@
           "@type": "Telemetry",
           "name": "temperature",
           "schema": "double"
+        },
+        {
+          "@type": "Telemetry",
+          "name": "pressure",
+          "schema": "float"
+        },
+        {
+          "@type": "Telemetry",
+          "name": "rpm",
+          "schema": "integer"
         }
       ]
     }
