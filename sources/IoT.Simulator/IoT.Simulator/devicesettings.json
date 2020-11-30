@@ -1,6 +1,6 @@
 {
   "connectionString": "HostName=iothubtestsedgepnp.azure-devices.net;DeviceId=simulator5;SharedAccessKey=9PUl2lovvijycVlibTPTbp5lemiI1LX522HbjB587cc=",
-  "defaultModelId": "dtmi:com:jmi:simulator5;1",
+  "defaultModelId": "dtmi:com:example:thermostat;1",
   "supportedModels": [
     {
       "modelId": "dtmi:com:example:thermostat;1",
@@ -13,7 +13,7 @@
     "latencyTestsFrecuency": 30,
     "enableDevice": true,
     "enableModules": false,
-    "enableTelemetryMessages": false,
+    "enableTelemetryMessages": true,
     "telemetryFrecuency": 10,
     "enableErrorMessages": false,
     "errorFrecuency": 20,

@@ -2,7 +2,7 @@
  "modules":[
   {
     "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
-    "defaultModelId": "dtmi:com:jmi:simulator5;1",
+    "defaultModelId": "dtmi:com:example:thermostat;1",
     "supportedModels": [
       {
         "modelId": "dtmi:com:example:thermostat;1",

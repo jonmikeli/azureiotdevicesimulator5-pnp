@@ -136,7 +136,11 @@ namespace IoT.Simulator.Services
                 while (true)
                 {
                     //Randomize data
-                    messageString = await _dtdlMessagingService.GetRandomizedMessageAsync(deviceId, moduleId, ModuleSettings.DefaultModelId, ModuleSettings.SupportedModels.Single(i=>i.ModelId == ModuleSettings.DefaultModelId).ModelPath);
+                    var defaultModel = ModuleSettings.SupportedModels.SingleOrDefault(i => i.ModelId == ModuleSettings.DefaultModelId);
+                    if (defaultModel == null)
+                        throw new Exception("No supported model corresponds to the default model Id.");
+
+                    messageString = await _dtdlMessagingService.GetRandomizedMessageAsync(deviceId, moduleId, ModuleSettings.DefaultModelId, defaultModel.ModelPath);
 
                     var message = new Message(Encoding.UTF8.GetBytes(messageString));
                     message.Properties.Add("messageType", "data");
