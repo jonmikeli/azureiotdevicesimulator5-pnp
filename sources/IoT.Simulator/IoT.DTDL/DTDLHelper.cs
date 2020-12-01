@@ -264,6 +264,9 @@ namespace IoT.DTDL
                             break;
                     }
 
+                    tmp = new JObject();
+                    AddCreatedProperties(ref tmp, item["schema"].Value<string>(), random);
+
                     result.Add(tmp);
                 }
             }
@@ -361,14 +364,14 @@ namespace IoT.DTDL
                     tmpRequestName = tmpRequest["name"].Value<string>();
                     
                     tmpCreatedRequest = new JObject();
-                    AddCreatedProperties(ref tmpCreatedRequest, tmpRequest["schema"].Value<string>(), random);
+                    AddCreatedProperties(ref tmpCreatedRequest, tmpRequestName, tmpRequest["schema"].Value<string>(), random);
 
                     //response
                     tmpResponse = (JObject)item["response"];
                     tmpResponseName = tmpResponse["name"].Value<string>();
 
                     tmpCreatedResponse = new JObject();
-                    AddCreatedProperties(ref tmpCreatedResponse, tmpResponse["schema"].Value<string>(), random);
+                    AddCreatedProperties(ref tmpCreatedResponse, tmpResponseName, tmpResponse["schema"].Value<string>(), random);
 
                     tmp.Add(tmpRequest);
                     tmp.Add(tmpResponse);
@@ -379,7 +382,7 @@ namespace IoT.DTDL
             return result;
         }
         
-        private static void AddCreatedProperties(ref JObject jObject, string schemaName, Random random)
+        private static void AddCreatedProperties(ref JObject jObject, string propertyName, string schemaName, Random random)
         {
             if (jObject == null)
                 throw new ArgumentNullException(nameof(jObject));
@@ -390,37 +393,37 @@ namespace IoT.DTDL
             switch (schemaName.ToLower())
             {
                 case "double":
-                    jObject.Add(schemaName, random.NextDouble());
+                    jObject.Add(propertyName, random.NextDouble());
                     break;
                 case "datetime":
-                    jObject.Add(schemaName, DateTime.Now.AddHours(random.Next(0, 148)));
+                    jObject.Add(propertyName, DateTime.Now.AddHours(random.Next(0, 148)));
                     break;
                 case "string":
-                    jObject.Add(schemaName, "string to be randomized");
+                    jObject.Add(propertyName, "string to be randomized");
                     break;
                 case "integer":
-                    jObject.Add(schemaName, random.Next());
+                    jObject.Add(propertyName, random.Next());
                     break;
                 case "boolean":
-                    jObject.Add(schemaName, random.Next(0, 1) == 1 ? true : false);
+                    jObject.Add(propertyName, random.Next(0, 1) == 1 ? true : false);
                     break;
                 case "date":
-                    jObject.Add(schemaName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
+                    jObject.Add(propertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
                     break;
                 case "duration":
-                    jObject.Add(schemaName, random.Next());
+                    jObject.Add(propertyName, random.Next());
                     break;
                 case "float":
-                    jObject.Add(schemaName, random.NextDouble());
+                    jObject.Add(propertyName, random.NextDouble());
                     break;
                 case "long":
-                    jObject.Add(schemaName, random.Next());
+                    jObject.Add(propertyName, random.Next());
                     break;
                 case "time":
-                    jObject.Add(schemaName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
+                    jObject.Add(propertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
                     break;
                 default:
-                    jObject.Add(schemaName, "Coplex or not identified schema");
+                    jObject.Add(propertyName, "Coplex or not identified schema");
                     break;
             }
         }
