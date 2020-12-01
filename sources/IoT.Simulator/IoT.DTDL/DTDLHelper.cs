@@ -166,7 +166,11 @@ namespace IoT.DTDL
                     tmpPropertyName = item["name"].Value<string>();
 
                     tmp = new JObject();
-                    AddCreatedProperties(ref tmp, tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
 
                     result.Add(tmp);
                 }
@@ -192,7 +196,11 @@ namespace IoT.DTDL
                     tmpPropertyName = item["name"].Value<string>();
 
                     tmp = new JObject();
-                    AddCreatedProperties(ref tmp, tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
 
                     result.Add(tmp);
                 }
@@ -216,7 +224,11 @@ namespace IoT.DTDL
                     tmpPropertyName = item["name"].Value<string>();                 
 
                     tmp = new JObject();
-                    AddCreatedProperties(ref tmp, tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
 
                     result.Add(tmp);
                 }
