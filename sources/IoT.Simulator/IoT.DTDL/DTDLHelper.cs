@@ -250,20 +250,28 @@ namespace IoT.DTDL
                     
                     //request
                     tmpRequest = (JObject)item["request"];
-                    tmpRequestName = tmpRequest["name"].Value<string>();
-                    
-                    tmpCreatedRequest = new JObject();
-                    AddCreatedProperties(ref tmpCreatedRequest, tmpRequestName, tmpRequest["schema"].Value<string>(), random);
+                    if (tmpRequest != null)
+                    {
+                        tmpRequestName = tmpRequest["name"].Value<string>();
+
+                        tmpCreatedRequest = new JObject();
+                        AddCreatedProperties(ref tmpCreatedRequest, tmpRequestName, tmpRequest["schema"].Value<string>(), random);
+
+                        tmp.Add(tmpRequest);
+                    }
 
                     //response
                     tmpResponse = (JObject)item["response"];
-                    tmpResponseName = tmpResponse["name"].Value<string>();
+                    if (tmpResponse != null)
+                    {
+                        tmpResponseName = tmpResponse["name"].Value<string>();
 
-                    tmpCreatedResponse = new JObject();
-                    AddCreatedProperties(ref tmpCreatedResponse, tmpResponseName, tmpResponse["schema"].Value<string>(), random);
+                        tmpCreatedResponse = new JObject();
+                        AddCreatedProperties(ref tmpCreatedResponse, tmpResponseName, tmpResponse["schema"].Value<string>(), random);
 
-                    tmp.Add(tmpRequest);
-                    tmp.Add(tmpResponse);
+                        tmp.Add(tmpResponse);
+                    }                    
+                    
                     result.Add(tmp);
                 }
             }
