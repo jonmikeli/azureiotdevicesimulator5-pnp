@@ -328,6 +328,88 @@ namespace IoT.DTDL
 
             return result;
         }
+
+        private static JArray ExtractCommands(JArray contents)
+        {
+            JArray result = null;
+            var commands = contents.Where(i => i["@type"].Value<string>().ToLower() == "command");
+            if (commands != null && commands.Any())
+            {
+                JObject tmp = null;
+                string tmpCommandName = string.Empty;
+                JObject tmpRequest = null;
+                JObject tmpResponse = null;
+                string tmpRequestName = string.Empty;
+                string tmpResponseName = string.Empty;
+
+                JObject tmpCreatedRequest = null;
+                JObject tmpCreatedResponse = null;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in commands)
+                {
+                    tmp = new JObject();
+                    //command
+                    tmpCommandName = item["name"].Value<string>();
+                    
+                    //request
+                    tmpRequest = (JObject)item["request"];
+                    tmpRequestName = tmpRequest["name"].Value<string>();
+                    
+                    tmpCreatedRequest = new JObject();
+                    AddCreatedProperties(ref tmpCreatedRequest, item["schema"].Value<string>());
+
+                    //response
+                    tmpResponse = (JObject)item["response"];
+                    tmpResponseName = tmpResponse["name"].Value<string>();
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+        
+        private static void AddCreatedProperties(ref JObject jObject, string schemaName)
+        {
+            Random random = new Random(DateTime.Now.Millisecond);
+            switch (schemaName.ToLower())
+            {
+                case "double":
+                    jObject.Add(schemaName, random.NextDouble());
+                    break;
+                case "datetime":
+                    jObject.Add(schemaName, DateTime.Now.AddHours(random.Next(0, 148)));
+                    break;
+                case "string":
+                    jObject.Add(schemaName, "string to be randomized");
+                    break;
+                case "integer":
+                    jObject.Add(schemaName, random.Next());
+                    break;
+                case "boolean":
+                    jObject.Add(schemaName, random.Next(0, 1) == 1 ? true : false);
+                    break;
+                case "date":
+                    jObject.Add(schemaName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
+                    break;
+                case "duration":
+                    jObject.Add(schemaName, random.Next());
+                    break;
+                case "float":
+                    jObject.Add(schemaName, random.NextDouble());
+                    break;
+                case "long":
+                    jObject.Add(schemaName, random.Next());
+                    break;
+                case "time":
+                    jObject.Add(schemaName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
+                    break;
+                default:
+                    jObject.Add(schemaName, "Coplex or not identified schema");
+                    break;
+            }
+        }
         #endregion
 
     }
