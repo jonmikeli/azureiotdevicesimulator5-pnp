@@ -161,7 +161,7 @@ namespace IoT.DTDL
                 string tmpPropertyName = string.Empty;
 
                 Random random = new Random(DateTime.Now.Millisecond);
-                foreach (var item in properties)
+                foreach (var item in telemetries)
                 {
                     tmpPropertyName = item["name"].Value<string>();
 
