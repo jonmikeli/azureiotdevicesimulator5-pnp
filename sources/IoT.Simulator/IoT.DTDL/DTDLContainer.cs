@@ -26,5 +26,7 @@ namespace IoT.DTDL
         public JArray ReadableProperties { get; set; }
 
         public JArray WritableProperties { get; set; }
+
+        public JArray Commands { get; set; }
     }
 }
