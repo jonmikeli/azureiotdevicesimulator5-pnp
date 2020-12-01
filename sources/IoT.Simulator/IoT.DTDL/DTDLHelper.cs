@@ -224,48 +224,10 @@ namespace IoT.DTDL
                 Random random = new Random(DateTime.Now.Millisecond);
                 foreach (var item in properties)
                 {
-                    tmp = new JObject();
                     tmpPropertyName = item["name"].Value<string>();
 
-                    switch (item["schema"].Value<string>().ToLower())
-                    {
-                        case "double":
-                            tmp.Add(tmpPropertyName, random.NextDouble());
-                            break;
-                        case "datetime":
-                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
-                            break;
-                        case "string":
-                            tmp.Add(tmpPropertyName, "string to be randomized");
-                            break;
-                        case "integer":
-                            tmp.Add(tmpPropertyName, random.Next());
-                            break;
-                        case "boolean":
-                            tmp.Add(tmpPropertyName, random.Next(0, 1) == 1 ? true : false);
-                            break;
-                        case "date":
-                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
-                            break;
-                        case "duration":
-                            tmp.Add(tmpPropertyName, random.Next());
-                            break;
-                        case "float":
-                            tmp.Add(tmpPropertyName, random.NextDouble());
-                            break;
-                        case "long":
-                            tmp.Add(tmpPropertyName, random.Next());
-                            break;
-                        case "time":
-                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
-                            break;
-                        default:
-                            tmp.Add(tmpPropertyName, "Coplex or not identified schema");
-                            break;
-                    }
-
                     tmp = new JObject();
-                    AddCreatedProperties(ref tmp, item["schema"].Value<string>(), random);
+                    AddCreatedProperties(ref tmp, tmpPropertyName, item["schema"].Value<string>(), random);
 
                     result.Add(tmp);
                 }
@@ -286,45 +248,7 @@ namespace IoT.DTDL
                 Random random = new Random(DateTime.Now.Millisecond);
                 foreach (var item in properties)
                 {
-                    tmp = new JObject();
-                    tmpPropertyName = item["name"].Value<string>();
-
-                    switch (item["schema"].Value<string>().ToLower())
-                    {
-                        case "double":
-                            tmp.Add(tmpPropertyName, random.NextDouble());
-                            break;
-                        case "datetime":
-                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)));
-                            break;
-                        case "string":
-                            tmp.Add(tmpPropertyName, "string to be randomized");
-                            break;
-                        case "integer":
-                            tmp.Add(tmpPropertyName, random.Next());
-                            break;
-                        case "boolean":
-                            tmp.Add(tmpPropertyName, random.Next(0, 1) == 1 ? true : false);
-                            break;
-                        case "date":
-                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
-                            break;
-                        case "duration":
-                            tmp.Add(tmpPropertyName, random.Next());
-                            break;
-                        case "float":
-                            tmp.Add(tmpPropertyName, random.NextDouble());
-                            break;
-                        case "long":
-                            tmp.Add(tmpPropertyName, random.Next());
-                            break;
-                        case "time":
-                            tmp.Add(tmpPropertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
-                            break;
-                        default:
-                            tmp.Add(tmpPropertyName, "Coplex or not identified schema");
-                            break;
-                    }
+                    tmpPropertyName = item["name"].Value<string>();                 
 
                     tmp = new JObject();
                     AddCreatedProperties(ref tmp, tmpPropertyName, item["schema"].Value<string>(), random);
