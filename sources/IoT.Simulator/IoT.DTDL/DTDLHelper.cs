@@ -323,6 +323,9 @@ namespace IoT.DTDL
                             break;
                     }
 
+                    tmp = new JObject();
+                    AddCreatedProperties(ref tmp, item["schema"].Value<string>(), random);
+
                     result.Add(tmp);
                 }
             }
