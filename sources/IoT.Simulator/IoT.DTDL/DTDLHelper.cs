@@ -378,6 +378,9 @@ namespace IoT.DTDL
             if (jObject == null)
                 throw new ArgumentNullException(nameof(jObject));
 
+            if (random == null)
+                throw new ArgumentNullException(nameof(random));
+
             switch (schemaName.ToLower())
             {
                 case "double":
