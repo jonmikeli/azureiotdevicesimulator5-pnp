@@ -238,8 +238,8 @@ namespace IoT.DTDL
                 string tmpRequestName = string.Empty;
                 string tmpResponseName = string.Empty;
 
-                JObject tmpCreatedRequest = null;
-                JObject tmpCreatedResponse = null;
+                JToken tmpCreatedRequest = null;
+                JToken tmpCreatedResponse = null;
 
                 Random random = new Random(DateTime.Now.Millisecond);
                 foreach (var item in commands)
@@ -253,9 +253,10 @@ namespace IoT.DTDL
                     if (tmpRequest != null)
                     {
                         tmpRequestName = tmpRequest["name"].Value<string>();
+                        JProperty jProperty = AddCreatedProperties(tmpRequestName, tmpRequest["schema"].Value<string>(), random);
 
-                        tmpCreatedRequest = new JObject();
-                        AddCreatedProperties(ref tmpCreatedRequest, tmpRequestName, tmpRequest["schema"].Value<string>(), random);
+                        if (jProperty != null)
+                            tmpResponse.Add(jProperty);
 
                         tmp.Add(tmpRequest);
                     }
@@ -264,10 +265,11 @@ namespace IoT.DTDL
                     tmpResponse = (JObject)item["response"];
                     if (tmpResponse != null)
                     {
-                        tmpResponseName = tmpResponse["name"].Value<string>();
+                        tmpResponseName = tmpResponse["name"].Value<string>();                        
+                        JProperty jProperty = AddCreatedProperties(tmpResponseName, tmpResponse["schema"].Value<string>(), random);
 
-                        tmpCreatedResponse = new JObject();
-                        AddCreatedProperties(ref tmpCreatedResponse, tmpResponseName, tmpResponse["schema"].Value<string>(), random);
+                        if (jProperty != null)
+                            tmpResponse.Add(jProperty);
 
                         tmp.Add(tmpResponse);
                     }                    
@@ -279,50 +281,51 @@ namespace IoT.DTDL
             return result;
         }
         
-        private static void AddCreatedProperties(ref JObject jObject, string propertyName, string schemaName, Random random)
+        private static JProperty AddCreatedProperties(string propertyName, string schemaName, Random random)
         {
-            if (jObject == null)
-                throw new ArgumentNullException(nameof(jObject));
-
             if (random == null)
                 throw new ArgumentNullException(nameof(random));
+
+            JProperty jProperty = null;            
 
             switch (schemaName.ToLower())
             {
                 case "double":
-                    jObject.Add(propertyName, random.NextDouble());
+                    jProperty = new JProperty(propertyName, random.NextDouble());
                     break;
                 case "datetime":
-                    jObject.Add(propertyName, DateTime.Now.AddHours(random.Next(0, 148)));
+                    jProperty = new JProperty(propertyName, DateTime.Now.AddHours(random.Next(0, 148)));
                     break;
                 case "string":
-                    jObject.Add(propertyName, "string to be randomized");
+                    jProperty = new JProperty(propertyName, "string to be randomized");
                     break;
                 case "integer":
-                    jObject.Add(propertyName, random.Next());
+                    jProperty = new JProperty(propertyName, random.Next());
                     break;
                 case "boolean":
-                    jObject.Add(propertyName, random.Next(0, 1) == 1 ? true : false);
+                    jProperty = new JProperty(propertyName, random.Next(0, 1) == 1 ? true : false);
                     break;
                 case "date":
-                    jObject.Add(propertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
+                    jProperty = new JProperty(propertyName, DateTime.Now.AddHours(random.Next(0, 148)).Date);
                     break;
                 case "duration":
-                    jObject.Add(propertyName, random.Next());
+                    jProperty = new JProperty(propertyName, random.Next());
                     break;
                 case "float":
-                    jObject.Add(propertyName, random.NextDouble());
+                    jProperty = new JProperty(propertyName, random.NextDouble());
                     break;
                 case "long":
-                    jObject.Add(propertyName, random.Next());
+                    jProperty = new JProperty(propertyName, random.Next());
                     break;
                 case "time":
-                    jObject.Add(propertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
+                    jProperty = new JProperty(propertyName, DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay);
                     break;
                 default:
-                    jObject.Add(propertyName, "Coplex or not identified schema");
+                    jProperty = new JProperty(propertyName, "Coplex or not identified schema");
                     break;
             }
+
+            return jProperty;
         }
         #endregion
 
