@@ -250,8 +250,8 @@ namespace IoT.DTDL
                 string tmpRequestName = string.Empty;
                 string tmpResponseName = string.Empty;
 
-                JToken tmpCreatedRequest = null;
-                JToken tmpCreatedResponse = null;
+                JObject tmpCreatedRequest = null;
+                JObject tmpCreatedResponse = null;
 
                 Random random = new Random(DateTime.Now.Millisecond);
                 foreach (var item in commands)
@@ -264,26 +264,28 @@ namespace IoT.DTDL
                     tmpRequest = (JObject)item["request"];
                     if (tmpRequest != null)
                     {
+                        tmpCreatedRequest = new JObject();
                         tmpRequestName = tmpRequest["name"].Value<string>();
                         JProperty jProperty = AddCreatedProperties(tmpRequestName, tmpRequest["schema"].Value<string>(), random);
 
                         if (jProperty != null)
-                            tmpResponse.Add(jProperty);
+                            tmpCreatedRequest.Add(jProperty);
 
-                        tmp.Add(tmpRequest);
+                        tmp.Add("request", tmpCreatedRequest);
                     }
 
                     //response
                     tmpResponse = (JObject)item["response"];
                     if (tmpResponse != null)
                     {
+                        tmpCreatedResponse = new JObject();
                         tmpResponseName = tmpResponse["name"].Value<string>();                        
                         JProperty jProperty = AddCreatedProperties(tmpResponseName, tmpResponse["schema"].Value<string>(), random);
 
                         if (jProperty != null)
-                            tmpResponse.Add(jProperty);
+                            tmpCreatedResponse.Add(jProperty);
 
-                        tmp.Add(tmpResponse);
+                        tmp.Add("response", tmpCreatedResponse);
                     }                    
                     
                     result.Add(tmp);
