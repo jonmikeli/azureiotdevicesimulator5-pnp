@@ -366,6 +366,8 @@ namespace IoT.DTDL
                     tmpCreatedResponse = new JObject();
                     AddCreatedProperties(ref tmpCreatedResponse, tmpResponse["schema"].Value<string>(), random);
 
+                    tmp.Add(tmpRequest);
+                    tmp.Add(tmpResponse);
                     result.Add(tmp);
                 }
             }
