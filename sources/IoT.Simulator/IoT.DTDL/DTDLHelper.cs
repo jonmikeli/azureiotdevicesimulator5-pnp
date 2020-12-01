@@ -243,6 +243,8 @@ namespace IoT.DTDL
             var commands = contents.Where(i => i["@type"].Value<string>().ToLower() == "command");
             if (commands != null && commands.Any())
             {
+                result = new JArray();
+
                 JObject tmp = null;
                 string tmpCommandName = string.Empty;
                 JObject tmpRequest = null;
