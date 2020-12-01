@@ -357,11 +357,14 @@ namespace IoT.DTDL
                     tmpRequestName = tmpRequest["name"].Value<string>();
                     
                     tmpCreatedRequest = new JObject();
-                    AddCreatedProperties(ref tmpCreatedRequest, item["schema"].Value<string>());
+                    AddCreatedProperties(ref tmpCreatedRequest, tmpRequest["schema"].Value<string>(), random);
 
                     //response
                     tmpResponse = (JObject)item["response"];
                     tmpResponseName = tmpResponse["name"].Value<string>();
+
+                    tmpCreatedResponse = new JObject();
+                    AddCreatedProperties(ref tmpCreatedResponse, tmpResponse["schema"].Value<string>(), random);
 
                     result.Add(tmp);
                 }
@@ -370,9 +373,11 @@ namespace IoT.DTDL
             return result;
         }
         
-        private static void AddCreatedProperties(ref JObject jObject, string schemaName)
+        private static void AddCreatedProperties(ref JObject jObject, string schemaName, Random random)
         {
-            Random random = new Random(DateTime.Now.Millisecond);
+            if (jObject == null)
+                throw new ArgumentNullException(nameof(jObject));
+
             switch (schemaName.ToLower())
             {
                 case "double":
