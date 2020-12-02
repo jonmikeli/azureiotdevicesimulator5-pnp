@@ -171,8 +171,6 @@ namespace IoT.Simulator
                 throw new ArgumentNullException(nameof(services));
 
             services.AddTransient<IDTDLMessageService, DTDLMessageService>();
-            //services.AddTransient<ITelemetryMessageService, SimpleTelemetryMessageService>();
-            //services.AddTransient<IErrorMessageService, SimpleErrorMessageService>();
         }
 
         static void RegisterModuleSimulators(DeviceSettings deviceSettings, IServiceCollection services)
