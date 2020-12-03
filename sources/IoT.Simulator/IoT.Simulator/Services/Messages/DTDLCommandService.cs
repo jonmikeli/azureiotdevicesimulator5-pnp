@@ -17,17 +17,16 @@ namespace IoT.Simulator.Services
     {
         private ILogger _logger;
 
-        public DTDLMessageService(ILoggerFactory loggerFactory)
+        public DTDLCommandService(ILoggerFactory loggerFactory)
         {            
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory));
 
-            _logger = loggerFactory.CreateLogger<DTDLMessageService>();
+            _logger = loggerFactory.CreateLogger<DTDLCommandService>();
         }
 
-        public async Task<string> GetMessageAsync(string modelId, string modelPath)
+        public async Task<string> GetCommandsAsync(string modelId, string modelPath)
         {
-
             var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, modelPath);
 
             if (modelContainer == null)
@@ -40,38 +39,37 @@ namespace IoT.Simulator.Services
             string messageString = string.Empty;
             if (
                 modelContent.Value != null
-                && modelContent.Value.DTDLGeneratedData != null
-                && modelContent.Value.DTDLGeneratedData.Telemetries != null)
-                messageString = JsonConvert.SerializeObject(modelContent.Value.DTDLGeneratedData.Telemetries, Formatting.Indented);
+                && modelContent.Value.DTDL != null)
+            {
+                _logger.LogDebug($"Commands found in the provided model::modelId: {modelId} - modelPath: {modelPath}");
+                messageString = JsonConvert.SerializeObject(modelContent.Value.DTDL, Formatting.Indented);
+            }
             else
-                throw new ArgumentException($"No telemetry has been built from the provided model::modelId: {modelId} - modelPath: {modelPath}");
+                _logger.LogDebug($"No commands have been found  the provided model::modelId: {modelId} - modelPath: {modelPath}");
 
             return messageString;
         }
 
-        public async Task<string> GetMessageAsync(string deviceId, string moduleId, string modelId, string modelPath)
+        public async Task<string> GetCommandsAsync(string deviceId, string moduleId, string modelId, string modelPath)
         {
             string artifactId = string.IsNullOrEmpty(moduleId) ? deviceId : moduleId;
 
             string logPrefix = "DTDLTelemetryMessageService".BuildLogPrefix();
-            string messageString = await GetMessageAsync(modelId, modelPath);
+            string messageString = await GetCommandsAsync(modelId, modelPath);
 
             if (string.IsNullOrEmpty(messageString))
                 throw new ArgumentNullException(nameof(messageString), "DATA: The message to send is empty or not found.");
 
             _logger.LogTrace($"{logPrefix}::{artifactId}::Message body according to a given model has been loaded.");
 
-            //messageString = IoTTools.UpdateIds(messageString, deviceId, moduleId);
-            //_logger.LogTrace($"{logPrefix}::{artifactId}::DeviceId and moduleId updated in the message template.");
-
             return messageString;
         }
 
-        public async Task<string> GetRandomizedMessageAsync(string deviceId, string moduleId, string modelId, string modelPath)
+        public async Task<string> GetRandomizedCommandPayloadsAsync(string deviceId, string moduleId, string modelId, string modelPath)
         {
             string artifactId = string.IsNullOrEmpty(moduleId) ? deviceId : moduleId;
 
-            string messageString = await this.GetMessageAsync(deviceId, moduleId, modelId, modelPath);
+            string messageString = await this.GetCommandsAsync(deviceId, moduleId, modelId, modelPath);
             string logPrefix = "DTDLTelemetryMessageService".BuildLogPrefix();
 
             //Randomize data           
