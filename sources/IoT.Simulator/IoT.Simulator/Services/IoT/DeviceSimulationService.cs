@@ -383,6 +383,10 @@ namespace IoT.Simulator.Services
 
                 await _deviceClient.SetMethodDefaultHandlerAsync(DefaultC2DMethodHandler, null);
                 _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD Default handler registered.");
+
+                //ADD DTDL COMMANDS
+                //TO BE DONE
+                
             }
             catch (Exception ex)
             {
