@@ -27,6 +27,8 @@ namespace IoT.Simulator.Services
 
         public async Task<string> GetCommandsAsync(string modelId, string modelPath)
         {
+            string logPrefix = "DTDLCommandService.GetCommandsAsync".BuildLogPrefix();
+
             var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, modelPath);
 
             if (modelContainer == null)
@@ -52,9 +54,9 @@ namespace IoT.Simulator.Services
 
         public async Task<string> GetCommandsAsync(string deviceId, string moduleId, string modelId, string modelPath)
         {
-            string artifactId = string.IsNullOrEmpty(moduleId) ? deviceId : moduleId;
+            string logPrefix = "DTDLCommandService.GetCommandsAsync".BuildLogPrefix();
 
-            string logPrefix = "DTDLTelemetryMessageService".BuildLogPrefix();
+            string artifactId = string.IsNullOrEmpty(moduleId) ? deviceId : moduleId;            
             string messageString = await GetCommandsAsync(modelId, modelPath);
 
             if (string.IsNullOrEmpty(messageString))
@@ -70,7 +72,7 @@ namespace IoT.Simulator.Services
             string artifactId = string.IsNullOrEmpty(moduleId) ? deviceId : moduleId;
 
             string messageString = await this.GetCommandsAsync(deviceId, moduleId, modelId, modelPath);
-            string logPrefix = "DTDLTelemetryMessageService".BuildLogPrefix();
+            string logPrefix = "DTDLCommandService.GetRandomizedCommandPayloadsAsync".BuildLogPrefix();
 
             //Randomize data           
             messageString = IoTTools.RandomizeData(messageString);
