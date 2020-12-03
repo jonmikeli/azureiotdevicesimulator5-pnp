@@ -84,8 +84,11 @@ namespace IoT.Simulator
                     throw new ArgumentException("No device simulation settings have been configured.");
 
                 if (deviceSettings.SimulationSettings.EnableDevice || deviceSettings.SimulationSettings.EnableModules)
+                {
                     //If any of the simulators is enabled, messaging services will be required to build the messages.
                     RegisterMessagingServices(services);
+                    RegisterCommandServices(services);
+                }
 
                 if (deviceSettings.SimulationSettings.EnableDevice)
                     RegisterDeviceSimulators(services);
@@ -171,6 +174,14 @@ namespace IoT.Simulator
                 throw new ArgumentNullException(nameof(services));
 
             services.AddTransient<IDTDLMessageService, DTDLMessageService>();
+        }
+
+        static void RegisterCommandServices(IServiceCollection services)
+        {
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+
+            services.AddTransient<IDTDLCommandService, DTDLCommandService>();
         }
 
         static void RegisterModuleSimulators(DeviceSettings deviceSettings, IServiceCollection services)
