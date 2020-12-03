@@ -144,6 +144,8 @@ namespace IoT.DTDL
             //Look for properties (JSON)
             result.DTDLGeneratedData.ReadableProperties = ExtractReadableProperties(contents);
             result.DTDLGeneratedData.WritableProperties = ExtractWritableProperties(contents);
+
+            //Commands
             result.DTDLGeneratedData.Commands = ExtractCommands(contents);
 
             return result;
