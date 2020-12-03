@@ -34,8 +34,9 @@ namespace IoT.Simulator.Services
         private bool _stopProcessing = false;
 
         private IDTDLMessageService _dtdlMessageService;
+        private IDTDLCommandService _dtdlCommandService;
 
-        public DeviceSimulationService(IOptions<DeviceSettings> deviceSettings, IDTDLMessageService dtdlMessageService, ILoggerFactory loggerFactory)
+        public DeviceSimulationService(IOptions<DeviceSettings> deviceSettings, IDTDLMessageService dtdlMessageService, IDTDLCommandService dtdlCommandService, ILoggerFactory loggerFactory)
         {
             if (deviceSettings == null)
                 throw new ArgumentNullException(nameof(deviceSettings));
@@ -48,6 +49,9 @@ namespace IoT.Simulator.Services
 
             if (dtdlMessageService == null)
                 throw new ArgumentNullException(nameof(dtdlMessageService));
+
+            if (dtdlCommandService == null)
+                throw new ArgumentNullException(nameof(dtdlCommandService));
 
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory), "No logger factory has been provided.");
@@ -63,6 +67,7 @@ namespace IoT.Simulator.Services
             _logger = loggerFactory.CreateLogger<DeviceSimulationService>();
 
             _dtdlMessageService = dtdlMessageService;
+            _dtdlCommandService = dtdlCommandService;
 
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
