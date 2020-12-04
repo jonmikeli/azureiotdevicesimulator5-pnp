@@ -25,7 +25,7 @@ namespace IoT.Simulator.Services
             _logger = loggerFactory.CreateLogger<DTDLCommandService>();
         }
 
-        public async Task<string> GetCommandsAsync(string modelId, string modelPath)
+        public async Task<JArray> GetCommandsAsync(string modelId, string modelPath)
         {
             string logPrefix = "DTDLCommandService.GetCommandsAsync".BuildLogPrefix();
 
@@ -48,35 +48,6 @@ namespace IoT.Simulator.Services
             }
             else
                 _logger.LogDebug($"No commands have been found  the provided model::modelId: {modelId} - modelPath: {modelPath}");
-
-            return messageString;
-        }
-
-        public async Task<string> GetCommandsAsync(string deviceId, string moduleId, string modelId, string modelPath)
-        {
-            string logPrefix = "DTDLCommandService.GetCommandsAsync".BuildLogPrefix();
-
-            string artifactId = string.IsNullOrEmpty(moduleId) ? deviceId : moduleId;            
-            string messageString = await GetCommandsAsync(modelId, modelPath);
-
-            if (string.IsNullOrEmpty(messageString))
-                throw new ArgumentNullException(nameof(messageString), "DATA: The message to send is empty or not found.");
-
-            _logger.LogTrace($"{logPrefix}::{artifactId}::Message body according to a given model has been loaded.");
-
-            return messageString;
-        }
-
-        public async Task<string> GetRandomizedCommandPayloadsAsync(string deviceId, string moduleId, string modelId, string modelPath)
-        {
-            string artifactId = string.IsNullOrEmpty(moduleId) ? deviceId : moduleId;
-
-            string messageString = await this.GetCommandsAsync(deviceId, moduleId, modelId, modelPath);
-            string logPrefix = "DTDLCommandService.GetRandomizedCommandPayloadsAsync".BuildLogPrefix();
-
-            //Randomize data           
-            messageString = IoTTools.RandomizeData(messageString);
-            _logger.LogTrace($"{logPrefix}::{artifactId}::Randomized data to update template's values before sending the message.");
 
             return messageString;
         }

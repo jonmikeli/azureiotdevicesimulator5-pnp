@@ -121,6 +121,57 @@ namespace IoT.DTDL
 
             return globalResult;
         }
+
+        public static async Task<Dictionary<string, DTDLCommandContainer>> ParseDTDLAndGetCommandsAsync(JArray dtdlArray)
+        {
+            if (dtdlArray == null)
+                throw new ArgumentNullException(nameof(dtdlArray));
+
+            Dictionary<string, DTDLCommandContainer> globalResult = null;
+            DTDLCommandContainer itemResult = null;
+
+            ModelParser parser = new ModelParser();
+            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = null;
+            JArray contents = null;
+            foreach (JObject dtdl in dtdlArray)
+            {
+                try
+                {
+                    globalResult = new Dictionary<string, DTDLCommandContainer>();
+                    parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+
+                    //CONTENT
+                    if (!dtdl.ContainsKey("contents"))
+                        throw new Exception("");
+
+                    contents = (JArray)dtdl["contents"];
+
+                    //Look for telemetries (JSON)
+                    itemResult.Commands = ExtractCommands(contents);
+                }
+                catch (ParsingException pex)
+                {
+                    if (itemResult == null)
+                        itemResult = new DTDLCommandContainer();
+
+                    itemResult.ParsingErrors = pex.Errors.Select(i => i.Message);
+                }
+                catch (Exception ex)
+                {
+                    itemResult = null;
+                }
+                finally
+                {
+                    if (itemResult != null)
+                        globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
+
+                    itemResult = null;
+                }
+            }
+
+
+            return globalResult;
+        }
         #endregion
 
         #region Private method(s)
