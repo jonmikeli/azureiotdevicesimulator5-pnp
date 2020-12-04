@@ -81,7 +81,7 @@ namespace IoT.DTDL
 
             ModelParser parser = new ModelParser();
             IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = null;
-            JArray contents = null;
+
             foreach (JObject dtdl in dtdlArray)
             {
                 try
@@ -92,8 +92,6 @@ namespace IoT.DTDL
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
                         throw new Exception("The DTDL model does not contain any 'content' property.");
-
-                    contents = (JArray)dtdl["contents"];
 
                     //Look for telemetries (JSON)
                     itemResult = BuildDynamicContent(dtdl);
