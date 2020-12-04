@@ -142,11 +142,11 @@ namespace IoT.DTDL
 
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
-                        throw new Exception("");
+                        throw new Exception("The DTDL model does not contain any 'content' property.");
+
+                    itemResult = new DTDLCommandContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };
 
                     contents = (JArray)dtdl["contents"];
-
-                    //Look for telemetries (JSON)
                     itemResult.Commands = ExtractCommands(contents);
                 }
                 catch (ParsingException pex)
