@@ -617,7 +617,7 @@ namespace IoT.Simulator.Services
             return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response, Formatting.Indented)), 200));
         }
 
-        private Task<MethodResponse> DTDLCommandHandler(MethodRequest methodRequest, object userContext)
+        private Task<MethodResponse> DTDLCommandHandler(MethodRequest methodRequest, object commandContext)
         {
             string logPrefix = "c2ddirectmethods.dtdlcommand.handler".BuildLogPrefix();
 
@@ -625,9 +625,17 @@ namespace IoT.Simulator.Services
 
             _logger.LogDebug($"{logPrefix}::DTDL Command called: {data}.");
 
-            // Acknowledge the direct method call with a 200 success message
-            string result = "{\"result\":\"Executed direct method: " + methodRequest.Name + "\"}";
-            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
+            if (commandContext != null && commandContext is DTDLCommandHandlerContext)
+            {
+                var context = commandContext as DTDLCommandHandlerContext;
+                _logger.LogDebug($"{logPrefix}::DTDL Command response: {context.CommandResponsePayload}.");
+                return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(context.CommandResponsePayload, Formatting.Indented)), 200));
+            }
+            else
+            {
+                _logger.LogDebug($"{logPrefix}::No DTDL command context has been found for the command}.");
+                return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { error = "No DTDL command context has been found." })), 500));
+            }
         }
         #endregion
         #endregion
