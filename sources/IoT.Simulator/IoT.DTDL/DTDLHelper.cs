@@ -39,6 +39,27 @@ namespace IoT.DTDL
             return await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);
         }
 
+        public static async Task<Dictionary<string, DTDLCommandContainer>> GetModelsAndExtratCommandsAsync(string modelId, string modelPath)
+        {
+            //Get the full DTDL model
+            JToken dtdlModel = await GetDTDLFromModelIdAsync(modelId, modelPath);
+
+            if (dtdlModel == null)
+                throw new Exception($"No DTDL model with the id {modelId} has been provided at the provided locations.");
+
+            JArray jArrayDTDLModel = null;
+            if (dtdlModel is JObject)
+            {
+                jArrayDTDLModel = new JArray();
+                jArrayDTDLModel.Add(dtdlModel);
+            }
+            else if (dtdlModel is JArray)
+                jArrayDTDLModel = dtdlModel as JArray;
+
+            //Build the JSON Message corresponding to the model
+            return await ParseDTDLAndGetCommandsAsync(jArrayDTDLModel);
+        }
+
         public static async Task<JToken> GetDTDLFromModelIdAsync(string modelId, string modelPath)
         {
             if (string.IsNullOrEmpty(modelId))
