@@ -403,7 +403,7 @@ namespace IoT.Simulator.Services
                             DTDLCommandHandler,
                             new DTDLCommandHandlerContext
                             {
-                                CommandName = "",
+                                CommandName = command.Key,
                                 CommandRequestPayload = "",
                                 CommandResponsePayload = ""
                             });
