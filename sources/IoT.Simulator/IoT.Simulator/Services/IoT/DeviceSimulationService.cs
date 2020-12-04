@@ -391,8 +391,15 @@ namespace IoT.Simulator.Services
                 _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD Default handler registered.");
 
                 //ADD DTDL COMMANDS
-                //TO BE DONE
-                
+                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers registered.");
+                var commands = await _dtdlCommandService.GetCommandsAsync(_deviceSettings.DefaultModelId, "");
+                if (commands != null && commands.Any())
+                {
+                    foreach (var command in commands)
+                    {
+                        await _deviceClient.SetMethodHandlerAsync(command.k, null, null);
+                    }
+                }
             }
             catch (Exception ex)
             {
