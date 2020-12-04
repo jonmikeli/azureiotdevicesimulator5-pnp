@@ -17,6 +17,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using IoT.Simulator.Services.IoT;
 
 namespace IoT.Simulator.Services
 {
@@ -397,7 +398,15 @@ namespace IoT.Simulator.Services
                 {
                     foreach (var command in commands)
                     {
-                        await _deviceClient.SetMethodHandlerAsync(command.Key, DTDLCommandHandler, null);
+                        await _deviceClient.SetMethodHandlerAsync(
+                            command.Key,
+                            DTDLCommandHandler,
+                            new DTDLCommandHandlerContext
+                            {
+                                CommandName = "",
+                                CommandRequestPayload = "",
+                                CommandResponsePayload = ""
+                            });
                     }
                 }
             }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IoT.Simulator.Services.IoT
+namespace IoT.Simulator.Services
 {
     public class DTDLCommandHandlerContext
     {
