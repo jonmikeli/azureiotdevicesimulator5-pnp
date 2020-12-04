@@ -411,7 +411,7 @@ namespace IoT.Simulator.Services
                                     CommandName = command.Key,
                                     CommandRequestPayload = currentCommand.ContainsKey("request") ? currentCommand["request"] : string.Empty,
                                     CommandResponsePayload = currentCommand.ContainsKey("response") ? currentCommand["response"] : string.Empty
-                                });Encoder ;
+                                });
                         }
                     }
                 }
