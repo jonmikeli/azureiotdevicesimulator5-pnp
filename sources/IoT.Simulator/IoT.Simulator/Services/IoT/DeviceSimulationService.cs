@@ -396,17 +396,23 @@ namespace IoT.Simulator.Services
                 var commands = await _dtdlCommandService.GetCommandsAsync(_deviceSettings.DefaultModelId, "");
                 if (commands != null && commands.Any())
                 {
+                    JObject currentCommand = null;
                     foreach (var command in commands)
                     {
-                        await _deviceClient.SetMethodHandlerAsync(
-                            command.Key,
-                            DTDLCommandHandler,
-                            new DTDLCommandHandlerContext
-                            {
-                                CommandName = command.Key,
-                                CommandRequestPayload = "",
-                                CommandResponsePayload = ""
-                            });
+                        if (command.Value != null && command.Value.Commands != null && command.Value.Commands.Count > 0)
+                        {
+                            currentCommand = (JObject)command.Value.Commands.Single(i => i["name"].Value<string>() == command.Key);
+
+                            await _deviceClient.SetMethodHandlerAsync(
+                                command.Key,
+                                DTDLCommandHandler,
+                                new DTDLCommandHandlerContext
+                                {
+                                    CommandName = command.Key,
+                                    CommandRequestPayload = currentCommand.ContainsKey("request") ? currentCommand["request"] : string.Empty,
+                                    CommandResponsePayload = currentCommand.ContainsKey("response") ? currentCommand["response"] : string.Empty
+                                });Encoder ;
+                        }
                     }
                 }
             }
