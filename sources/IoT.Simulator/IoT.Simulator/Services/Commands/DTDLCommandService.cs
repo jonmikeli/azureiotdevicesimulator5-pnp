@@ -25,31 +25,11 @@ namespace IoT.Simulator.Services
             _logger = loggerFactory.CreateLogger<DTDLCommandService>();
         }
 
-        public async Task<JArray> GetCommandsAsync(string modelId, string modelPath)
+        public async Task<Dictionary<string, DTDLCommandContainer>> GetCommandsAsync(string modelId, string modelPath)
         {
             string logPrefix = "DTDLCommandService.GetCommandsAsync".BuildLogPrefix();
 
-            var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, modelPath);
-
-            if (modelContainer == null)
-                throw new Exception($"No model container has been found corresponding to the parameters provided:: modelId: {modelId} - modelPath: {modelPath}");
-
-            var modelContent = modelContainer.SingleOrDefault(i => i.Key == modelId);
-            if (modelContent.Equals(default(KeyValuePair<string, DTDLContainer>)))
-                throw new Exception($"No model corresponding to the modelId {modelId} has been found.");
-
-            string messageString = string.Empty;
-            if (
-                modelContent.Value != null
-                && modelContent.Value.DTDL != null)
-            {
-                _logger.LogDebug($"Commands found in the provided model::modelId: {modelId} - modelPath: {modelPath}");
-                messageString = JsonConvert.SerializeObject(modelContent.Value.DTDL, Formatting.Indented);
-            }
-            else
-                _logger.LogDebug($"No commands have been found  the provided model::modelId: {modelId} - modelPath: {modelPath}");
-
-            return messageString;
+            return await DTDLHelper.GetModelsAndExtratCommandsAsync(modelId, modelPath);
         }
     }
 }
