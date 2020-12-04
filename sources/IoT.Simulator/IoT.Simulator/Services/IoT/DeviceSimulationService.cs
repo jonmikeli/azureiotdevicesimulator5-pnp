@@ -397,7 +397,7 @@ namespace IoT.Simulator.Services
                 {
                     foreach (var command in commands)
                     {
-                        await _deviceClient.SetMethodHandlerAsync(command.Key, null, null);
+                        await _deviceClient.SetMethodHandlerAsync(command.Key, DTDLCommandHandler, null);
                     }
                 }
             }
@@ -600,6 +600,19 @@ namespace IoT.Simulator.Services
             };
 
             return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response, Formatting.Indented)), 200));
+        }
+
+        private Task<MethodResponse> DTDLCommandHandler(MethodRequest methodRequest, object userContext)
+        {
+            string logPrefix = "c2ddirectmethods.dtdlcommand.handler".BuildLogPrefix();
+
+            var data = Encoding.UTF8.GetString(methodRequest.Data);
+
+            _logger.LogDebug($"{logPrefix}::DTDL Command called: {data}.");
+
+            // Acknowledge the direct method call with a 200 success message
+            string result = "{\"result\":\"Executed direct method: " + methodRequest.Name + "\"}";
+            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
         }
         #endregion
         #endregion
