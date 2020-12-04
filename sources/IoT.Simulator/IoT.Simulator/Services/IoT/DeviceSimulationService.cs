@@ -397,7 +397,7 @@ namespace IoT.Simulator.Services
                 {
                     foreach (var command in commands)
                     {
-                        await _deviceClient.SetMethodHandlerAsync(command.k, null, null);
+                        await _deviceClient.SetMethodHandlerAsync(command.Key, null, null);
                     }
                 }
             }
