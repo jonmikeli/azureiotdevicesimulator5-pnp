@@ -91,7 +91,7 @@ namespace IoT.DTDL
                  
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
-                        throw new Exception("");
+                        throw new Exception("The DTDL model does not contain any 'content' property.");
 
                     contents = (JArray)dtdl["contents"];
 
