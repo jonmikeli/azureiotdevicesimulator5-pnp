@@ -14,10 +14,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
-using IoT.Simulator.Services.IoT;
 
 namespace IoT.Simulator.Services
 {
@@ -633,7 +632,7 @@ namespace IoT.Simulator.Services
             }
             else
             {
-                _logger.LogDebug($"{logPrefix}::No DTDL command context has been found for the command}.");
+                _logger.LogDebug($"{logPrefix}::No DTDL command context has been found for the command.");
                 return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { error = "No DTDL command context has been found." })), 500));
             }
         }
@@ -672,7 +671,7 @@ namespace IoT.Simulator.Services
             {
                 _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sending generic reported property update:: {propertyName}-{value}.");
 
-                TwinCollection reportedProperties, configuration;
+                TwinCollection reportedProperties;
                 reportedProperties = new TwinCollection();
                 reportedProperties[propertyName] = value;
 
