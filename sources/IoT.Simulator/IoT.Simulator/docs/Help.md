@@ -370,6 +370,19 @@ The IoT PnP integration with modules has not been implemented yet. However, the 
 ```json
 {
   "connectionString": "HostName=[IOTHUB NAME].azure-devices.net;DeviceId=[DEVICE ID];SharedAccessKey=[KEY]",
+  "defaultModelId": "dtmi:com:example:thermostat;1",
+  "supportedModels": [
+    {
+      "modelId": "dtmi:com:example:thermostat;1",
+      "modelPath": "[HTTP path or local physical path to the model definition]",
+      "modelType": "Telemetry" //Telemetry, Error, Warning
+    },
+    {
+      "modelId": "dtmi:com:jmi:simulator:devicemessages;1",
+      "modelPath": "[HTTP path or local physical path to the model definition]",
+      "modelType": "Telemetry" //Telemetry, Error, Warning
+    }
+  ],
   "simulationSettings": {
     "enableLatencyTests": false,
     "latencyTestsFrecuency": 10,
@@ -445,101 +458,6 @@ Properties are quite self-explanatory.
 > [!NOTE]
 > 
 > Emission intervals are set in seconds.
-
-
-### Messages
-
-The messages below are basic proposals to start working. You will probably need to adjust them to each of your IoT projects taking into account your customers' requirements.
-
-> [!TIP]
-> 
-> `deviceId` and `messageType` fields have been included in the message to simplify processes in the backend side.
-> Indeed, even though these two properties can be reachable in the metadata of the message, having them inside the message itself brings simplicity to richer scenarios (ex: gateways sending messages in behalf of devices) and storing that information in the repository (autosufficient message). 
-> Debugging and message routing in Microsoft Azure IoT Hub are other of the fields that benefit from this practice.
-
-This being said, if at some point you need to avoid including that information in the message, feel free to do it. Routing could also work on metadata.
-
-> [!NOTE]
->
-> Microsoft Azure IoT Hub does not require the devices send JSON messages.
-> If your project requires other formats (ex: very small hexadecimal messages, frequent in IoT small devices), Microsoft Azure IoT Hub has no problem in processing them. Also, you can still use Azure IoT Device Simulator; it will require small code changes in the Message Service but all the remaining implemented features remain valid.
-
-> [!WARNING]
-> Not all the IoT projects can implement C2D features. Devices and communication platforms have to take into account the requirements of such features.
-
-
-#### commissioning.json
-```json
-{
-  "deviceId": "",
-  "messageType": "commissioning",
-  "timestamp": 13456,
-  "userId": "",
-  "building": {
-    "buildingId": "",
-    "floor": "",
-    "departmentId": "",
-    "roomId": null
-  }
-} 
-```
-
-> [!WARNING]
-> 
-> No `moduleId` is required since commissioning is related to devices and only devices (functional choice).
-
-
-#### error.json
-```json
-{
-  "deviceId": "",
-  "moduleId": "",
-  "messageType": "error",
-  "errorCode": "code",
-  "errorSeverity": "severity",
-  "errorStatus": "status",
-  "timestamp": 13456
-}
-```
-
-> [!WARNING]
-> 
-> `moduleId` can be empty in case the message is sent by a device.
-
-#### measureddata.json
-
-We consider each item (device or module) can send many "measured data" in a single message.
-This responds to data flow optimization scenarios and explains the chosen message schema.
-
-```json
-{
-  "deviceId": "",
-  "moduleId": "",
-  "timestamp": 0,
-  "schemaVersion": "v1.0",
-  "messageType": "data",
-  "data": [
-    {
-      "timestamp": 0,
-      "propertyName": "P1",
-      "propertyValue": 35,
-      "propertyUnit": "T",
-      "propertyDivFactor": 1
-    },
-    {
-      "timestamp": 0,
-      "propertyName": "P2",
-      "propertyValue": 1566,
-      "propertyUnit": "U",
-      "propertyDivFactor": 10
-    }
-  ]
-}
-```
-
-> [!WARNING]
-> 
-> `moduleId` can be empty in case the message is sent by a device.
 
 ## Evolutivity
 
