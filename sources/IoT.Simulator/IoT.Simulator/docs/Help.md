@@ -7,8 +7,8 @@ The application consist of:
  - an application console (.NET 5)
  - configuration files:
    - [appsettings.json](####appsettings.json) (described below)
-   - [devicesettings.json](####devicesettings.json) (described below)
-   - [modulessettings.json](####modulessettings.json) (described below)
+   - [devicesettings.json](####devicesettings.json) (described below). It includes the references to the used DTDL models.
+   - [modulessettings.json](####modulessettings.json) (described below). It includes the references to the used DTDL models. (IoT PnP at module level has not been implemented yet in the simulator).
  - message template files
    - [commissioning.json](####comissioning.json) (examples below)
    - [error.json](####error.json) (examples below)
@@ -32,7 +32,7 @@ The regular version of the simulator proposes a fully and open customizable proc
 2. [Measured](####measureddata.json) data messages (aka telemetry)
 3. [Error](####error.json) messages (functional errors sent by devices)
 
-This version of the simulator has another approach. 
+This version of the simulator has another approach: the messages should be build according to the definition included in the referenced model. 
 
 
 ##### Twins
