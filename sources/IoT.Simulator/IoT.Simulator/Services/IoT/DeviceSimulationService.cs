@@ -398,7 +398,6 @@ namespace IoT.Simulator.Services
                 var modelWithCommands = await _dtdlCommandService.GetCommandsAsync(_deviceSettings.DefaultModelId, _defaultModel.ModelPath);
                 if (modelWithCommands != null && modelWithCommands.Any())
                 {
-                    JObject currentCommand = null;
                     foreach (var model in modelWithCommands)
                     {
                         if (model.Value != null && model.Value.Commands != null && model.Value.Commands.Count > 0)
