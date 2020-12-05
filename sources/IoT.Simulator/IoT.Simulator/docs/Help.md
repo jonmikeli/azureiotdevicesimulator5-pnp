@@ -260,6 +260,25 @@ Properties are quite self-explanatory.
 > Emission intervals are set in seconds.
 
 
+IoT Plug and Play related settings:
+```json
+...
+"defaultModelId": "dtmi:com:example:thermostat;1",
+  "supportedModels": [
+    {
+      "modelId": "dtmi:com:example:thermostat;1",
+      "modelPath": "[HTTP path or local physical path to the model definition]",
+      "modelType": "Telemetry" //Telemetry, Error, Warning
+    },
+    {
+      "modelId": "dtmi:com:jmi:simulator:devicemessages;1",
+      "modelPath": "[HTTP path or local physical path to the model definition]",
+      "modelType": "Telemetry" //Telemetry, Error, Warning
+    }
+  ]
+...
+```
+
 #### Modules
 IoT Simulator's device can contain **zero, one or more modules but no module is mandatory**.
 Behaviors of modules are configured by the *modulessettings.json* configuration file.
