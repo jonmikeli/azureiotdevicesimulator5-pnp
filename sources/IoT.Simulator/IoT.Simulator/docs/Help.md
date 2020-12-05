@@ -220,6 +220,19 @@ The device behavior is configured by the *devicessettings.json* configuration fi
 ```json
 {
   "connectionString": "HostName=[IOTHUB NAME].azure-devices.net;DeviceId=[DEVICE ID];SharedAccessKey=[KEY]",
+  "defaultModelId": "dtmi:com:example:thermostat;1",
+  "supportedModels": [
+    {
+      "modelId": "dtmi:com:example:thermostat;1",
+      "modelPath": "[HTTP path or local physical path to the model definition]",
+      "modelType": "Telemetry" //Telemetry, Error, Warning
+    },
+    {
+      "modelId": "dtmi:com:jmi:simulator:devicemessages;1",
+      "modelPath": "[HTTP path or local physical path to the model definition]",
+      "modelType": "Telemetry" //Telemetry, Error, Warning
+    }
+  ],
   "simulationSettings": {
     "enableLatencyTests": false,
     "latencyTestsFrecuency": 10,
