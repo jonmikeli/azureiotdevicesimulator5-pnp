@@ -14,7 +14,7 @@ This simulator allows to use DTDL* models describing the device capabilities. To
 
 > NOTES
 >
-> DTDL stands for Digital Twin Description Language. This language, based on open W3C standards like JSON-LD and RDF allows to describe the models and eases the adoption across services and tooling. You will find more information [here](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md).
+> DTDL stands for Digital Twins Definition Language. This language, based on open W3C standards like JSON-LD and RDF, allows to describe the models and eases the adoption across services and tooling. You will find more information [here](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md).
 
 <br/>
 
