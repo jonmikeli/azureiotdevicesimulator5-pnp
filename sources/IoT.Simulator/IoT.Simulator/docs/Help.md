@@ -281,8 +281,14 @@ A few settings are related to IoT Pnp:
   ]
 ...
 ```
+These properties DO NOT BELONG to IoT PnP or DTDL. They are custom properties created for the simulator.
 
-
+Descriptions:
+- defaultModelId:
+- supportedModels:
+- modelId:
+- modelPath:
+- modelType:
 
 
 
