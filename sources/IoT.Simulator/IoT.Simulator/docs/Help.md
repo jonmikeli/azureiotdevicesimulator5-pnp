@@ -288,8 +288,12 @@ Descriptions:
 - supportedModels: a collection of the supported models by the simulator. This notion of "collection" does not exist in DTDL v2. However, many real life projects may need this. In order to make the simulator (and your IoT device) compatible with a IoT PnP approach, a collection of "usable" models by the device has been created.
 - modelId: DTDL model Id (in DTDL expected format). Refer to the documentation [here](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) for details about the format.
 - modelPath: path of the JSON containing the DTDL model.
-- modelType:
+- modelType: describes the model type. This notion does not exist either in DTDL. Having decide to support many models in the simulator, this property allows to type each of them (ex: Telemetry, Error, Warning).
 
+> NOTE
+>
+> At least one supported model is required.
+> The default model id has to be one of the values included in the supported models.
 
 
 #### Modules
