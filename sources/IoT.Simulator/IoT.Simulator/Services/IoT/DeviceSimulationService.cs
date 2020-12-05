@@ -36,6 +36,8 @@ namespace IoT.Simulator.Services
         private IDTDLMessageService _dtdlMessageService;
         private IDTDLCommandService _dtdlCommandService;
 
+        private DTDLModelItem _defaultModel;
+
         public DeviceSimulationService(IOptions<DeviceSettings> deviceSettings, IDTDLMessageService dtdlMessageService, IDTDLCommandService dtdlCommandService, ILoggerFactory loggerFactory)
         {
             if (deviceSettings == null)
@@ -71,7 +73,12 @@ namespace IoT.Simulator.Services
 
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device simulator created.");   
+            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device simulator created.");
+
+            //Default DTDL Model
+            _defaultModel = _deviceSettings?.SupportedModels?.SingleOrDefault(i => i.ModelId == _deviceSettings.DefaultModelId);
+            if (_defaultModel == null)
+                throw new Exception("No supported model corresponds to the default model Id.");
         }
 
         ~DeviceSimulationService()
@@ -222,14 +229,10 @@ namespace IoT.Simulator.Services
 
             using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettings.ArtifactId}::MEASURED DATA"))
             {
-                var defaultModel = _deviceSettings.SupportedModels.SingleOrDefault(i => i.ModelId == _deviceSettings.DefaultModelId);
-                if (defaultModel == null)
-                    throw new Exception("No supported model corresponds to the default model Id.");
-
                 while (true)
                 {
                     //Randomize data                    
-                    messageString = await _dtdlMessageService.GetMessageAsync(deviceId, string.Empty, _deviceSettings.DefaultModelId, defaultModel.ModelPath);
+                    messageString = await _dtdlMessageService.GetMessageAsync(deviceId, string.Empty, _deviceSettings.DefaultModelId, _defaultModel.ModelPath);
 
                     var message = new Message(Encoding.UTF8.GetBytes(messageString));
                     message.Properties.Add("messageType", "data");
