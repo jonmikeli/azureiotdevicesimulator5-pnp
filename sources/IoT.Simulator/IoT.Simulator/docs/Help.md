@@ -461,12 +461,9 @@ Properties are quite self-explanatory.
 
 ## Evolutivity
 
-If you need to customize messages, their generation relies on services that implement the interfaces below:
- - `ITelemetryMessageService` for telemetry or measured data
- - `IErrorMessageService`
- - `ICommissioningMessageService`
+This version of the IoT PnP simulator does not process propertly the 'component' concept of DTDL. This would be a good point to work on and totally cover DTDL features.
 
-If you need richer business logic or more evolved dynamic ways to generate messages, you can easily use your own implementation of these interfaces and update the IoC/DI.
+
 
 The method that registers services is located in the `Program.cs` class:
 ```csharp
