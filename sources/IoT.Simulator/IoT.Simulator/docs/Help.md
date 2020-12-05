@@ -27,7 +27,7 @@ The application consist of:
 The regular version of the simulator proposes a fully and open customizable process to create messages. The examples provided include messages such as:
 1. `Commissioning` messages
 2. `Measured` data messages (aka telemetry)
-3. [Error](####error.json) messages (functional errors sent by devices)
+3. `Error` messages (functional errors sent by devices)
 
 This version of the simulator has another approach: the messages should be build according to the definition included in the referenced model.
 
