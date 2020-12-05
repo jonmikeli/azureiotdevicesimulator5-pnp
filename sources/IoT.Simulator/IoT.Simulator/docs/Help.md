@@ -29,7 +29,7 @@ The regular version of the simulator proposes a fully and open customizable proc
 2. [Measured](####measureddata.json) data messages (aka telemetry)
 3. [Error](####error.json) messages (functional errors sent by devices)
 
-This version of the simulator has another approach: the messages should be build according to the definition included in the referenced model. 
+This version of the simulator has another approach: the messages should be build according to the definition included in the referenced model.
 
 
 ##### Twins
@@ -42,6 +42,8 @@ The device sends updated Reported Properties (Twins) after many operations/comma
 #### C2D
 ##### Direct Methods
 
+The simulator includes a default set of commands usable as Direct Methods.
+
 |Method name|Description|Request|Response|Comments|
 |:-|:-|:-|:-|:-|
 | SendLatencyTest | Allows to start a [latency](LatencyTests.md) test between a given device and the Microsoft Azure IoT Hub where the device is registered. | ```{ "deviceId":"", "messageType":"latency", "startTimestamp":12345} ```| NA |The request contains the initial  timpestamp, which is sent back to the device after all the process in order to allow him to measure latency. <br>***NOTE: this feature requires an [Azure Function](https://github.com/jonmikeli/azureiotdevicesimulator/tree/master/sources/IoT.Simulator/IoT.Simulator.AF) responding to the latency test requests and calling back the C2D LatencyTestCallBack Direct Method.***|
@@ -53,6 +55,12 @@ The device sends updated Reported Properties (Twins) after many operations/comma
 | Generic | Generic method | string | <ul><li>message notifying that the Generic Direct Method has been called (string).</li><li> result code, 200</li></ul>|
 | SetTelemetryInterval | Updates the time rate used to send telemetry data. | seconds (int) | <ul><li>message notifying that the SetTelemetryInterval Direct Method has been called (string).</li><li> result code, 200</li></ul>|
 
+Similarly to the messages, this IoT Plug and Play simulator adds commands that whould be defined in the DTDL referenced model.
+
+> NOTE
+>
+> The should should only use the commands defined in the DTDL model. This said, it can be interesting to keep the other set of commands for many test purposes.
+> This illustrates too that the DTDL may be combined with elements not defined in the models. However, be aware that all the elements not declared in the models will be unknown to the IoT Solutions that use the models to integrate your devices.
 
 ##### Messages
 The device can be configured to receive generic **messages** coming from the cloud (Microsoft Azure IoT Hub C2D Messages).
