@@ -59,7 +59,7 @@ Similarly to the messages, this IoT Plug and Play simulator adds commands that w
 
 > NOTE
 >
-> The should should only use the commands defined in the DTDL model. This said, it can be interesting to keep the other set of commands for many test purposes.
+> The simulator should should only use the commands defined in the DTDL model. This said, it can be interesting to keep the other set of commands for many test purposes.
 > This illustrates too that the DTDL may be combined with elements not defined in the models. However, be aware that all the elements not declared in the models will be unknown to the IoT Solutions that use the models to integrate your devices.
 
 ##### Messages
