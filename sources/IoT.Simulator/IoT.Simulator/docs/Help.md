@@ -463,19 +463,10 @@ Properties are quite self-explanatory.
 
 This version of the IoT PnP simulator does not process propertly the 'component' concept of DTDL. This would be a good point to work on and totally cover DTDL features.
 
+Additionnally, I guess parts of the code may be reviewed or improved.
 
+A `DTDLHelper` has been created to factorize and ease working with DTDL models. It will probably be worth to make it stronger and publish it independently.
 
-The method that registers services is located in the `Program.cs` class:
-```csharp
-RegisterMessagingServices
-```
-
-Replace the lines below with your own implementation:
-```csharp
-services.AddTransient<ITelemetryMessageService, SimpleTelemetryMessageService>();
-services.AddTransient<IErrorMessageService, SimpleErrorMessageService>();       
-services.AddTransient<ICommissioningMessageService, SimpleCommissioningMessageService>();
-```
 
 # Glossary
 A few word explanations to be sure they are understood in the context of this document.
