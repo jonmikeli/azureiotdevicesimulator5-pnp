@@ -1,6 +1,12 @@
-# Azure IoT Device Simulator - Readme
+# Azure IoT Device Simulator 5 PnP - IoT Plug and Play version - Readme
 
-This project has for purpose to help IoT developers and testers. The solution is an Azure IoT Device simulator that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulated device.
+This project has for purpose to help IoT developers and testers. The solution is an Azure IoT Device simulator coded with .NET 5 (C#) that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulated device.
+
+This version of the simulator is based on the [regular version of the simulator](https://github.com/jonmikeli/azureiotdevicesimulator), which in turns, completes the series of simulators created on top of:
+ - .Net Core 2.1
+ - .Net Core 3.1
+
+Azure IoT Device Simulator
 
 <br/>
 
