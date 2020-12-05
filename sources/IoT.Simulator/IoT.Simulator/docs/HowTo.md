@@ -96,6 +96,19 @@ This file allows configuring device simulation settings.
 ```json
 {
   "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];SharedAccessKey=[SHARED KEY]",
+  "defaultModelId": "dtmi:com:example:thermostat;1",
+  "supportedModels": [
+    {
+      "modelId": "dtmi:com:example:thermostat;1",
+      "modelPath": "[HTTP path or local physical path to the model definition]",
+      "modelType": "Telemetry" //Telemetry, Error, Warning
+    },
+    {
+      "modelId": "dtmi:com:jmi:simulator:devicemessages;1",
+      "modelPath": "[HTTP path or local physical path to the model definition]",
+      "modelType": "Telemetry" //Telemetry, Error, Warning
+    }
+  ],
   "simulationSettings": {
     "enableLatencyTests": false,
     "latencyTestsFrecuency": 30,
@@ -153,72 +166,6 @@ This file allows configuring module(s) simulation settings.
 >
 > Do not forget to set your own values for `connectionString`. 
 
-
-
-#### Message templates
-You will find in this section the default templates of the messages sent by the simulator.
-You are totally free to change and adapt them to your needs.
-
-> [!WARNING]
-> 
-> This first version includes a dependency between message templates and message service implementation (randomized values and ID properties).
-> For that reason, if the message template is completely reviewed and new randomized properties are added, you will need to either update the existing message service or create yours and update the IoC/DI settings.
-
-##### Measured data / telemetry message
-```json
-{
-  "deviceId": "",
-  "moduleId": "",
-  "timestamp": 0,
-  "schemaVersion": "v1.0",
-  "messageType": "data",
-  "data": [
-    {
-      "timestamp": 0,
-      "propertyName": "P1",
-      "propertyValue": 35,
-      "propertyUnit": "T",
-      "propertyDivFactor": 1
-    },
-    {
-      "timestamp": 0,
-      "propertyName": "P2",
-      "propertyValue": 1566,
-      "propertyUnit": "U",
-      "propertyDivFactor": 10
-    }
-  ]
-}
-```
-
-##### Error message
-```json
-{
-  "deviceId": "",
-  "moduleId": "",
-  "messageType": "error",
-  "errorCode": "code",
-  "errorSeverity": "severity",
-  "errorStatus": "status",
-  "timestamp": 13456
-}
-```
-
-##### Commissioning message
-```json
-{
-  "deviceId": "",
-  "messageType": "commissioning",
-  "timestamp": 13456,
-  "userId": "",
-  "building": {
-    "buildingId": "",
-    "floor": "",
-    "departmentId": "",
-    "roomId": null
-  }
-} 
-```
 
 #### Commands
 **Regular**
