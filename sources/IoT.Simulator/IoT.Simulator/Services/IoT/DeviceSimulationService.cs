@@ -395,7 +395,7 @@ namespace IoT.Simulator.Services
 
                 //ADD DTDL COMMANDS
                 _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers registered.");
-                var commands = await _dtdlCommandService.GetCommandsAsync(_deviceSettings.DefaultModelId, "");
+                var commands = await _dtdlCommandService.GetCommandsAsync(_deviceSettings.DefaultModelId, _defaultModel.ModelPath);
                 if (commands != null && commands.Any())
                 {
                     JObject currentCommand = null;
