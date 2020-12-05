@@ -365,7 +365,7 @@ namespace IoT.DTDL
                         tmpCreatedRequestAndResponseContainer.Add("response", tmpCreatedResponse);
                     }
 
-                    tmpCreatedCommand.Add(tmpCreatedRequestAndResponseContainer);
+                    tmpCreatedCommand.Add(tmpCommandName, tmpCreatedRequestAndResponseContainer);
 
                     result.Add(tmpCreatedCommand);
                 }

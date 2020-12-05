@@ -395,27 +395,35 @@ namespace IoT.Simulator.Services
 
                 //ADD DTDL COMMANDS
                 _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL command handlers.");
-                var commands = await _dtdlCommandService.GetCommandsAsync(_deviceSettings.DefaultModelId, _defaultModel.ModelPath);
-                if (commands != null && commands.Any())
+                var modelWithCommands = await _dtdlCommandService.GetCommandsAsync(_deviceSettings.DefaultModelId, _defaultModel.ModelPath);
+                if (modelWithCommands != null && modelWithCommands.Any())
                 {
                     JObject currentCommand = null;
-                    foreach (var command in commands)
+                    foreach (var model in modelWithCommands)
                     {
-                        if (command.Value != null && command.Value.Commands != null && command.Value.Commands.Count > 0)
-                        {                             
-                            currentCommand = (JObject)command.Value.Commands.Single(i => i["name"].Value<string>() == command.Key);
-
-                            await _deviceClient.SetMethodHandlerAsync(
-                                command.Key,
-                                DTDLCommandHandler,
-                                new DTDLCommandHandlerContext
+                        if (model.Value != null && model.Value.Commands != null && model.Value.Commands.Count > 0)
+                        {
+                            string commandName = string.Empty;
+                            foreach (JObject command in model.Value.Commands)
+                            {
+                                if (command.Properties().Any())
                                 {
-                                    CommandName = command.Key,
-                                    CommandRequestPayload = currentCommand.ContainsKey("request") ? currentCommand["request"] : string.Empty,
-                                    CommandResponsePayload = currentCommand.ContainsKey("response") ? currentCommand["response"] : string.Empty
-                                });
+                                    commandName = command.Properties().First().Name;
+                                    await _deviceClient.SetMethodHandlerAsync(
+                                    commandName,
+                                    DTDLCommandHandler,
+                                    new DTDLCommandHandlerContext
+                                    {
+                                        CommandName = commandName,
+                                        CommandRequestPayload = command["request"], //TODO: replace this with the actual JSON Schema of the request
+                                        CommandResponsePayload = command["response"] //TODO: replace this with the actual JSON Schema of the response
+                                    });
 
-                            _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers registered:: {command.Key}");
+                                    _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers registered:: {commandName}");
+                                }
+                                else
+                                    _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers::bad formed command structure.");
+                            }                            
                         }
                         else
                             _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands:: no commands have been declared in this model.");
