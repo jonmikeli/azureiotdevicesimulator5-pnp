@@ -260,7 +260,10 @@ Properties are quite self-explanatory.
 > Emission intervals are set in seconds.
 
 
-IoT Plug and Play related settings:
+##### IoT Plug and Play related settings
+
+A few settings are related to IoT Pnp:
+
 ```json
 ...
 "defaultModelId": "dtmi:com:example:thermostat;1",
@@ -278,6 +281,10 @@ IoT Plug and Play related settings:
   ]
 ...
 ```
+
+
+
+
 
 #### Modules
 IoT Simulator's device can contain **zero, one or more modules but no module is mandatory**.
