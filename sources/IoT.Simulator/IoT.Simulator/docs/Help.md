@@ -27,9 +27,13 @@ The application consist of:
 ### Device
 #### D2C
 ##### Messages
+The regular version of the simulator proposes a fully and open customizable process to create messages. The examples provided include messages such as:
 1. [Commissioning](##Commissioning) messages
 2. [Measured](####measureddata.json) data messages (aka telemetry)
 3. [Error](####error.json) messages (functional errors sent by devices)
+
+This version of the simulator has another approach. 
+
 
 ##### Twins
 The device sends updated Reported Properties (Twins) after many operations/commands.
