@@ -37,7 +37,7 @@ Technical information:
  - .NET 5
  - Microsoft Azure IoT SDK (Device capabilities, including IoT Hub modules)
  - IoT Plug and Play
- - DTDL
+ - DTDL v2
 
 <br/>
 
