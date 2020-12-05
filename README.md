@@ -14,7 +14,7 @@ IoT Plug and Play is meant to ease the integration of IoT devices with IoT solut
 
 For more information:
  - [*How to (Quickstart)*](sources/IoT.Simulator/IoT.Simulator/docs/HowTo.md)
- - [*Help  and details*](sources/IoT.Simulator/IoT.Simulator/docs/Help.md) 
+ - [*Help and details*](sources/IoT.Simulator/IoT.Simulator/docs/Help.md) 
  
  <br/>
 
