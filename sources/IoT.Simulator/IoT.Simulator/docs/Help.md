@@ -351,7 +351,7 @@ Behaviors of modules are configured by the *modulessettings.json* configuration 
 > 
 > Emission intervals are set in seconds.
 
-
+The IoT PnP integration with modules has not been implemented yet. However, the approach will be exactly the same than with devices.
 
 ### Configuration files reminder
 #### appsettings.json
