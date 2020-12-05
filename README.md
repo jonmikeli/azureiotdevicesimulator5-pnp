@@ -129,10 +129,6 @@ Functional features are based on these generic technical features:
  - Direct Methods
  - Messages
 
-## Upcoming features
-- IoT Plug and Play, as soon as the C# SDK will be released
-- "fileupload" feature implementation
-
 ## More information
 
 - Details about **HOW the solution WORKS** are provided in the [help](sources/IoT.Simulator/IoT.Simulator/docs/Help.md) section.
