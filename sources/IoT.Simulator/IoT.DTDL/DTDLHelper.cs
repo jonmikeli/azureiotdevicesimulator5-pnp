@@ -317,20 +317,23 @@ namespace IoT.DTDL
             {
                 result = new JArray();
 
-                JObject tmp = null;
+                
                 string tmpCommandName = string.Empty;
                 JObject tmpRequest = null;
                 JObject tmpResponse = null;
                 string tmpRequestName = string.Empty;
                 string tmpResponseName = string.Empty;
 
+                JObject tmpCreatedCommand = null;
+                JObject tmpCreatedRequestAndResponseContainer = null;
                 JObject tmpCreatedRequest = null;
                 JObject tmpCreatedResponse = null;
 
                 Random random = new Random(DateTime.Now.Millisecond);
                 foreach (var item in commands)
                 {
-                    tmp = new JObject();
+                    tmpCreatedCommand = new JObject();
+                    tmpCreatedRequestAndResponseContainer = new JObject();                    
                     //command
                     tmpCommandName = item["name"].Value<string>();
                     
@@ -345,7 +348,7 @@ namespace IoT.DTDL
                         if (jProperty != null)
                             tmpCreatedRequest.Add(jProperty);
 
-                        tmp.Add("request", tmpCreatedRequest);
+                        tmpCreatedRequestAndResponseContainer.Add("request", tmpCreatedRequest);
                     }
 
                     //response
@@ -359,10 +362,12 @@ namespace IoT.DTDL
                         if (jProperty != null)
                             tmpCreatedResponse.Add(jProperty);
 
-                        tmp.Add("response", tmpCreatedResponse);
-                    }                    
-                    
-                    result.Add(tmp);
+                        tmpCreatedRequestAndResponseContainer.Add("response", tmpCreatedResponse);
+                    }
+
+                    tmpCreatedCommand.Add(tmpCreatedRequestAndResponseContainer);
+
+                    result.Add(tmpCreatedCommand);
                 }
             }
 
