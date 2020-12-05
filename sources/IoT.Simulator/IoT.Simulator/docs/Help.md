@@ -82,7 +82,7 @@ Any change in a **Desired Property** (device level) is notified to the device an
 
 #### M2C
 ##### Messages
-The approach at modules level is exactly the same that the approach at device level.
+The approach at modules level is exactly the same that the approach at the device level.
 
 ##### Twins
 Modules send updated **Reported Properties (Twins)** after many operations/commands.
@@ -94,6 +94,8 @@ Modules send updated **Reported Properties (Twins)** after many operations/comma
 #### C2M
 ##### Direct Methods
 
+The simulator includes a default set of commands that can be used as Direct Methods.
+
 |Method name |Description|Request|Response|Comments|
 |:-|:-|:-|:-|:-|
 | Reboot | Simulates a device reboot operation. | NA | <ul><li>message notifying that the Reboot Direct Method has been called (string).</li><li> result code, 200</li></ul>|Sends Twins (Reported properties) notifying the reboot.|
@@ -103,6 +105,7 @@ Modules send updated **Reported Properties (Twins)** after many operations/comma
 | Generic | Generic method | string | <ul><li>message notifying that the Generic Direct Method has been called (string).</li><li> result code, 200</li></ul>|
 | SetTelemetryInterval | Updates the time rate used to send telemetry data. | seconds (int) | <ul><li>message notifying that the SetTelemetryInterval Direct Method has been called (string).</li><li> result code, 200</li></ul>|
 
+The approach at modules level is exactly the same that the approach at the device level.
 
 ##### Messages
 Each module can be configured to receive generic **messages** coming from the cloud (Microsoft Azure IoT Hub).
