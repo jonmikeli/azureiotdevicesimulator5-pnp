@@ -414,8 +414,8 @@ namespace IoT.Simulator.Services
                                     new DTDLCommandHandlerContext
                                     {
                                         CommandName = commandName,
-                                        CommandRequestPayload = command["request"], //TODO: replace this with the actual JSON Schema of the request
-                                        CommandResponsePayload = command["response"] //TODO: replace this with the actual JSON Schema of the response
+                                        CommandRequestPayload = command.Descendants().Where(d=>d is JObject && d["request"] != null).SingleOrDefault(), //TODO: replace this with the actual JSON Schema of the request
+                                        CommandResponsePayload = command.Descendants().Where(d => d is JObject && d["response"] != null).SingleOrDefault() //TODO: replace this with the actual JSON Schema of the response
                                     });
 
                                     _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers registered:: {commandName}");
@@ -641,7 +641,7 @@ namespace IoT.Simulator.Services
             if (commandContext != null && commandContext is DTDLCommandHandlerContext)
             {
                 var context = commandContext as DTDLCommandHandlerContext;
-                _logger.LogDebug($"{logPrefix}::DTDL Command response: {context.CommandResponsePayload}.");
+                _logger.LogDebug($"{logPrefix}::DTDL Command response: {context.CommandResponsePayload} to request {data}.");
                 return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(context.CommandResponsePayload, Formatting.Indented)), 200));
             }
             else
