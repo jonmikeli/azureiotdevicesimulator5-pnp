@@ -42,7 +42,7 @@ The device sends updated Reported Properties (Twins) after many operations/comma
 #### C2D
 ##### Direct Methods
 
-The simulator includes a default set of commands usable as Direct Methods.
+The simulator includes a default set of commands that can be used as Direct Methods.
 
 |Method name|Description|Request|Response|Comments|
 |:-|:-|:-|:-|:-|
@@ -82,9 +82,7 @@ Any change in a **Desired Property** (device level) is notified to the device an
 
 #### M2C
 ##### Messages
-1. [Commissioning](##Commissioning) messages
-2. [Measured](####measureddata.json) data messages (aka telemetry)
-3. [Error](####error.json) messages (functional errors sent by devices)
+The approach at modules level is exactly the same that the approach at device level.
 
 ##### Twins
 Modules send updated **Reported Properties (Twins)** after many operations/commands.
