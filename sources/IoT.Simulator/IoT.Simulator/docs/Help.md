@@ -284,9 +284,9 @@ A few settings are related to IoT Pnp:
 These properties DO NOT BELONG to IoT PnP or DTDL. They are custom properties created for the simulator.
 
 Descriptions:
-- defaultModelId:
-- supportedModels:
-- modelId:
+- defaultModelId: it contains the default DTDL model Id. It is mandatory in this version of the simulator.
+- supportedModels: a collection of the supported models by the simulator. This notion of "collection" does not exist in DTDL v2. However, many real life projects may need this. In order to make the simulator (and your IoT device) compatible with a IoT PnP approach, a collection of "usable" models by the device has been created.
+- modelId: DTDL model Id (in DTDL expected format). Refer to the documentation [here](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) for details about the format.
 - modelPath:
 - modelType:
 
