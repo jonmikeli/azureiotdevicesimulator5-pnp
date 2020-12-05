@@ -394,7 +394,7 @@ namespace IoT.Simulator.Services
                 _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD Default handler registered.");
 
                 //ADD DTDL COMMANDS
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL command handlers.");
                 var commands = await _dtdlCommandService.GetCommandsAsync(_deviceSettings.DefaultModelId, _defaultModel.ModelPath);
                 if (commands != null && commands.Any())
                 {
@@ -402,7 +402,7 @@ namespace IoT.Simulator.Services
                     foreach (var command in commands)
                     {
                         if (command.Value != null && command.Value.Commands != null && command.Value.Commands.Count > 0)
-                        {
+                        {                             
                             currentCommand = (JObject)command.Value.Commands.Single(i => i["name"].Value<string>() == command.Key);
 
                             await _deviceClient.SetMethodHandlerAsync(
@@ -414,7 +414,11 @@ namespace IoT.Simulator.Services
                                     CommandRequestPayload = currentCommand.ContainsKey("request") ? currentCommand["request"] : string.Empty,
                                     CommandResponsePayload = currentCommand.ContainsKey("response") ? currentCommand["response"] : string.Empty
                                 });
+
+                            _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers registered:: {command.Key}");
                         }
+                        else
+                            _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL commands:: no commands have been declared in this model.");
                     }
                 }
             }
