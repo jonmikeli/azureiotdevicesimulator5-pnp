@@ -25,7 +25,7 @@ For more information:
  <br/>
 
 Example of uses:
- - development tool for developers working in Microsoft Azure IoT solutions (cloud)
+ - development tool for developers working on Microsoft Azure IoT solutions (cloud)
  - tester tool in IoT-oriented projects
  - scalable IoT simulation platforms
  - fast and simple development of IoT devices
