@@ -34,7 +34,7 @@ Example of uses:
 <br/>
 
 Technical information:
- - .NET 5
+ - .NET 5 (C#)
  - Microsoft Azure IoT SDK (Device capabilities, including IoT Hub modules)
  - IoT Plug and Play
  - DTDL v2
