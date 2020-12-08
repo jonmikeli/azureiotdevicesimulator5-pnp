@@ -45,6 +45,20 @@ namespace IoT.DTDL.Tests
         }
 
         [TestMethod()]
+        public async Task GetModelsAndBuildDynamicContentAsync_Generic2_OneTelemetry_Errors_OK()
+        {
+            string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic2-errors.json";
+            string modelId = "dtmi:com:jmi:simulator:devicemessages;1";
+
+            var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
+
+            Assert.IsNotNull(modelContainer);
+            Assert.IsTrue(modelContainer.Count > 0);
+
+            Assert.IsNotNull(modelContainer[modelId].ParsingErrors);
+        }
+
+        [TestMethod()]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_ManyTelemetries_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic3.json";
