@@ -56,6 +56,7 @@ namespace IoT.DTDL.Tests
             Assert.IsTrue(modelContainer.Count > 0);
 
             Assert.IsNotNull(modelContainer[modelId].ParsingErrors);
+            Assert.IsTrue(modelContainer[modelId].ParsingErrors.Count() > 0);
         }
 
         [TestMethod()]
