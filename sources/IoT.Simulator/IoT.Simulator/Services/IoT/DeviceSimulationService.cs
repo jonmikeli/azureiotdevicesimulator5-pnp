@@ -226,6 +226,7 @@ namespace IoT.Simulator.Services
             string logPrefix = "data".BuildLogPrefix();
 
             string messageString = string.Empty;
+            Message message = null;
 
             using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettings.ArtifactId}::MEASURED DATA"))
             {
@@ -234,7 +235,7 @@ namespace IoT.Simulator.Services
                     //Randomize data                    
                     messageString = await _dtdlMessageService.GetMessageAsync(deviceId, string.Empty, _deviceSettings.DefaultModelId, _defaultModel.ModelPath);
 
-                    var message = new Message(Encoding.UTF8.GetBytes(messageString));
+                    message = new Message(Encoding.UTF8.GetBytes(messageString));
                     message.Properties.Add("messageType", "data");
 
                     // Add a custom application property to the message.
