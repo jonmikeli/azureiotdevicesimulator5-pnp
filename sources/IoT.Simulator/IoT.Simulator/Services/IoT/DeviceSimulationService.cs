@@ -266,6 +266,8 @@ namespace IoT.Simulator.Services
         internal async Task SendDeviceToCloudLatencyTestAsync(string deviceId, int interval)
         {
             string logPrefix = "latency".BuildLogPrefix();
+            string messageString = string.Empty;
+            Message message = null;
 
             while (true)
             {
@@ -278,8 +280,8 @@ namespace IoT.Simulator.Services
                 };
 
 
-                var messageString = JsonConvert.SerializeObject(data);
-                var message = new Message(Encoding.ASCII.GetBytes(messageString));
+                messageString = JsonConvert.SerializeObject(data);
+                message = new Message(Encoding.ASCII.GetBytes(messageString));
                 message.Properties.Add("messagetype", "latency");
                 message.ContentType = "application/json";
                 message.ContentEncoding = "utf-8";
