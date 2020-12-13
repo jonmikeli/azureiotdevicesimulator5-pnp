@@ -87,11 +87,11 @@ Any change in a **Desired Property** (device level) is notified to the device an
 The approach at modules level is exactly the same that the approach at the device level.
 
 ##### Twins
-Modules send updated **Reported Properties (Twins)** after many operations/commands.
+Modules may send updated **Reported Properties (Twins)** at some point during or after many operations/commands.
 
 > [!NOTE]
 > 
-> Example: after a OnOff Direct Method request, a givne module sends its status to the cloud solution (Microsoft Azure IoT Hub) using the Twin Reported Properties.
+> Example: after a OnOff Direct Method request, a given module sends its status to the cloud solution (Microsoft Azure IoT Hub) using the Twin Reported Properties.
 
 #### C2M
 ##### Direct Methods
@@ -136,11 +136,11 @@ The features of the application rely on two main components:
 <br/>
 
 ### Runing the simulator
- The simulator is a .NET Core application.
+ The simulator is a .NET 5  application.
  
  To run the simulator, there are two alternatives:
-  1. running the simulator as a **.NET Core application** (Console Application)
-  1. running the *Docker container* (which contains in turn the .NET Core binaries, packages and other required prerequisites)
+  1. running the simulator as a **.NET 5 Console application** (selfcontained or depending on an installed firmware)
+  1. running the *Docker container* (which contains in turn the .NET 5 binaries, packages and other required prerequisites)
   
  > ![NOTE]
  > 
