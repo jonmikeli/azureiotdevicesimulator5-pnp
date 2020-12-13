@@ -8,7 +8,7 @@ This version of the simulator is based on the [regular version of the simulator]
 
 *Azure IoT Device Simulator 5 PnP* is the [IoT Plug and Play](https://docs.microsoft.com/en-us/azure/iot-pnp/overview-iot-plug-and-play) version of [Azure IoT Device Simulator 5](https://github.com/jonmikeli/azureiotdevicesimulator5).
 
-IoT Plug and Play is meant to ease the integration of IoT devices with IoT solutions, trying to imitate the concept of the Plug and Play experience we all already know.
+IoT Plug and Play is meant to facilitate the integration of IoT devices with IoT solutions, trying to imitate the concept of the Plug and Play experience we all already know.
 
 This simulator allows to use DTDL* models describing the device capabilities. To make the whole loop coherent and consistent, the used models should be accessible by the IoT solution too.
 
