@@ -10,6 +10,7 @@ This version of the simulator is based on the [regular version of the simulator]
 
 IoT Plug and Play is meant to facilitate the integration of IoT devices with IoT solutions, trying to imitate the concept of the already known Plug and Play experience.
 
+## DTDL
 This simulator allows using [DTDL, Digital Twins Definition Language](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) models. These models describe the device capabilities via the next concepts:
  - components
  - interfaces
@@ -22,21 +23,14 @@ All these are described in detail [here](https://github.com/Azure/opendigitaltwi
 
 DTDL is based on open standards (JSON-LD and RDF).
 
-To make the whole loop coherent and consistent, the used models should be accessible by the IoT solution too.
+## Models
+In order to keep coherence in the whole solution (Cloud IoT part and the simulator/devices part), the used DTDL models have to be reachable from both sides.
 
-> NOTES
->
-> DTDL stands for Digital Twins Definition Language. This language, based on open W3C standards like JSON-LD and RDF, allows to describe the models and eases the adoption across services and tooling. You will find more information [here](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md).
-
-<br/>
-
-For more information:
+## Additional details
  - [*How to (Quickstart)*](sources/IoT.Simulator/IoT.Simulator/docs/HowTo.md)
  - [*Help and details*](sources/IoT.Simulator/IoT.Simulator/docs/Help.md) 
  
- <br/>
-
-Example of uses:
+## Examples of use
  - development tool for developers working on Microsoft Azure IoT solutions (cloud)
  - tester tool in IoT-oriented projects
  - scalable IoT simulation platforms
