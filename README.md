@@ -101,7 +101,7 @@ The devices module have not been updated to integrate IoT Plug and Play features
 
 Functional features are based on these generic technical features:
  - telemetry sent from a device.
- - a device can contain one or many modules.
+ - a device may contain one or many modules.
  - each module behaves independently with its own flows (C2M/M2C) and its configuration settings.
  - the device that contains the modules has its own behavior (based on its own configuration file).
  - telemetry sent from a module.
