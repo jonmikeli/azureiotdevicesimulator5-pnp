@@ -87,7 +87,11 @@ In order to keep coherence in the whole solution (Cloud IoT part and the simulat
 
 
 ### Module level (C2M/M2C)
-The features at the module level are the identical to the device features except for the latency tests.
+The devices module have not been updated to integrate IoT Plug and Play features. This should be done in a short future.
+
+>NOTE
+>
+>Latency tests will not be included at modules level.
 
 
 [details](sources/IoT.Simulator/IoT.Simulator/docs/Help.md).
