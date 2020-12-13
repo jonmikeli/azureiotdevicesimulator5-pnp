@@ -261,7 +261,7 @@ Properties are quite self-explanatory.
 
 ##### IoT Plug and Play related settings
 
-A few settings are related to IoT Pnp:
+A few settings are related to IoT Plug and Play (IoT PnP):
 
 ```json
 ...
@@ -283,11 +283,11 @@ A few settings are related to IoT Pnp:
 These properties ARE NOT PART of IoT PnP or DTDL. They are custom properties created for the simulator.
 
 Descriptions:
-- defaultModelId: it contains the default DTDL model Id. It is mandatory in this version of the simulator.
-- supportedModels: a collection of the supported models by the simulator. This notion of "collection" does not exist in DTDL v2. However, many real life projects may need this. In order to make the simulator (and your IoT device) compatible with a IoT PnP approach, a collection of "usable" models by the device has been created.
-- modelId: DTDL model Id (in DTDL expected format). Refer to the documentation [here](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) for details about the format.
-- modelPath: path of the JSON containing the DTDL model.
-- modelType: describes the model type. This notion does not exist either in DTDL. Having decide to support many models in the simulator, this property allows to type each of them (ex: Telemetry, Error, Warning).
+- defaultModelId: it contains the default DTDL model Id. It is mandatory in this version of IoT Simulator.
+- supportedModels: a collection of the supported models by the simulator. This notion of "collection" does not exist in DTDL v2. However, many real life projects may need this.
+  - modelId: DTDL model Id (in DTDL expected format). Refer to the documentation [here](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) for details about the format.
+  - modelPath: path of the JSON containing the DTDL model.
+  - modelType: describes the model type. This notion does not exist either in DTDL. Having decide to support many models in the simulator, this property allows to type each of them (ex: Telemetry, Error, Warning).
 
 > NOTE
 >
