@@ -82,8 +82,7 @@ namespace IoT.DTDL.Tests
 
             var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
 
-            Assert.IsNotNull(modelContainer);
-            //TODO: check if the modelId belongs to the collection of the built models
+            Assert.IsNull(modelContainer);
         }
     }
 }

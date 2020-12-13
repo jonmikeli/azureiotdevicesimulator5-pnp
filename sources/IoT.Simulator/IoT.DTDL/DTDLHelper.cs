@@ -35,8 +35,11 @@ namespace IoT.DTDL
             else if (dtdlModel is JArray)
                 jArrayDTDLModel = dtdlModel as JArray;
 
-            //Build the JSON Message corresponding to the model
-            return await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);
+            Dictionary<string, DTDLContainer> data = await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);
+            if (data != null && data.Any() && data.ContainsKey(modelId))
+                return data;
+            else
+                return null;            
         }
 
         public static async Task<Dictionary<string, DTDLCommandContainer>> GetModelsAndExtratCommandsAsync(string modelId, string modelPath)
