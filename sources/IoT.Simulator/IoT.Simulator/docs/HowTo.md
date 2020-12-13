@@ -35,9 +35,9 @@ The Azure IoT Device Simulator needs two basic things before starting:
 
 #### Settings
 Settings are based on 3 files:
- - [appsettings.json](#####appsettings.json)
- - [devicesettings.json](#####devicesettings.json)
- - [modulessettings.json](#####modulessettings.json)
+ - [appsettings.json](##### appsettings.json)
+ - [devicesettings.json](##### devicesettings.json)
+ - [modulessettings.json](##### modulessettings.json)
 
 For details and explanations, see [help](Help.md).
 
