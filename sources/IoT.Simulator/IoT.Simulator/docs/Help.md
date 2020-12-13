@@ -24,7 +24,7 @@ The application consist of:
 ### Device
 #### D2C
 ##### Messages
-The regular version of the simulator proposes a fully and open customizable process to create messages. The examples provided include messages such as:
+The regular version of the simulator proposes a fully and open customizable process to create messages. The examples provided included messages such as:
 1. `Commissioning` messages
 2. `Measured` data messages (aka telemetry)
 3. `Error` messages (functional errors sent by devices)
