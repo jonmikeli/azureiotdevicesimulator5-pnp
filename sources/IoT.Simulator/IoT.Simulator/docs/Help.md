@@ -77,7 +77,7 @@ Any change in a **Desired Property** (device level) is notified to the device an
 > ###### Tags and Microsoft IoT Hub Jobs
 >
 > The simulator can benefit from the use of **Microsoft IoT Hub Jobs** for operations based in property queries.
-> A typical example of this would be a **FOTA** (Firmware Over The Air) update according to criteria based in **Twin.Tag properties* (ex: firmwareVersion, location, environment, etc).
+> A typical example of this would be a **FOTA** (Firmware Over The Air) update according to criteria based in **Twin.Properties.Desired properties* (ex: firmwareVersion, location, environment, etc).
 
 
 ### Modules
