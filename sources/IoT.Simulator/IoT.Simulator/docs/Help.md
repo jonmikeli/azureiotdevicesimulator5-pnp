@@ -29,7 +29,7 @@ The regular version of the simulator proposes a fully and open customizable proc
 2. `Measured` data messages (aka telemetry)
 3. `Error` messages (functional errors sent by devices)
 
-This version of the simulator has another approach: the messages should be build according to the definition included in the referenced model.
+This version of the simulator follows another approach: the messages should be built according to the definition included in the referenced DTDL model.
 
 
 ##### Twins
@@ -42,7 +42,10 @@ The device sends updated Reported Properties (Twins) after many operations/comma
 #### C2D
 ##### Direct Methods
 
-The simulator includes a default set of commands that can be used as Direct Methods.
+Even though this simulator is meant to implement the contract defined in the DTDL model, it includes a default set of commands that can be used as Direct Methods.
+
+Part of those Direct Methods may help in developing stages of the solution.
+If it comes to be misleading, these Direct Methods may be deleted in upcoming updates.
 
 |Method name|Description|Request|Response|Comments|
 |:-|:-|:-|:-|:-|
@@ -59,8 +62,7 @@ Similarly to the messages, this IoT Plug and Play simulator adds commands that w
 
 > NOTE
 >
-> The simulator should should only use the commands defined in the DTDL model. This said, it can be interesting to keep the other set of commands for test purposes.
-> Also, this illustrates that the DTDL may be combined with elements not defined in the models. However, be aware that all the elements not declared in the models will be unknown to the IoT Solutions that use the models to integrate your devices.
+> This illustrates that the DTDL may be combined with elements not defined in the models. However, be aware that all the elements not declared in the models will be unknown to the IoT Solutions that use the models to integrate your devices.
 
 ##### Messages
 The device can be configured to receive generic **messages** coming from the cloud (Microsoft Azure IoT Hub C2D Messages).
