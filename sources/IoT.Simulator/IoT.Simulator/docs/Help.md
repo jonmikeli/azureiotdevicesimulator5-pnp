@@ -284,10 +284,10 @@ These properties ARE NOT PART of IoT PnP or DTDL. They are custom properties cre
 
 Descriptions:
 - defaultModelId: it contains the default DTDL model Id. It is mandatory in this version of IoT Simulator.
-- supportedModels: a collection of the supported models by the simulator. This notion of "collection" does not exist in DTDL v2. However, many real life projects may need this.
+- supportedModels: a collection of the supported models by the simulator. This notion of "collection" does not exist in DTDL v2. However, many real life projects may need this. Be sure that one of the supported models is the default model.
   - modelId: DTDL model Id (in DTDL expected format). Refer to the documentation [here](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) for details about the format.
-  - modelPath: path of the JSON containing the DTDL model.
-  - modelType: describes the model type. This notion does not exist either in DTDL. Having decide to support many models in the simulator, this property allows to type each of them (ex: Telemetry, Error, Warning).
+  - modelPath: path of the JSON containing the DTDL model. This path can be local or remote (http based path).
+  - modelType: describes the model type. This notion does not exist either in DTDL. Having decided to support many models in the simulator, this property allows to give a type to each of them (ex: Telemetry, Error, Warning).
 
 > NOTE
 >
