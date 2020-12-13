@@ -8,9 +8,21 @@ This version of the simulator is based on the [regular version of the simulator]
 
 *Azure IoT Device Simulator 5 PnP* is the [IoT Plug and Play](https://docs.microsoft.com/en-us/azure/iot-pnp/overview-iot-plug-and-play) version of [Azure IoT Device Simulator 5](https://github.com/jonmikeli/azureiotdevicesimulator5).
 
-IoT Plug and Play is meant to facilitate the integration of IoT devices with IoT solutions, trying to imitate the concept of the Plug and Play experience we all already know.
+IoT Plug and Play is meant to facilitate the integration of IoT devices with IoT solutions, trying to imitate the concept of the already known Plug and Play experience.
 
-This simulator allows to use DTDL* models describing the device capabilities. To make the whole loop coherent and consistent, the used models should be accessible by the IoT solution too.
+This simulator allows using [DTDL, Digital Twins Definition Language](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) models. These models describe the device capabilities via the next concepts:
+ - components
+ - interfaces
+ - properties
+ - telemetries
+ - commands
+ - relationships
+
+All these are described in detail [here](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md).
+
+DTDL is based on open standards (JSON-LD and RDF).
+
+To make the whole loop coherent and consistent, the used models should be accessible by the IoT solution too.
 
 > NOTES
 >
