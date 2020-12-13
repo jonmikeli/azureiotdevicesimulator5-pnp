@@ -146,11 +146,11 @@ The features of the application rely on two main components:
  > 
  > See [Docker](https://www.docker.com) and container oriented development for those who are not familiar with.
  
- Whatever the alternative will be, check that the **3 configuration** files are set properly.
+ Whatever the alternative will be, check that all the **3 configuration** files are set properly.
 
  > ![IMPORTANT]
  > 
- > The 3 configurations files have be present and contain the proper Microsoft Azure IoT Hub connection strings, IDs or keys.
+ > The 3 configurations files have to be present and contain the proper Microsoft Azure IoT Hub connection strings, IDs or keys.
 
  
  #### Runing .NET Core application
@@ -163,9 +163,6 @@ The features of the application rely on two main components:
  ```cmd
  docker run -ti --name [containername] [imagename]
  ```
-
- You can get ready to use Docker images of the Azure IoT Device Simulator [here](https://hub.docker.com/r/jonmikeli/azureiotdevicesimulator).
-
 
  ### Configurations
  #### Application
