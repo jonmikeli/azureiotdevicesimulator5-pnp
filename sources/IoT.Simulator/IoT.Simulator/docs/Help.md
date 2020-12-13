@@ -350,7 +350,7 @@ Behaviors of modules are configured by the *modulessettings.json* configuration 
 > 
 > Emission intervals are set in seconds.
 
-The IoT PnP integration with modules has not been implemented yet. However, the approach will be exactly the same than with devices.
+_The IoT PnP integration with modules has not been implemented yet. However, the approach should be exactly the same than with devices_.
 
 ### Configuration files reminder
 #### appsettings.json
@@ -464,7 +464,7 @@ This version of the IoT PnP simulator does not process propertly the `component`
 
 Additionnally, I guess parts of the code may be reviewed or improved.
 
-A `DTDLHelper` has been created to factorize and ease working with DTDL models. It will probably be worth to make it stronger and publish it independently.
+A `DTDLHelper` has been created to factorize and facilitate working with DTDL models. It will probably be worth to make it stronger and publish it independently.
 
 
 # Glossary
