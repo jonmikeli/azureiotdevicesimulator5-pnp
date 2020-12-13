@@ -21,13 +21,13 @@ Do not forget you will need an internet connection with specific open ports:
  - 443
 [Ports](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-protocols) required to communicate with Microsoft Azure IoT Hub.
 
-Finally, you will need enough storage memory to download the Docker image and create your containers.
+The new .NET 5 docker images are smaller and offer better performances.
 
 
 ### Steps to follow
 The Azure IoT Device Simulator needs two basic things before starting:
  - settings (need to be updated with proper connection settings)
- - message templates (included by default)
+ - reachable DTDL models
 
  Once those items are ready, a single command allows starting the application.
 
@@ -43,7 +43,7 @@ For details and explanations, see [help](Help.md).
 > 
 > The solution takes into account **settings** depending on the environment.
 > It can be set trough the environment variable ENVIRONMENT.
-> The solution looks for settings files following the pattern *file.ENVIRONMENT.json* (similar to transformation files).
+> The solution looks for settings files following the pattern *file.ENVIRONMENT.json* (similar to the former transformation files).
 > Default setting files will be loaded first in case no environment file is found.
 
 ##### appsettings.json
