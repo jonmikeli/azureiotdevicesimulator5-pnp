@@ -296,7 +296,7 @@ Descriptions:
 
 
 #### Modules
-IoT Simulator's device can contain **zero, one or more modules but no module is mandatory**.
+IoT Simulator's device may contain **zero, one or more modules but no module is mandatory**.
 Behaviors of modules are configured by the *modulessettings.json* configuration file.
 
 
