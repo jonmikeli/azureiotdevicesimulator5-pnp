@@ -37,9 +37,7 @@ In order to keep coherence in the whole solution (Cloud IoT part and the simulat
  - fast and simple development of IoT devices
  - etc
 
-<br/>
-
-Technical information:
+## Technical information
  - .NET 5 (C#)
  - Microsoft Azure IoT SDK (Device capabilities, including IoT Hub modules)
  - IoT Plug and Play
@@ -78,7 +76,7 @@ Technical information:
  - update telemetry interval
  
  *Messages*
- D2C: The device can send messages of different types (telemetry, error, commissioning).
+ D2C: The device will send the telemetries according the referenced DTDL model.
  
  C2D: Microsoft Azure IoT Hub can send messages to a given device.
  
