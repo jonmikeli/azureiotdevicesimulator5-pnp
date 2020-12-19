@@ -215,6 +215,7 @@ namespace IoT.Simulator
                             item,
                             item.SimulationSettings,
                             serviceProvider.GetService<IDTDLMessageService>(),
+                            serviceProvider.GetService<IDTDLCommandService>(),
                             loggerFactory);
 
                         services.AddSingleton<IModuleSimulationService, ModuleSimulationService>(iServiceProvider => simulator);
