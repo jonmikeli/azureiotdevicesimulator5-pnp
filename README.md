@@ -82,8 +82,6 @@ In order to keep coherence in the whole solution (Cloud IoT part and the simulat
  *Twin*
  Any change in the Desired properties is notified and handled by the device.
 
- The device reports changes in different types of information to the Microsoft Azure IoT Hub.
-
 
 ### Module level (C2M/M2C)
 The devices module have not been updated to integrate IoT Plug and Play features. This should be done in a near future.
