@@ -233,10 +233,10 @@ namespace IoT.Simulator.Services
                 while (true)
                 {
                     //Randomize data                    
-                    messageString = await _dtdlMessageService.GetMessageAsync(deviceId, string.Empty, _deviceSettings.DefaultModelId, _defaultModel.ModelPath);
+                    messageString = await _dtdlMessageService.GetRandomizedMessageAsync(deviceId, string.Empty, _deviceSettings.DefaultModelId, _defaultModel.ModelPath);
 
                     message = new Message(Encoding.UTF8.GetBytes(messageString));
-                    message.Properties.Add("messageType", "data");
+                    message.Properties.Add("messageType", "dtdlMessage");
 
                     // Add a custom application property to the message.
                     // An IoT hub can filter on these properties without access to the message body.

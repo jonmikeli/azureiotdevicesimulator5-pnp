@@ -129,7 +129,9 @@ namespace IoT.Simulator.Services
             // Initial telemetry values
             int counter = 1;
             string logPrefix = "data".BuildLogPrefix();
+
             string messageString = string.Empty;
+            Message message = null;
 
             using (logger.BeginScope($"{logPrefix}::{ModuleSettings.ArtifactId}::MEASURED DATA"))
             {
@@ -142,8 +144,8 @@ namespace IoT.Simulator.Services
                     //Randomize data                    
                     messageString = await _dtdlMessagingService.GetRandomizedMessageAsync(deviceId, moduleId, ModuleSettings.DefaultModelId, defaultModel.ModelPath);
 
-                    var message = new Message(Encoding.UTF8.GetBytes(messageString));
-                    message.Properties.Add("messageType", "data");
+                    message = new Message(Encoding.UTF8.GetBytes(messageString));
+                    message.Properties.Add("messageType", "dtdlMessage");
 
                     // Add a custom application property to the message.
                     // An IoT hub can filter on these properties without access to the message body.
