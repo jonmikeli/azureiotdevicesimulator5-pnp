@@ -460,7 +460,7 @@ Properties are quite self-explanatory.
 
 ## Evolutivity
 
-This version of the IoT PnP simulator does not process propertly the `component` concept of DTDL. This would be a good point to work on and totally cover DTDL features.
+This version of the IoT PnP simulator does not process properly the `component` concept of DTDL. This would be a good point to work on and totally cover DTDL features.
 
 Additionnally, I guess parts of the code may be reviewed or improved.
 
