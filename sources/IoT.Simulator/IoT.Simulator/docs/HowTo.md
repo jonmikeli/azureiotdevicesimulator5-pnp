@@ -89,7 +89,7 @@ Detailed logs settings.
 ```
 
 ##### devicesettings.json
-This file allows configuring device simulation settings.
+This file allows configuring the device simulation settings.
 
 ```json
 {
