@@ -84,7 +84,7 @@ In order to keep coherence in the whole solution (Cloud IoT part and the simulat
 
 
 ### Module level (C2M/M2C)
-The devices module have not been updated to integrate IoT Plug and Play features. This should be done in a near future.
+Commands have also been implemented at device module level.
 
 >NOTE
 >
