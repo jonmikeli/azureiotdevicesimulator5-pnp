@@ -1,7 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Version>0.1.0.0</Version>
+    <Authors>Jon Mikel Inza</Authors>
+    <Description>Basic DTDL v2 reader/parser to help to work in IoT Plug and Play solutions.</Description>
+    <Company>JMI</Company>
+    <Copyright>Jon Mikel Inza</Copyright>
+    <PackageTags>IoT Plug and Play, IoT PnP, DTDL</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
