@@ -11,8 +11,6 @@
       }
     ],
     "simulationSettings": {
-      "enableLatencyTests": false,
-      "latencyTestsFrecuency": 10,
       "enableTelemetryMessages": true,
       "telemetryFrecuency": 20,
       "enableErrorMessages": false,
