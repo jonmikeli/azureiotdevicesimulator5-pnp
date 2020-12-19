@@ -8,7 +8,7 @@ The application consist of:
  - configuration files:
    - [appsettings.json](####appsettings.json) (described below)
    - [devicesettings.json](####devicesettings.json) (described below). It includes the references to the used DTDL models.
-   - [modulessettings.json](####modulessettings.json) (described below). It includes the references to the used DTDL models. (IoT PnP at module level has not been implemented yet in the simulator).
+   - [modulessettings.json](####modulessettings.json) (described below). It includes the references to the used DTDL models.
 
 
 <br/>
