@@ -10,6 +10,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using IoT.Simulator.Models;
 
 namespace IoT.Simulator.Services
 {
@@ -23,9 +24,12 @@ namespace IoT.Simulator.Services
         private bool _stopProcessing;
         private ModuleClient _moduleClient;
 
-        private IDTDLMessageService _dtdlMessagingService;        
+        private IDTDLMessageService _dtdlMessagingService;
+        private IDTDLCommandService _dtdlCommandService;
 
-        public ModuleSimulationService(ModuleSettings settings, SimulationSettingsModule simulationSettings, IDTDLMessageService dtdlMessagingService, ILoggerFactory loggerFactory)
+        private DTDLModelItem _defaultModel;
+
+        public ModuleSimulationService(ModuleSettings settings, SimulationSettingsModule simulationSettings, IDTDLMessageService dtdlMessagingService, IDTDLCommandService dtdlCommandService, , ILoggerFactory loggerFactory)
         {
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
@@ -46,6 +50,7 @@ namespace IoT.Simulator.Services
             _logger = loggerFactory.CreateLogger<ModuleSimulationService>();
 
             _dtdlMessagingService = dtdlMessagingService;
+            _dtdlCommandService = dtdlCommandService;
 
             _telemetryInterval = 10;
             _stopProcessing = false;
@@ -53,6 +58,11 @@ namespace IoT.Simulator.Services
             _moduleClient = ModuleClient.CreateFromConnectionString(ModuleSettings.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
             _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Logger created.");
             _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Module simulator created.");
+
+            //Default DTDL Model
+            _defaultModel = ModuleSettings?.SupportedModels?.SingleOrDefault(i => i.ModelId == ModuleSettings.DefaultModelId);
+            if (_defaultModel == null)
+                throw new Exception("No supported model corresponds to the default model Id.");
         }
 
         ~ModuleSimulationService()
@@ -200,7 +210,7 @@ namespace IoT.Simulator.Services
 
         private async Task RegisterC2DDirectMethodsHandlersAsync(ModuleClient moduleClient, ModuleSettings settings, ILogger logger)
         {
-            string logPrefix = "c2ddirectmethods".BuildLogPrefix();
+            string logPrefix = "modules.c2ddirectmethods".BuildLogPrefix();
 
             try
             {
@@ -224,8 +234,45 @@ namespace IoT.Simulator.Services
                 await moduleClient.SetMethodHandlerAsync("Generic", Generic, null);
                 logger.LogTrace($"{logPrefix}::{ModuleSettings.ArtifactId}::DIRECT METHOD Generic registered.");
 
+                //Default
                 await moduleClient.SetMethodDefaultHandlerAsync(DefaultC2DMethodHandler, null);
                 _logger.LogTrace($"{logPrefix}::{ModuleSettings.ArtifactId}::DIRECT METHOD Default handler registered.");
+
+                //DTDL Commands
+                _logger.LogTrace($"{logPrefix}::{ModuleSettings.ArtifactId}::DIRECT METHOD DTDL command handlers.");
+                var modelWithCommands = await _dtdlCommandService.GetCommandsAsync(ModuleSettings.DefaultModelId, _defaultModel.ModelPath);
+                if (modelWithCommands != null && modelWithCommands.Any())
+                {
+                    foreach (var model in modelWithCommands)
+                    {
+                        if (model.Value != null && model.Value.Commands != null && model.Value.Commands.Count > 0)
+                        {
+                            string commandName = string.Empty;
+                            foreach (JObject command in model.Value.Commands)
+                            {
+                                if (command.Properties().Any())
+                                {
+                                    commandName = command.Properties().First().Name;
+                                    await moduleClient.SetMethodHandlerAsync(
+                                    commandName,
+                                    DTDLCommandHandler,
+                                    new DTDLCommandHandlerContext
+                                    {
+                                        CommandName = commandName,
+                                        CommandRequestPayload = command.Descendants().Where(d => d is JObject && d["request"] != null).SingleOrDefault(), //TODO: replace this with the actual JSON Schema of the request
+                                        CommandResponsePayload = command.Descendants().Where(d => d is JObject && d["response"] != null).SingleOrDefault() //TODO: replace this with the actual JSON Schema of the response
+                                    });
+
+                                    _logger.LogTrace($"{logPrefix}::{ModuleSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers registered:: {commandName}");
+                                }
+                                else
+                                    _logger.LogError($"{logPrefix}::{ModuleSettings.ArtifactId}::DIRECT METHOD DTDL commands handlers::bad formed command structure.");
+                            }
+                        }
+                        else
+                            _logger.LogTrace($"{logPrefix}::{ModuleSettings.ArtifactId}::DIRECT METHOD DTDL commands:: no commands have been declared in this model.");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -397,6 +444,27 @@ namespace IoT.Simulator.Services
 
             return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response, Formatting.Indented)), 200));
 
+        }
+
+        private Task<MethodResponse> DTDLCommandHandler(MethodRequest methodRequest, object commandContext)
+        {
+            string logPrefix = "modules.c2ddirectmethods.dtdlcommand.handler".BuildLogPrefix();
+
+            var data = Encoding.UTF8.GetString(methodRequest.Data);
+
+            _logger.LogDebug($"{logPrefix}::DTDL Command called: {data}.");
+
+            if (commandContext != null && commandContext is DTDLCommandHandlerContext)
+            {
+                var context = commandContext as DTDLCommandHandlerContext;
+                _logger.LogDebug($"{logPrefix}::DTDL Command response: {context.CommandResponsePayload} to request {data}.");
+                return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(context.CommandResponsePayload, Formatting.Indented)), 200));
+            }
+            else
+            {
+                _logger.LogDebug($"{logPrefix}::No DTDL command context has been found for the command.");
+                return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { error = "No DTDL command context has been found." })), 500));
+            }
         }
         #endregion
         #endregion
