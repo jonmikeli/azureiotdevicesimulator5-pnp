@@ -4,12 +4,12 @@
   "supportedModels": [
     {
       "modelId": "dtmi:com:example:thermostat;1",
-      "modelPath": "./Tests/thermostat.json",
+      "modelPath": "./DTDLModels/thermostat.json",
       "modelType": "Telemetry"
     },
     {
       "modelId": "dtmi:com:jmi:simulator:devicemessages;1",
-      "modelPath": "./Tests/jmi.simulator.pnp.model.generic3.json",
+      "modelPath": "./DTDLModels/jmi.simulator.pnp.model.generic3.json",
       "modelType": "Telemetry"
     }
   ],
