@@ -29,7 +29,7 @@ namespace IoT.Simulator.Services
 
         private DTDLModelItem _defaultModel;
 
-        public ModuleSimulationService(ModuleSettings settings, SimulationSettingsModule simulationSettings, IDTDLMessageService dtdlMessagingService, IDTDLCommandService dtdlCommandService, , ILoggerFactory loggerFactory)
+        public ModuleSimulationService(ModuleSettings settings, SimulationSettingsModule simulationSettings, IDTDLMessageService dtdlMessagingService, IDTDLCommandService dtdlCommandService, ILoggerFactory loggerFactory)
         {
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
