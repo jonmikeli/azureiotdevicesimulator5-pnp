@@ -75,8 +75,8 @@ namespace IoT.Simulator.Services
             string logPrefix = "DTDLTelemetryMessageService".BuildLogPrefix();
 
             //Randomize data           
-            messageString = IoTTools.RandomizeData(messageString);
-            _logger.LogTrace($"{logPrefix}::{artifactId}::Randomized data to update template's values before sending the message.");
+            //messageString = IoTTools.RandomizeData(messageString);
+            //_logger.LogTrace($"{logPrefix}::{artifactId}::Randomized data to update template's values before sending the message.");
 
             return messageString;
         }
