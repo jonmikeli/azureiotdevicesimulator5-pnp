@@ -136,27 +136,49 @@ This file allows configuring module(s) simulation settings.
 {
  "modules":[
     {
-      "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
-      "simulationSettings": {
-        "enableLatencyTests": false,
-        "latencyTestsFrecuency": 10,
-        "enableTelemetryMessages": true,
-        "telemetryFrecuency": 20,
-        "enableErrorMessages": false,
-        "errorFrecuency": 30,
-        "enableCommissioningMessages": false,
-        "commissioningFrecuency": 60,
-        "enableTwinReportedMessages": false,
-        "twinReportedMessagesFrecuency": 60,
-        "enableReadingTwinProperties": true,
-        "enableC2DDirectMethods": true,
-        "enableC2DMessages": true,
-        "enableTwinPropertiesDesiredChangesNotifications": true
-      }
+        "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
+        "defaultModelId": "dtmi:com:example:thermostat;1",
+        "supportedModels": [
+          {
+            "modelId": "dtmi:com:example:thermostat;1",
+            "modelPath": "./DTDLModels/thermostat.json",
+            "modelType": "Telemetry"
+          }
+        ],
+        "simulationSettings": {
+          "enableTelemetryMessages": true,
+          "telemetryFrecuency": 20,
+          "enableTwinReportedMessages": false,
+          "twinReportedMessagesFrecuency": 60,
+          "enableReadingTwinProperties": true,
+          "enableC2DDirectMethods": true,
+          "enableC2DMessages": true,
+          "enableTwinPropertiesDesiredChangesNotifications": true
+        }
+    },
+    {
+        "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
+        "defaultModelId": "dtmi:com:example:thermostat;1",
+        "supportedModels": [
+          {
+            "modelId": "dtmi:com:example:thermostat;1",
+            "modelPath": "./DTDLModels/thermostat.json",
+            "modelType": "Telemetry"
+          }
+        ],
+        "simulationSettings": {
+          "enableTelemetryMessages": true,
+          "telemetryFrecuency": 20,
+          "enableTwinReportedMessages": false,
+          "twinReportedMessagesFrecuency": 60,
+          "enableReadingTwinProperties": true,
+          "enableC2DDirectMethods": true,
+          "enableC2DMessages": true,
+          "enableTwinPropertiesDesiredChangesNotifications": true
+        }
     }
   ]
 }
-
 ```
 
 
