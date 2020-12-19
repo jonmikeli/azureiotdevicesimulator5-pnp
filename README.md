@@ -58,7 +58,6 @@ In order to keep coherence in the whole solution (Cloud IoT part and the simulat
  - module simulation configuration based on JSON files
  - no specific limitation on the number of modules (only limited by Microsoft Azure IoT Hub constraints)
  - simple and lightweight application, containerizable
- - message templates based on JSON (3 message types by default in this first version)
  - implementation of full IoT flows (C2D, D2C, C2M, M2C) - see below for more details
 
 
