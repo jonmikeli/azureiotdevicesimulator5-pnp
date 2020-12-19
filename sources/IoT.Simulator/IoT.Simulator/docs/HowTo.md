@@ -26,7 +26,7 @@ The new .NET 5 docker images are smaller and offer better performances.
 
 ### Steps to follow
 The Azure IoT Device Simulator needs two basic things before starting:
- - settings (need to be updated with proper connection settings)
+ - settings (do not forget to update the connection string settings)
  - reachable DTDL models
 
  Once those items are ready, a single command allows starting the application.
