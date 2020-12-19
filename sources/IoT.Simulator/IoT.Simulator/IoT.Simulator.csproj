@@ -74,6 +74,12 @@
       <DependentUpon>devicesettings.json</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
     </None>
+    <None Update="modulessettings - Copy.Development.json">
+      <TransformOnBuild>true</TransformOnBuild>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>modulessettings.json</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
     <None Update="modulessettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
