@@ -47,7 +47,7 @@ In order to keep coherence in the whole solution (Cloud IoT part and the simulat
 
 > IOT PLUG AND PLAY VS REGULAR SIMULATOR
 >
-> You can find [here](https://github.com/jonmikeli/azureiotdevicesimulator5) a conventional version of the simulator.
+> You can find [here](https://github.com/jonmikeli/azureiotdevicesimulator5) a conventional version of the simulator (without IoT Plug and Play).
 > The main difference with the IoT Plug and Play version is that it allows to easily handle with complex JSON Schemas and different types of mesages in one single device.
 >
 > _Which one to choose?_
