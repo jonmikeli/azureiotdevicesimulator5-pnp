@@ -11,7 +11,7 @@ This version of the simulator is based on the [regular version of the simulator]
 IoT Plug and Play is meant to facilitate the integration of IoT devices with IoT solutions, trying to imitate the concept of the already known Plug and Play experience.
 
 ## DTDL
-This simulator allows using [DTDL, Digital Twins Definition Language](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) models. These models describe the device capabilities via the next concepts:
+This simulator allows to use [DTDL, Digital Twins Definition Language](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) models. These models describe the device capabilities via the next concepts:
  - components
  - interfaces
  - properties
