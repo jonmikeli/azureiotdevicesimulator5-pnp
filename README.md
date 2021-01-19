@@ -39,7 +39,7 @@ In order to keep coherence in the whole solution (Cloud IoT part and the simulat
 
 ## Technical information
  - .NET 5 (C#)
- - Microsoft Azure IoT SDK (Device capabilities, including IoT Hub modules)
+ - Microsoft Azure IoT SDK (Device capabilities, including IoT Hub modules, a.k.a. module identities)
  - IoT Plug and Play
  - DTDL v2
 
