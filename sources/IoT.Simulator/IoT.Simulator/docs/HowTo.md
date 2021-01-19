@@ -4,7 +4,7 @@
 ## How to use the Azure IoT Device Simulator?
 
 The IoT simulator can easily be containerized in order to simplify its delivery and use.
-Also, .NET 5 includes interesting capabilities to build lighter and/or selfsufficient applications (ex: selfcontained or trim build options).
+Also, .NET 5 includes interesting capabilities to build lighter and/or selfsufficient applications (ex: selfcontained with trim build options).
 
 If you need detailed documentation about what Azure IoT Device Simulator is, you can find additional information at:
  - [Readme](../../../../Readme.md)
