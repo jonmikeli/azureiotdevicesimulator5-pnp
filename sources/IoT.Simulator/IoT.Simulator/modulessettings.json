@@ -13,8 +13,6 @@
     "simulationSettings": {
       "enableTelemetryMessages": true,
       "telemetryFrecuency": 20,
-      "enableErrorMessages": false,
-      "errorFrecuency": 30,
       "enableTwinReportedMessages": false,
       "twinReportedMessagesFrecuency": 60,
       "enableReadingTwinProperties": true,

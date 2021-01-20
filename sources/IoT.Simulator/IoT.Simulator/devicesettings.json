@@ -20,8 +20,6 @@
     "enableModules": false,
     "enableTelemetryMessages": true,
     "telemetryFrecuency": 10,
-    "enableErrorMessages": false,
-    "errorFrecuency": 20,
     "enableTwinReportedMessages": false,
     "twinReportedMessagesFrecuency": 60,
     "enableReadingTwinProperties": false,
