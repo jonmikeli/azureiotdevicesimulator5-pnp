@@ -11,12 +11,6 @@ namespace IoT.Simulator.Settings
         [JsonProperty("telemetryFrecuency")]
         public int TelemetryFrecuency { get; set; }
 
-        [JsonProperty("enableErrorMessages")]
-        public bool EnableErrorMessages { get; set; }
-        [JsonProperty("errorFrecuency")]
-        public int ErrorFrecuency { get; set; }
-
-
         [JsonProperty("enableTwinReportedMessages")]
         public bool EnableTwinReportedMessages { get; set; }
 
