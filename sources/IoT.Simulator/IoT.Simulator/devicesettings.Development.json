@@ -1,6 +1,6 @@
 {
-  "connectionString": "TO BE REPLACED",
-  "defaultModelId": "dtmi:com:example:thermostat;1",
+  "connectionString": "",
+  "defaultModelId": "dtmi:com:jmi:simulator:devicemessages;1",
   "supportedModels": [
     {
       "modelId": "dtmi:com:example:thermostat;1",
@@ -15,15 +15,11 @@
   ],
   "simulationSettings": {
     "enableLatencyTests": false,
-    "latencyTestsFrecuency":25,
+    "latencyTestsFrecuency": 25,
     "enableDevice": true,
     "enableModules": false,
     "enableTelemetryMessages": true,
     "telemetryFrecuency": 10,
-    "enableErrorMessages": false,
-    "errorFrecuency": 20,
-    "enableCommissioningMessages": false,
-    "commissioningFrecuency": 30,
     "enableTwinReportedMessages": false,
     "twinReportedMessagesFrecuency": 60,
     "enableReadingTwinProperties": false,
