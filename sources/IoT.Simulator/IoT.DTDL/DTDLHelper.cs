@@ -99,7 +99,7 @@ namespace IoT.DTDL
             if (dtdlArray == null)
                 throw new ArgumentNullException(nameof(dtdlArray));
 
-            Dictionary<string, DTDLContainer> globalResult = null;
+            Dictionary<string, DTDLContainer> globalResult = new Dictionary<string, DTDLContainer>();
             DTDLContainer itemResult = null;
 
             ModelParser parser = new ModelParser();
@@ -109,7 +109,6 @@ namespace IoT.DTDL
             {
                 try
                 {
-                    globalResult = new Dictionary<string, DTDLContainer>();
                     parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
                  
                     //CONTENT
