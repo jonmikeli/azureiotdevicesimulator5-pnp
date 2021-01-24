@@ -6,7 +6,7 @@ This version of the simulator is based on the [regular version of the simulator]
  - [.Net Core 2.1](https://github.com/jonmikeli/azureiotdevicesimulator)
  - [.Net Core 3.1](https://github.com/jonmikeli/azureiotdevicesimulator3)
 
-Besides the asforementioned IoT Simulator, a version implementing Device Provisioning Service (DPS) features completes the family of simulators.
+Besides the asforementioned IoT Simulator, a version implementing [Device Provisioning Service (DPS) features](https://github.com/jonmikeli/azureiotdevicesimulator5-dps) completes the family of simulators.
 
 *Azure IoT Device Simulator 5 PnP* is the [IoT Plug and Play](https://docs.microsoft.com/en-us/azure/iot-pnp/overview-iot-plug-and-play) version of [Azure IoT Device Simulator 5](https://github.com/jonmikeli/azureiotdevicesimulator5).
 
