@@ -109,6 +109,29 @@ namespace IoT.DTDL
             {
                 try
                 {
+                    //PROCESS THE COMPONENTS
+                    var components = ExtractComponents(new JArray(dtdl));
+                    if (components != null && components.Any())
+                    {
+                        foreach (JObject item in components)
+                        {
+                            var tmpData = await ParseDTDLAndBuildDynamicContentAsync(new JArray(dtdl));
+
+                            if (tmpData != null && tmpData.Any())
+                            {
+                                var dataToAdd = tmpData.Except(globalResult);//TODO: define the proper EqualityComparer
+                                if (dataToAdd != null && dataToAdd.Any())
+                                {
+                                    foreach (var itemToAdd in dataToAdd)
+                                    {
+                                        globalResult.Add(itemToAdd.Key, itemToAdd.Value);
+                                    }
+                                }
+                            }                            
+                        }                        
+                    }
+
+                    //PROCESS THE TYPES OTHER THAN COMPONENTS
                     parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
                  
                     //CONTENT
