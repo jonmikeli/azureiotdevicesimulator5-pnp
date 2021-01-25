@@ -374,7 +374,35 @@ namespace IoT.DTDL
 
             return result;
         }
-        
+
+        private static JArray ExtractComponents(JArray contents)
+        {
+            JArray result = null;
+            var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "component");
+            if (properties != null && properties.Any())
+            {
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in properties)
+                {
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    tmp = new JObject();
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
         private static JProperty AddCreatedProperties(string propertyName, string schemaName, Random random)
         {
             if (random == null)
