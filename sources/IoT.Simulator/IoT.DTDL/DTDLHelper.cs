@@ -123,8 +123,19 @@ namespace IoT.DTDL
                         if (components != null && components.Any())
                         {
                             foreach (JObject item in components)
-                            {
-                                var tmpData = await ParseDTDLAndBuildDynamicContentAsync(new JArray(dtdl));
+                            {                                
+                                JToken dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("@id"));
+
+                                JArray jArrayDTDLModel = null;
+                                if (dtdlComponentModel is JObject)
+                                {
+                                    jArrayDTDLModel = new JArray();
+                                    jArrayDTDLModel.Add(dtdlComponentModel);
+                                }
+                                else if (dtdlComponentModel is JArray)
+                                    jArrayDTDLModel = dtdlComponentModel as JArray;
+
+                                var tmpData = await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);
 
                                 if (tmpData != null && tmpData.Any())
                                 {
@@ -414,27 +425,7 @@ namespace IoT.DTDL
             JArray result = null;
             var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "component");
             if (properties != null && properties.Any())
-            {
-                result = new JArray();
-
-                JObject tmp = null;
-                string tmpPropertyName = string.Empty;
-                JProperty jProperty = null;
-
-                Random random = new Random(DateTime.Now.Millisecond);
-                foreach (var item in properties)
-                {
-                    tmpPropertyName = item["name"].Value<string>();
-
-                    tmp = new JObject();
-                    jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
-
-                    if (jProperty != null)
-                        tmp.Add(jProperty);
-
-                    result.Add(tmp);
-                }
-            }
+                result = JArray.FromObject(properties);
 
             return result;
         }
