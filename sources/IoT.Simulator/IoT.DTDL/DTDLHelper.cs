@@ -124,7 +124,7 @@ namespace IoT.DTDL
                         {
                             foreach (JObject item in components)
                             {                                
-                                JToken dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("@id"));
+                                JToken dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("schema"));
 
                                 JArray jArrayDTDLModel = null;
                                 if (dtdlComponentModel is JObject)
