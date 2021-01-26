@@ -25,7 +25,7 @@ namespace IoT.DTDL
             if (dtdlModel == null)
                 throw new Exception($"No DTDL model with the id {modelId} has been provided at the provided locations.");
 
-            JArray jArrayDTDLModel=null;
+            JArray jArrayDTDLModel = null;
             if (dtdlModel is JObject)
             {
                 jArrayDTDLModel = new JArray();
@@ -38,7 +38,7 @@ namespace IoT.DTDL
             if (data != null && data.Any() && data.ContainsKey(modelId))
                 return data;
             else
-                return null;            
+                return null;
         }
 
         public static async Task<Dictionary<string, DTDLCommandContainer>> GetModelsAndExtratCommandsAsync(string modelId, string modelPath)
@@ -105,35 +105,46 @@ namespace IoT.DTDL
             ModelParser parser = new ModelParser();
             IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = null;
 
+            JArray componentLevelContents = null;
+
             foreach (JObject dtdl in dtdlArray)
             {
                 try
                 {
                     //PROCESS THE COMPONENTS
-                    var components = ExtractComponents(new JArray(dtdl));
-                    if (components != null && components.Any())
-                    {
-                        foreach (JObject item in components)
-                        {
-                            var tmpData = await ParseDTDLAndBuildDynamicContentAsync(new JArray(dtdl));
+                    if (!dtdl.ContainsKey("contents"))
+                        throw new Exception("THe DTDL model does not contain any 'contents' property.");
 
-                            if (tmpData != null && tmpData.Any())
+                    componentLevelContents = (JArray)dtdl["contents"];
+
+                    if (componentLevelContents != null && componentLevelContents.Any())
+                    {
+                        var components = ExtractComponents(componentLevelContents);
+                        if (components != null && components.Any())
+                        {
+                            foreach (JObject item in components)
                             {
-                                var dataToAdd = tmpData.Except(globalResult);//TODO: define the proper EqualityComparer
-                                if (dataToAdd != null && dataToAdd.Any())
+                                var tmpData = await ParseDTDLAndBuildDynamicContentAsync(new JArray(dtdl));
+
+                                if (tmpData != null && tmpData.Any())
                                 {
-                                    foreach (var itemToAdd in dataToAdd)
+                                    var dataToAdd = tmpData.Except(globalResult);//TODO: define the proper EqualityComparer
+                                    if (dataToAdd != null && dataToAdd.Any())
                                     {
-                                        globalResult.Add(itemToAdd.Key, itemToAdd.Value);
+                                        foreach (var itemToAdd in dataToAdd)
+                                        {
+                                            globalResult.Add(itemToAdd.Key, itemToAdd.Value);
+                                        }
                                     }
                                 }
-                            }                            
-                        }                        
+                            }
+                        }
+                        componentLevelContents = null;
                     }
 
                     //PROCESS THE TYPES OTHER THAN COMPONENTS
                     parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
-                 
+
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
                         throw new Exception("The DTDL model does not contain any 'content' property.");
@@ -278,7 +289,7 @@ namespace IoT.DTDL
         private static JArray ExtractWritableProperties(JArray contents)
         {
             JArray result = null;
-            var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "property" && i.Contains("writable") &&  i["writable"].Value<string>().ToLower() == "true");
+            var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "property" && i.Contains("writable") && i["writable"].Value<string>().ToLower() == "true");
             if (properties != null && properties.Any())
             {
                 result = new JArray();
@@ -317,7 +328,7 @@ namespace IoT.DTDL
                 Random random = new Random(DateTime.Now.Millisecond);
                 foreach (var item in properties)
                 {
-                    tmpPropertyName = item["name"].Value<string>();                 
+                    tmpPropertyName = item["name"].Value<string>();
 
                     tmp = new JObject();
 
@@ -341,7 +352,7 @@ namespace IoT.DTDL
             {
                 result = new JArray();
 
-                
+
                 string tmpCommandName = string.Empty;
                 JObject tmpRequest = null;
                 JObject tmpResponse = null;
@@ -357,10 +368,10 @@ namespace IoT.DTDL
                 foreach (var item in commands)
                 {
                     tmpCreatedCommand = new JObject();
-                    tmpCreatedRequestAndResponseContainer = new JObject();                    
+                    tmpCreatedRequestAndResponseContainer = new JObject();
                     //command
                     tmpCommandName = item["name"].Value<string>();
-                    
+
                     //request
                     tmpRequest = (JObject)item["request"];
                     if (tmpRequest != null)
@@ -380,7 +391,7 @@ namespace IoT.DTDL
                     if (tmpResponse != null)
                     {
                         tmpCreatedResponse = new JObject();
-                        tmpResponseName = tmpResponse["name"].Value<string>();                        
+                        tmpResponseName = tmpResponse["name"].Value<string>();
                         JProperty jProperty = AddCreatedProperties(tmpResponseName, tmpResponse["schema"].Value<string>(), random);
 
                         if (jProperty != null)
@@ -404,8 +415,11 @@ namespace IoT.DTDL
             var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "component");
             if (properties != null && properties.Any())
             {
+                result = new JArray();
+
                 JObject tmp = null;
                 string tmpPropertyName = string.Empty;
+                JProperty jProperty = null;
 
                 Random random = new Random(DateTime.Now.Millisecond);
                 foreach (var item in properties)
@@ -413,8 +427,7 @@ namespace IoT.DTDL
                     tmpPropertyName = item["name"].Value<string>();
 
                     tmp = new JObject();
-
-                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+                    jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
 
                     if (jProperty != null)
                         tmp.Add(jProperty);
@@ -431,7 +444,7 @@ namespace IoT.DTDL
             if (random == null)
                 throw new ArgumentNullException(nameof(random));
 
-            JProperty jProperty = null;            
+            JProperty jProperty = null;
 
             switch (schemaName.ToLower())
             {
