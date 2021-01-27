@@ -102,7 +102,7 @@ namespace IoT.DTDL
             Dictionary<string, DTDLContainer> globalResult = new Dictionary<string, DTDLContainer>();
             DTDLContainer itemResult = null;
 
-            ModelParser parser = new ModelParser();           
+            ModelParser parser = new ModelParser();
             JArray componentLevelContents = null;
 
             //PROCESS THE TYPES OTHER THAN COMPONENTS
@@ -111,7 +111,7 @@ namespace IoT.DTDL
             foreach (JObject dtdl in dtdlArray)
             {
                 try
-                {                    
+                {
                     //CONTENT (COMPONENTSS AND OTHER)
                     if (!dtdl.ContainsKey("contents"))
                         throw new Exception("The DTDL model does not contain any 'content' property.");
@@ -124,7 +124,7 @@ namespace IoT.DTDL
                         if (components != null && components.Any())
                         {
                             foreach (JObject item in components)
-                            {                                
+                            {
                                 JToken dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("schema"));
 
                                 JArray jArrayDTDLModel = null;
@@ -171,7 +171,10 @@ namespace IoT.DTDL
                 finally
                 {
                     if (itemResult != null)
-                        globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
+                    {
+                        if (!globalResult.ContainsKey(dtdl["@id"].Value<string>()))
+                            globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
+                    }
 
                     itemResult = null;
                 }
