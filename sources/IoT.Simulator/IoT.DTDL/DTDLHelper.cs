@@ -184,6 +184,8 @@ namespace IoT.DTDL
             return globalResult;
         }
 
+
+        //TODO: review this according to the changes to the previous method and add Component oriented capabilities.
         public static async Task<Dictionary<string, DTDLCommandContainer>> ParseDTDLAndGetCommandsAsync(JArray dtdlArray)
         {
             if (dtdlArray == null)
