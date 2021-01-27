@@ -107,13 +107,16 @@ namespace IoT.DTDL
 
             JArray componentLevelContents = null;
 
+            //PROCESS THE TYPES OTHER THAN COMPONENTS
+            parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+
             foreach (JObject dtdl in dtdlArray)
             {
                 try
-                {
-                    //PROCESS THE COMPONENTS
+                {                    
+                    //CONTENT (COMPONENTSS AND OTHER)
                     if (!dtdl.ContainsKey("contents"))
-                        throw new Exception("THe DTDL model does not contain any 'contents' property.");
+                        throw new Exception("The DTDL model does not contain any 'content' property.");
 
                     componentLevelContents = (JArray)dtdl["contents"];
 
@@ -152,13 +155,6 @@ namespace IoT.DTDL
                         }
                         componentLevelContents = null;
                     }
-
-                    //PROCESS THE TYPES OTHER THAN COMPONENTS
-                    parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
-
-                    //CONTENT
-                    if (!dtdl.ContainsKey("contents"))
-                        throw new Exception("The DTDL model does not contain any 'content' property.");
 
                     //Look for telemetries (JSON)
                     itemResult = BuildDynamicContent(dtdl);
