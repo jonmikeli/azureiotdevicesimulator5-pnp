@@ -154,7 +154,7 @@ namespace IoT.DTDL
                         componentLevelContents = null;
                     }
 
-                    //Look for telemetries (JSON)
+                    //ALL EXCEPT COMPONENTS
                     itemResult = BuildDynamicContent(dtdl);
                 }
                 catch (ParsingException pex)
