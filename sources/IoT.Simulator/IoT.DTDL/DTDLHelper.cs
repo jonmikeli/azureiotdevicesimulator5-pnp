@@ -102,13 +102,11 @@ namespace IoT.DTDL
             Dictionary<string, DTDLContainer> globalResult = new Dictionary<string, DTDLContainer>();
             DTDLContainer itemResult = null;
 
-            ModelParser parser = new ModelParser();
-            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = null;
-
+            ModelParser parser = new ModelParser();           
             JArray componentLevelContents = null;
 
             //PROCESS THE TYPES OTHER THAN COMPONENTS
-            parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
 
             foreach (JObject dtdl in dtdlArray)
             {
