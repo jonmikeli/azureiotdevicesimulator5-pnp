@@ -156,11 +156,13 @@ namespace IoT.DTDL
                 var components = ExtractComponents(componentLevelContents);
                 if (components != null && components.Any())
                 {
+                    JToken dtdlComponentModel = null;
+                    JArray jArrayDTDLModel = null;
+
                     foreach (JObject item in components)
                     {
-                        JToken dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("schema"));
-
-                        JArray jArrayDTDLModel = null;
+                        dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("schema"));
+                        
                         if (dtdlComponentModel is JObject)
                         {
                             jArrayDTDLModel = new JArray();
@@ -196,18 +198,20 @@ namespace IoT.DTDL
             if (dtdlArray == null)
                 throw new ArgumentNullException(nameof(dtdlArray));
 
-            Dictionary<string, DTDLCommandContainer> globalResult = null;
             DTDLCommandContainer itemResult = null;
 
-            ModelParser parser = new ModelParser();
-            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = null;
+            ModelParser parser = new ModelParser();            
             JArray contents = null;
+
+            Dictionary<string, DTDLCommandContainer>  globalResult = new Dictionary<string, DTDLCommandContainer>();
+            IReadOnlyDictionary<Dtmi, DTEntityInfo>  parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+
             foreach (JObject dtdl in dtdlArray)
             {
                 try
-                {
-                    globalResult = new Dictionary<string, DTDLCommandContainer>();
-                    parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+                {                    
+                    //PROCESS COMPONENTS
+                    await ProcessComponents(dtdlArray, dtdl, globalResult);
 
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
