@@ -111,7 +111,7 @@ namespace IoT.DTDL
                 try
                 {
                     //PROCESS COMPONENTS
-                    await ProcessComponents(dtdlArray, dtdl, globalResult);
+                    await ProcessComponentsWithDynamicContent(dtdlArray, dtdl, globalResult);
 
                     //ALL EXCEPT COMPONENTS
                     itemResult = BuildDynamicContent(dtdl);
@@ -143,7 +143,7 @@ namespace IoT.DTDL
             return globalResult;
         }
 
-        private static async Task ProcessComponents(JArray dtdlArray, JObject dtdl, Dictionary<string, DTDLContainer> globalResult)
+        private static async Task ProcessComponentsWithDynamicContent(JArray dtdlArray, JObject dtdl, Dictionary<string, DTDLContainer> globalResult)
         {
             //CONTENT (COMPONENTSS AND OTHER)
             if (!dtdl.ContainsKey("contents"))
@@ -188,7 +188,53 @@ namespace IoT.DTDL
                 }
                 componentLevelContents = null;
             }
+        }
 
+        private static async Task ProcessComponentsWithCommands(JArray dtdlArray, JObject dtdl, Dictionary<string, DTDLCommandContainer> globalResult)
+        {
+            //CONTENT (COMPONENTSS AND OTHER)
+            if (!dtdl.ContainsKey("contents"))
+                throw new Exception("The DTDL model does not contain any 'content' property.");
+
+            JArray componentLevelContents = (JArray)dtdl["contents"];
+
+            if (componentLevelContents != null && componentLevelContents.Any())
+            {
+                var components = ExtractComponents(componentLevelContents);
+                if (components != null && components.Any())
+                {
+                    JToken dtdlComponentModel = null;
+                    JArray jArrayDTDLModel = null;
+
+                    foreach (JObject item in components)
+                    {
+                        dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("schema"));
+
+                        if (dtdlComponentModel is JObject)
+                        {
+                            jArrayDTDLModel = new JArray();
+                            jArrayDTDLModel.Add(dtdlComponentModel);
+                        }
+                        else if (dtdlComponentModel is JArray)
+                            jArrayDTDLModel = dtdlComponentModel as JArray;
+
+                        var tmpData = await ParseDTDLAndGetCommandsAsync(jArrayDTDLModel);
+
+                        if (tmpData != null && tmpData.Any())
+                        {
+                            var dataToAdd = tmpData.Except(globalResult);//TODO: define the proper EqualityComparer
+                            if (dataToAdd != null && dataToAdd.Any())
+                            {
+                                foreach (var itemToAdd in dataToAdd)
+                                {
+                                    globalResult.Add(itemToAdd.Key, itemToAdd.Value);
+                                }
+                            }
+                        }
+                    }
+                }
+                componentLevelContents = null;
+            }
         }
 
 
@@ -211,7 +257,7 @@ namespace IoT.DTDL
                 try
                 {                    
                     //PROCESS COMPONENTS
-                    await ProcessComponents(dtdlArray, dtdl, globalResult);
+                    await ProcessComponentsWithCommands(dtdlArray, dtdl, globalResult);
 
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
