@@ -112,47 +112,8 @@ namespace IoT.DTDL
             {
                 try
                 {
-                    //CONTENT (COMPONENTSS AND OTHER)
-                    if (!dtdl.ContainsKey("contents"))
-                        throw new Exception("The DTDL model does not contain any 'content' property.");
-
-                    componentLevelContents = (JArray)dtdl["contents"];
-
-                    if (componentLevelContents != null && componentLevelContents.Any())
-                    {
-                        var components = ExtractComponents(componentLevelContents);
-                        if (components != null && components.Any())
-                        {
-                            foreach (JObject item in components)
-                            {
-                                JToken dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("schema"));
-
-                                JArray jArrayDTDLModel = null;
-                                if (dtdlComponentModel is JObject)
-                                {
-                                    jArrayDTDLModel = new JArray();
-                                    jArrayDTDLModel.Add(dtdlComponentModel);
-                                }
-                                else if (dtdlComponentModel is JArray)
-                                    jArrayDTDLModel = dtdlComponentModel as JArray;
-
-                                var tmpData = await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);
-
-                                if (tmpData != null && tmpData.Any())
-                                {
-                                    var dataToAdd = tmpData.Except(globalResult);//TODO: define the proper EqualityComparer
-                                    if (dataToAdd != null && dataToAdd.Any())
-                                    {
-                                        foreach (var itemToAdd in dataToAdd)
-                                        {
-                                            globalResult.Add(itemToAdd.Key, itemToAdd.Value);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        componentLevelContents = null;
-                    }
+                    //PROCESS COMPONENTS
+                    await ProcessComponents(dtdlArray, dtdl, globalResult);
 
                     //ALL EXCEPT COMPONENTS
                     itemResult = BuildDynamicContent(dtdl);
@@ -182,6 +143,52 @@ namespace IoT.DTDL
 
 
             return globalResult;
+        }
+
+        private static async Task ProcessComponents(JArray dtdlArray, JObject dtdl, Dictionary<string, DTDLContainer> globalResult)
+        {
+            //CONTENT (COMPONENTSS AND OTHER)
+            if (!dtdl.ContainsKey("contents"))
+                throw new Exception("The DTDL model does not contain any 'content' property.");
+
+            JArray componentLevelContents = (JArray)dtdl["contents"];
+
+            if (componentLevelContents != null && componentLevelContents.Any())
+            {
+                var components = ExtractComponents(componentLevelContents);
+                if (components != null && components.Any())
+                {
+                    foreach (JObject item in components)
+                    {
+                        JToken dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("schema"));
+
+                        JArray jArrayDTDLModel = null;
+                        if (dtdlComponentModel is JObject)
+                        {
+                            jArrayDTDLModel = new JArray();
+                            jArrayDTDLModel.Add(dtdlComponentModel);
+                        }
+                        else if (dtdlComponentModel is JArray)
+                            jArrayDTDLModel = dtdlComponentModel as JArray;
+
+                        var tmpData = await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);
+
+                        if (tmpData != null && tmpData.Any())
+                        {
+                            var dataToAdd = tmpData.Except(globalResult);//TODO: define the proper EqualityComparer
+                            if (dataToAdd != null && dataToAdd.Any())
+                            {
+                                foreach (var itemToAdd in dataToAdd)
+                                {
+                                    globalResult.Add(itemToAdd.Key, itemToAdd.Value);
+                                }
+                            }
+                        }
+                    }
+                }
+                componentLevelContents = null;
+            }
+
         }
 
 
