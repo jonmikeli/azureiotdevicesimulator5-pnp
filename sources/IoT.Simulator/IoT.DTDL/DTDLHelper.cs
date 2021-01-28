@@ -141,8 +141,63 @@ namespace IoT.DTDL
 
 
             return globalResult;
-        }
+        }        
 
+        public static async Task<Dictionary<string, DTDLCommandContainer>> ParseDTDLAndGetCommandsAsync(JArray dtdlArray)
+        {
+            if (dtdlArray == null)
+                throw new ArgumentNullException(nameof(dtdlArray));
+
+            DTDLCommandContainer itemResult = null;
+
+            ModelParser parser = new ModelParser();            
+            JArray contents = null;
+
+            Dictionary<string, DTDLCommandContainer>  globalResult = new Dictionary<string, DTDLCommandContainer>();
+            IReadOnlyDictionary<Dtmi, DTEntityInfo>  parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+
+            foreach (JObject dtdl in dtdlArray)
+            {
+                try
+                {                    
+                    //PROCESS COMPONENTS
+                    await ProcessComponentsWithCommands(dtdlArray, dtdl, globalResult);
+
+                    //CONTENT
+                    if (!dtdl.ContainsKey("contents"))
+                        throw new Exception("The DTDL model does not contain any 'content' property.");
+
+                    itemResult = new DTDLCommandContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };
+
+                    contents = (JArray)dtdl["contents"];
+                    itemResult.Commands = ExtractCommands(contents);
+                }
+                catch (ParsingException pex)
+                {
+                    if (itemResult == null)
+                        itemResult = new DTDLCommandContainer();
+
+                    itemResult.ParsingErrors = pex.Errors.Select(i => i.Message);
+                }
+                catch (Exception ex)
+                {
+                    itemResult = null;
+                }
+                finally
+                {
+                    if (itemResult != null)
+                        globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
+
+                    itemResult = null;
+                }
+            }
+
+
+            return globalResult;
+        }
+        #endregion
+
+        #region Private method(s)
         private static async Task ProcessComponentsWithDynamicContent(JArray dtdlArray, JObject dtdl, Dictionary<string, DTDLContainer> globalResult)
         {
             //CONTENT (COMPONENTSS AND OTHER)
@@ -162,7 +217,7 @@ namespace IoT.DTDL
                     foreach (JObject item in components)
                     {
                         dtdlComponentModel = dtdlArray.Single(i => i["@id"].Value<string>().ToLower() == item.Value<string>("schema"));
-                        
+
                         if (dtdlComponentModel is JObject)
                         {
                             jArrayDTDLModel = new JArray();
@@ -236,64 +291,6 @@ namespace IoT.DTDL
                 componentLevelContents = null;
             }
         }
-
-
-        //TODO: review this according to the changes to the previous method and add Component oriented capabilities.
-        public static async Task<Dictionary<string, DTDLCommandContainer>> ParseDTDLAndGetCommandsAsync(JArray dtdlArray)
-        {
-            if (dtdlArray == null)
-                throw new ArgumentNullException(nameof(dtdlArray));
-
-            DTDLCommandContainer itemResult = null;
-
-            ModelParser parser = new ModelParser();            
-            JArray contents = null;
-
-            Dictionary<string, DTDLCommandContainer>  globalResult = new Dictionary<string, DTDLCommandContainer>();
-            IReadOnlyDictionary<Dtmi, DTEntityInfo>  parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
-
-            foreach (JObject dtdl in dtdlArray)
-            {
-                try
-                {                    
-                    //PROCESS COMPONENTS
-                    await ProcessComponentsWithCommands(dtdlArray, dtdl, globalResult);
-
-                    //CONTENT
-                    if (!dtdl.ContainsKey("contents"))
-                        throw new Exception("The DTDL model does not contain any 'content' property.");
-
-                    itemResult = new DTDLCommandContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };
-
-                    contents = (JArray)dtdl["contents"];
-                    itemResult.Commands = ExtractCommands(contents);
-                }
-                catch (ParsingException pex)
-                {
-                    if (itemResult == null)
-                        itemResult = new DTDLCommandContainer();
-
-                    itemResult.ParsingErrors = pex.Errors.Select(i => i.Message);
-                }
-                catch (Exception ex)
-                {
-                    itemResult = null;
-                }
-                finally
-                {
-                    if (itemResult != null)
-                        globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
-
-                    itemResult = null;
-                }
-            }
-
-
-            return globalResult;
-        }
-        #endregion
-
-        #region Private method(s)
         private static DTDLContainer BuildDynamicContent(JObject dtdl)
         {
             if (dtdl == null)
