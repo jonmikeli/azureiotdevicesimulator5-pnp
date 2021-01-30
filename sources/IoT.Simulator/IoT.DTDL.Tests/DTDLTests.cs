@@ -80,6 +80,7 @@ namespace IoT.DTDL.Tests
         }
 
         #region Components
+        [TestCategory("Components")]
         [TestMethod()]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_ManyTelemetries_Components1_OK()
         {
@@ -91,6 +92,7 @@ namespace IoT.DTDL.Tests
             Assert.IsNotNull(modelContainer);
         }
 
+        [TestCategory("Components")]
         [TestMethod()]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_ManyTelemetries_Components2_OK()
         {
