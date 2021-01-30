@@ -9,6 +9,7 @@ namespace IoT.DTDL.Tests
     public class DTDLTests
     {
         [TestMethod()]
+        [TestCategory("Regular")]
         public async Task GetModelsAndBuildDynamicContentAsync_Thermostat_OK()
         {
             string dtdlModelPath = @"./Tests/thermostat.json";
@@ -24,6 +25,7 @@ namespace IoT.DTDL.Tests
         }
 
         [TestMethod()]
+        [TestCategory("Regular")]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic2_OneTelemetry_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic2.json";
@@ -39,6 +41,7 @@ namespace IoT.DTDL.Tests
         }
 
         [TestMethod()]
+        [TestCategory("Regular")]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic2_OneTelemetry_Errors_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic2-errors.json";
@@ -54,6 +57,7 @@ namespace IoT.DTDL.Tests
         }
 
         [TestMethod()]
+        [TestCategory("Regular")]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_ManyTelemetries_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic3.json";
@@ -69,6 +73,7 @@ namespace IoT.DTDL.Tests
         }
 
         [TestMethod()]
+        [TestCategory("Regular")]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_ManyTelemetries_BadModelId_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic3.json";
@@ -79,9 +84,9 @@ namespace IoT.DTDL.Tests
             Assert.IsNull(modelContainer);
         }
 
-        #region Components
-        [TestCategory("Components")]
+        #region Components       
         [TestMethod()]
+        [TestCategory("Components")]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_ManyTelemetries_Components1_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic3.json";
@@ -91,9 +96,9 @@ namespace IoT.DTDL.Tests
 
             Assert.IsNotNull(modelContainer);
         }
-
-        [TestCategory("Components")]
+        
         [TestMethod()]
+        [TestCategory("Components")]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_ManyTelemetries_Components2_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic3.json";
