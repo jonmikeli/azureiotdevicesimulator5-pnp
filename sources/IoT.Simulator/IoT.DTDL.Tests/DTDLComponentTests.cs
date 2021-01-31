@@ -14,7 +14,7 @@ namespace IoT.DTDL.Tests
         [TestCategory("Components")]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_Components_Telemetries_OK()
         {
-            string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic3.json";
+            string dtdlModelPath = @"./Tests/Components/jmi.simulator.pnp.model.telemetries.readableproperties.json";
             string modelId = "dtmi:com:jmi:simulator5;1";
 
             var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
@@ -98,7 +98,7 @@ namespace IoT.DTDL.Tests
         [TestCategory("Components")]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_Components_Telemetries_WritableProperties_OK()
         {
-            string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic3.json";
+            string dtdlModelPath = @"./Tests/Components/jmi.simulator.pnp.model.telemetries.writableproperties.json";
             string modelId = "dtmi:com:jmi:simulator5;1";
 
             var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
