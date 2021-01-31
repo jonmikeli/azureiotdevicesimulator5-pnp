@@ -18,6 +18,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Tests\Components\jmi.simulator.pnp.model.full.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\Components\jmi.simulator.pnp.model.commands.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\Components\jmi.simulator.pnp.model.telemetries.writableproperties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\Components\jmi.simulator.pnp.model.writableproperties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\Components\jmi.simulator.pnp.model.readableproperties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\Components\jmi.simulator.pnp.model.telemetries.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Tests\Components\jmi.simulator.pnp.model.telemetries.readableproperties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Tests\jmi.simulator.pnp.model.generic3.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
