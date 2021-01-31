@@ -1,6 +1,6 @@
 {
-  "connectionString": "",
-  "defaultModelId": "dtmi:com:jmi:simulator:devicemessages;1",
+  "connectionString": "HostName=iothubtestsedgepnp.azure-devices.net;DeviceId=simulator5;SharedAccessKey=9PUl2lovvijycVlibTPTbp5lemiI1LX522HbjB587cc=",
+  "defaultModelId": "dtmi:com:jmi:simulator5;1",
   "supportedModels": [
     {
       "modelId": "dtmi:com:example:thermostat;1",
@@ -9,6 +9,11 @@
     },
     {
       "modelId": "dtmi:com:jmi:simulator:devicemessages;1",
+      "modelPath": "./DTDLModels/jmi.simulator.pnp.model.generic3.json",
+      "modelType": "Telemetry"
+    },
+    {
+      "modelId": "dtmi:com:jmi:simulator5;1",
       "modelPath": "./DTDLModels/jmi.simulator.pnp.model.generic3.json",
       "modelType": "Telemetry"
     }

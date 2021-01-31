@@ -1,7 +1,7 @@
 {
   "modules": [
     {
-      "connectionString": "",
+      "connectionString": "HostName=iothubtestsedgepnp.azure-devices.net;DeviceId=simulator5;ModuleId=moduleTest1;SharedAccessKey=W6212aO8KTpV/IsMPe8ClrlXmXyWxGW/csz5YfaUV0U=",
       "defaultModelId": "dtmi:com:example:thermostat;1",
       "supportedModels": [
         {
