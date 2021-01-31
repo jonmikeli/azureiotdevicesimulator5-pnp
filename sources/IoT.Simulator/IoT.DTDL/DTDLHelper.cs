@@ -296,8 +296,7 @@ namespace IoT.DTDL
             if (dtdl == null)
                 throw new ArgumentNullException(nameof(dtdl));
 
-            DTDLContainer result = new DTDLContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };
-            result.DTDLGeneratedData = new DTDLGeneratedData();
+            DTDLContainer result = new DTDLContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };            
 
             //CONTENT
             if (!dtdl.ContainsKey("contents"))
@@ -306,14 +305,42 @@ namespace IoT.DTDL
             JArray contents = (JArray)dtdl["contents"];
 
             //Look for telemetries (JSON)
-            result.DTDLGeneratedData.Telemetries = ExtractTelemetries(contents);
+            JArray telemetries = ExtractTelemetries(contents);
+            if (telemetries != null && telemetries.Any())
+            {
+                if (result.DTDLGeneratedData == null)
+                    result.DTDLGeneratedData = new DTDLGeneratedData();
+
+                result.DTDLGeneratedData.Telemetries = telemetries;
+            }
 
             //Look for properties (JSON)
-            result.DTDLGeneratedData.ReadableProperties = ExtractReadableProperties(contents);
-            result.DTDLGeneratedData.WritableProperties = ExtractWritableProperties(contents);
+            JArray readableProperties = ExtractReadableProperties(contents);
+            if (readableProperties != null && readableProperties.Any())
+            {
+                if (result.DTDLGeneratedData == null)
+                    result.DTDLGeneratedData = new DTDLGeneratedData();
+
+                result.DTDLGeneratedData.ReadableProperties = readableProperties;
+            }
+
+            JArray writableProperties = ExtractWritableProperties(contents);
+            if (writableProperties != null && writableProperties.Any())
+            {
+                if (result.DTDLGeneratedData == null)
+                    result.DTDLGeneratedData = new DTDLGeneratedData();
+
+                result.DTDLGeneratedData.WritableProperties = writableProperties;
+            }
 
             //Commands
-            result.DTDLGeneratedData.Commands = ExtractCommands(contents);
+            JArray commands = ExtractCommands(contents);
+            if (commands != null && commands.Any())
+            {
+                if (result.DTDLGeneratedData == null)
+                    result.DTDLGeneratedData = new DTDLGeneratedData();
+                result.DTDLGeneratedData.Commands = commands;
+            }
 
             return result;
         }
