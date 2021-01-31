@@ -25,45 +25,15 @@
     "contents": [
       {
         "@type": "Property",
-        "name": "name",
-        "schema": "string"        
-      },
-      {
-        "@type": "Property",
-        "name": "serialNumber",
-        "schema": "string"
-      },
-      {
-        "@type": "Property",
         "name": "latitude",
         "schema": "double",
-        "writable": true
+        "writable":  true
       },
       {
         "@type": "Property",
         "name": "longitude",
         "schema": "double",
         "writable": true
-      },
-      {
-        "@type": "Property",
-        "name": "manufacturer",
-        "schema": "string"
-      },
-      {
-        "@type": "Property",
-        "name": "manufacturerContact",
-        "schema": "string"
-      },
-      {
-        "@type": "Property",
-        "name": "firmwareVersion",
-        "schema": "string"
-      },
-      {
-        "@type": "Property",
-        "name": "firmwareLastUpdate",
-        "schema": "dateTime"
       }
     ]
   },
