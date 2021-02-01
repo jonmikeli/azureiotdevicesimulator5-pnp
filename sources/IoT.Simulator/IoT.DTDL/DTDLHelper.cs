@@ -408,7 +408,16 @@ namespace IoT.DTDL
         private static JArray ExtractReadableProperties(JArray contents)
         {
             JArray result = null;
-            var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "property" && (!i.Contains("writable") | (i.Contains("writable") && i["writable"].Value<string>().ToLower() == "false")));
+            var properties = contents.Where(
+                i => 
+                    i["@type"].Value<string>().ToLower() == "property" 
+                    && 
+                    (
+                        !i.Contains("writable") 
+                        ||
+                        (i.Contains("writable") && !i["writable"].Value<bool>())
+                    )
+                );
             if (properties != null && properties.Any())
             {
                 result = new JArray();
