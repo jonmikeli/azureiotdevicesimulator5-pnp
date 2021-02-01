@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Azure.DigitalTwins.Parser;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,6 +43,7 @@ namespace IoT.DTDL.Tests
 
         [TestMethod()]
         [TestCategory("Regular")]
+        [ExpectedException(typeof(ParsingException))]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic2_OneTelemetry_Errors_OK()
         {
             string dtdlModelPath = @"./Tests/jmi.simulator.pnp.model.generic2-errors.json";
