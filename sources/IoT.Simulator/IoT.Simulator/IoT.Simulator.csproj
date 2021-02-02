@@ -76,6 +76,9 @@
       <DependentUpon>devicesettings.json</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
     </None>
+    <None Update="DTDLModels\jmi.simulator.pnp.model.generic4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="modulessettings - Copy.Development.json">
       <TransformOnBuild>true</TransformOnBuild>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
