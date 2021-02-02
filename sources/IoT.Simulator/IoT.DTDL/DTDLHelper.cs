@@ -148,28 +148,28 @@ namespace IoT.DTDL
             if (dtdlArray == null)
                 throw new ArgumentNullException(nameof(dtdlArray));
 
+            Dictionary<string, DTDLCommandContainer> globalResult = new Dictionary<string, DTDLCommandContainer>();
             DTDLCommandContainer itemResult = null;
-
-            ModelParser parser = new ModelParser();            
+            
+            ModelParser parser = new ModelParser();
             JArray contents = null;
 
-            Dictionary<string, DTDLCommandContainer>  globalResult = new Dictionary<string, DTDLCommandContainer>();
-            IReadOnlyDictionary<Dtmi, DTEntityInfo>  parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
 
             foreach (JObject dtdl in dtdlArray)
             {
                 try
-                {                    
+                {
                     //PROCESS COMPONENTS
                     await ProcessComponentsWithCommands(dtdlArray, dtdl, globalResult);
-
+                    
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
                         throw new Exception("The DTDL model does not contain any 'content' property.");
 
-                    itemResult = new DTDLCommandContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };
-
                     contents = (JArray)dtdl["contents"];
+
+                    itemResult = new DTDLCommandContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };                    
                     itemResult.Commands = ExtractCommands(contents);
                 }
                 catch (ParsingException pex)
@@ -186,7 +186,10 @@ namespace IoT.DTDL
                 finally
                 {
                     if (itemResult != null)
-                        globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
+                    {
+                        if (!globalResult.ContainsKey(dtdl["@id"].Value<string>()))
+                            globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
+                    }
 
                     itemResult = null;
                 }
