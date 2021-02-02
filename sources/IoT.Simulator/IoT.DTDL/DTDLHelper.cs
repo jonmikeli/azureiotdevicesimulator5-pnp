@@ -185,7 +185,7 @@ namespace IoT.DTDL
                 }
                 finally
                 {
-                    if (itemResult != null)
+                    if (itemResult != null && itemResult.Commands != null)
                     {
                         if (!globalResult.ContainsKey(dtdl["@id"].Value<string>()))
                             globalResult.Add(dtdl["@id"].Value<string>(), itemResult);
@@ -466,7 +466,6 @@ namespace IoT.DTDL
             if (commands != null && commands.Any())
             {
                 result = new JArray();
-
 
                 string tmpCommandName = string.Empty;
                 JObject tmpRequest = null;
