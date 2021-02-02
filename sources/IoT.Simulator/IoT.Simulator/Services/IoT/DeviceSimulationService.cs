@@ -639,7 +639,7 @@ namespace IoT.Simulator.Services
 
             var data = Encoding.UTF8.GetString(methodRequest.Data);
 
-            _logger.LogDebug($"{logPrefix}::DTDL Command called: {data}.");
+            _logger.LogDebug($"{logPrefix}::DTDL Command called: {methodRequest.Name} with payload {methodRequest.DataAsJson}.");
 
             if (commandContext != null && commandContext is DTDLCommandHandlerContext)
             {
