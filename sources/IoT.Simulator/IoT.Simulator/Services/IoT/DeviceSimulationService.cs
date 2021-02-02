@@ -396,11 +396,11 @@ namespace IoT.Simulator.Services
                 await _deviceClient.SetMethodDefaultHandlerAsync(DefaultC2DMethodHandler, null);
                 _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD Default handler registered.");
 
-                //ADD DTDL COMMANDS
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL command handlers.");
+                //ADD DTDL COMMANDS                
                 var modelWithCommands = await _dtdlCommandService.GetCommandsAsync(_deviceSettings.DefaultModelId, _defaultModel.ModelPath);
                 if (modelWithCommands != null && modelWithCommands.Any())
                 {
+                    _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD DTDL command handlers.");
                     foreach (var model in modelWithCommands)
                     {
                         if (model.Value != null && model.Value.Commands != null && model.Value.Commands.Count > 0)
