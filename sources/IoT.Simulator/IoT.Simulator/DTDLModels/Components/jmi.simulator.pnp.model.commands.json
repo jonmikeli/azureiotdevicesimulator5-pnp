@@ -1,0 +1,39 @@
+[
+  {
+    "@id": "dtmi:com:jmi:simulator5;1",
+    "@type": "Interface",
+    "@context": "dtmi:dtdl:context;2",
+    "displayName": "Simulator",
+    "contents": [
+      {
+        "@type": "Component",
+        "name": "deviceInteractions",
+        "schema": "dtmi:com:jmi:simulator:deviceinteractions;1"
+      }
+    ]
+  },
+  {
+    "@id": "dtmi:com:jmi:simulator:deviceinteractions;1",
+    "@type": "Interface",
+    "@context": "dtmi:dtdl:context;2",
+    "displayName": "Device Interactions",
+    "contents": [
+      {
+        "@type": "Command",
+        "name": "reboot",
+        "request": {
+          "name": "delay",
+          "schema": "integer"
+        }
+      },
+      {
+        "@type": "Command",
+        "name": "sayhello",
+        "request": {
+          "name": "name",
+          "schema": "string"
+        }
+      }
+    ]
+  }
+]

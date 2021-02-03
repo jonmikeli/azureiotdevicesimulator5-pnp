@@ -1,0 +1,35 @@
+[
+  {
+    "@id": "dtmi:com:jmi:simulator5;1",
+    "@type": "Interface",
+    "@context": "dtmi:dtdl:context;2",
+    "displayName": "Simulator",
+    "contents": [
+      {
+        "@type": "Component",
+        "name": "deviceInformation",
+        "schema": "dtmi:com:jmi:simulator:deviceinformation;1"
+      }
+    ]
+  },
+  {
+    "@id": "dtmi:com:jmi:simulator:deviceinformation;1",
+    "@type": "Interface",
+    "@context": "dtmi:dtdl:context;2",
+    "displayName": "Device Information",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "latitude",
+        "schema": "double",
+        "writable": true
+      },
+      {
+        "@type": "Property",
+        "name": "longitude",
+        "schema": "double",
+        "writable": true
+      }
+    ]
+  }
+]

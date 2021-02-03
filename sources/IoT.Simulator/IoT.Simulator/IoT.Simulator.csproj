@@ -76,6 +76,30 @@
       <DependentUpon>devicesettings.json</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
     </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.commands.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.full.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.readableproperties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.telemetries.commands.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.telemetries.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.telemetries.readableproperties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.telemetries.writableproperties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.writableproperties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="DTDLModels\jmi.simulator.pnp.model.generic4.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

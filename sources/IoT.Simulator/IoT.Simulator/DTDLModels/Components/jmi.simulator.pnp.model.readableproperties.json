@@ -1,0 +1,63 @@
+[
+  {
+    "@id": "dtmi:com:jmi:simulator5;1",
+    "@type": "Interface",
+    "@context": "dtmi:dtdl:context;2",
+    "displayName": "Simulator",
+    "contents": [
+      {
+        "@type": "Component",
+        "name": "deviceInformation",
+        "schema": "dtmi:com:jmi:simulator:deviceinformation;1"
+      }
+    ]
+  },
+  {
+    "@id": "dtmi:com:jmi:simulator:deviceinformation;1",
+    "@type": "Interface",
+    "@context": "dtmi:dtdl:context;2",
+    "displayName": "Device Information",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "name",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "serialNumber",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "latitude",
+        "schema": "double"
+      },
+      {
+        "@type": "Property",
+        "name": "longitude",
+        "schema": "double"
+      },
+      {
+        "@type": "Property",
+        "name": "manufacturer",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "manufacturerContact",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "firmwareVersion",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "firmwareLastUpdate",
+        "schema": "dateTime"
+      }
+    ]
+  }
+]

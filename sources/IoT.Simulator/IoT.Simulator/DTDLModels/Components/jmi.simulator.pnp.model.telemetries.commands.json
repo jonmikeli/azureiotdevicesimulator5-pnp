@@ -1,0 +1,75 @@
+[
+  {
+    "@id": "dtmi:com:jmi:simulator5;1",
+    "@type": "Interface",
+    "@context": "dtmi:dtdl:context;2",
+    "displayName": "Simulator",
+    "contents": [
+      {
+        "@type": "Component",
+        "name": "deviceMessages",
+        "schema": "dtmi:com:jmi:simulator:devicemessages;1"
+      },
+      {
+        "@type": "Component",
+        "name": "deviceInteractions",
+        "schema": "dtmi:com:jmi:simulator:deviceinteractions;1"
+      }
+    ]
+  },
+  {
+    "@id": "dtmi:com:jmi:simulator:devicemessages;1",
+    "@type": "Interface",
+    "@context": "dtmi:dtdl:context;2",
+    "displayName": "Device Messages",
+    "contents": [
+      {
+        "@type": "Telemetry",
+        "name": "temperature",
+        "schema": "double"
+      },
+      {
+        "@type": "Telemetry",
+        "name": "pressure",
+        "schema": "float"
+      },
+      {
+        "@type": "Telemetry",
+        "name": "rpm",
+        "schema": "integer"
+      },
+      {
+        "@type": "Command",
+        "name": "rebootIncludedInTelemetry",
+        "request": {
+          "name": "delay",
+          "schema": "integer"
+        }
+      }
+    ]
+  },
+  {
+    "@id": "dtmi:com:jmi:simulator:deviceinteractions;1",
+    "@type": "Interface",
+    "@context": "dtmi:dtdl:context;2",
+    "displayName": "Device Interactions",
+    "contents": [
+      {
+        "@type": "Command",
+        "name": "reboot",
+        "request": {
+          "name": "delay",
+          "schema": "integer"
+        }
+      },
+      {
+        "@type": "Command",
+        "name": "sayhello",
+        "request": {
+          "name": "name",
+          "schema": "string"
+        }
+      }
+    ]
+  }
+]
