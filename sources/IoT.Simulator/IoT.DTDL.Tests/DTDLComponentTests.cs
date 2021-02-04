@@ -1,5 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -224,6 +228,7 @@ namespace IoT.DTDL.Tests
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
             Assert.IsTrue(data.Any());
+            Assert.IsTrue(data.Count() == 1); //TODO: replace this to make it dynamic
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
             Assert.IsTrue(data.Any());
