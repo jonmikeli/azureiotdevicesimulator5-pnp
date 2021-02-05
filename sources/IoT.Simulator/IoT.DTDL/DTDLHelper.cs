@@ -37,6 +37,16 @@ namespace IoT.DTDL
             //TODO: store in the cache the processed data (all the models are processed in a row in the method)
             Dictionary<string, DTDLContainer> data = await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);
 
+            return BuildCleanDependencies(data, modelId);
+        }
+
+        private static Dictionary<string, DTDLContainer>  BuildCleanDependencies(Dictionary<string, DTDLContainer> data, string modelId)
+        {
+            Dictionary<string, DTDLContainer> result = null;
+
+            if (!string.IsNullOrEmpty(modelId))
+                throw new ArgumentNullException(nameof(modelId));
+
             if (data != null && data.Any() && data.ContainsKey(modelId))
             {
                 //Filter by only the required models (initial model and dependencies)
@@ -45,15 +55,13 @@ namespace IoT.DTDL
                 var referencedModelsIds = ((JObject)(entryModel.Value.DTDL)).Value<JArray>("contents").Where(i => i.Value<string>("@type").ToLower() == "component").Select(i => i.Value<string>("schema")).ToList();
                 referencedModelsIds.Add(modelId);
 
-                var entreModelAndReferences = data.Join(referencedModelsIds, arrayItem => arrayItem.Value.ModelId, referenceIdItem => referenceIdItem , (arrayItem, referenceIdItem) => arrayItem);
+                var entreModelAndReferences = data.Join(referencedModelsIds, arrayItem => arrayItem.Value.ModelId, referenceIdItem => referenceIdItem, (arrayItem, referenceIdItem) => arrayItem);
 
                 if (entreModelAndReferences != null && entreModelAndReferences.Any())
-                    data = new Dictionary<string, DTDLContainer>(entreModelAndReferences);
-
-                return data;
+                    result = new Dictionary<string, DTDLContainer>(entreModelAndReferences);
             }
-            else
-                return null;
+
+            return result;
         }
 
         public static async Task<Dictionary<string, DTDLCommandContainer>> GetModelsAndExtratCommandsAsync(string modelId, string modelPath)
