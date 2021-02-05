@@ -39,6 +39,17 @@ namespace IoT.DTDL
 
             if (data != null && data.Any() && data.ContainsKey(modelId))
             {
+                //Filter by only the required models (initial model and dependencies)
+                var entryModel = data.Single(i => i.Key == modelId);
+
+                var referencedModelsIds = ((JObject)(entryModel.Value.DTDL)).Value<JArray>("contents").Where(i => i.Value<string>("@type").ToLower() == "component").Select(i => i.Value<string>("schema")).ToList(); ;
+                referencedModelsIds.Add(modelId);
+
+                var entreModelAndReferences = data.Join(referencedModelsIds, a=>a.Value.ModelId, r=>r, (a, r) => a);
+
+                if (entreModelAndReferences != null && entreModelAndReferences.Any())
+                    data = new Dictionary<string, DTDLContainer>(entreModelAndReferences);
+
                 return data;
             }
             else
