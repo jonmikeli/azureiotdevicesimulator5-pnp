@@ -44,7 +44,7 @@ namespace IoT.DTDL
         {
             Dictionary<string, DTDLContainer> result = null;
 
-            if (!string.IsNullOrEmpty(modelId))
+            if (string.IsNullOrEmpty(modelId))
                 throw new ArgumentNullException(nameof(modelId));
 
             if (data != null && data.Any() && data.ContainsKey(modelId))
