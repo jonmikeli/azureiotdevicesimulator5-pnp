@@ -34,10 +34,13 @@ namespace IoT.DTDL
             else if (dtdlModel is JArray)
                 jArrayDTDLModel = dtdlModel as JArray;
 
-            Dictionary<string, DTDLContainer> data = await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);            
+            //TODO: store in the cache the processed data (all the models are processed in a row in the method)
+            Dictionary<string, DTDLContainer> data = await ParseDTDLAndBuildDynamicContentAsync(jArrayDTDLModel);
 
             if (data != null && data.Any() && data.ContainsKey(modelId))
+            {
                 return data;
+            }
             else
                 return null;
         }
@@ -105,12 +108,7 @@ namespace IoT.DTDL
 
             ModelParser parser = new ModelParser();
             
-            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
-
-            //TODO
-            //group items by groupedin
-            //build dependency tree (and/or list)
-            //join with the grouped list
+            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));            
 
             foreach (JObject dtdl in dtdlArray)
             {
