@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Tests\Components\jmi.simulator.pnp.model.full.withAdditionalItems2.json">
+    <None Update="Tests\Components\jmi.simulator.pnp.model.full.withAdditionalItems.mixedTelemetriesInComponents.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Tests\Components\jmi.simulator.pnp.model.full.withAdditionalItems.json">
