@@ -223,9 +223,11 @@ namespace IoT.DTDL.Tests
 
             Assert.IsNotNull(modelContainer);
 
+            //Readable properties
             var data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.ReadableProperties != null);
             Assert.IsTrue(data.Any());
 
+            //Telemetries
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
             Assert.IsTrue(data.Any());
 
@@ -240,7 +242,7 @@ namespace IoT.DTDL.Tests
             }
             else if (rawModel is JArray)
                 arrayModel = rawModel as JArray;
-
+            
             //We control the number of models / components with telemetries
             var components = arrayModel.Single(i => i.Value<string>("@id") == modelId)["contents"].Where(i => i.Value<string>("@type").ToLower() == "component");
             Assert.IsNotNull(components);
@@ -255,9 +257,11 @@ namespace IoT.DTDL.Tests
 
             Assert.IsTrue(data.Count() == actualModelsWithTelemetries.Count() + 1); 
 
+            //Commands
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
             Assert.IsTrue(data.Any());
 
+            //Writable properties
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.WritableProperties != null);
             Assert.IsTrue(data.Any());
         }
