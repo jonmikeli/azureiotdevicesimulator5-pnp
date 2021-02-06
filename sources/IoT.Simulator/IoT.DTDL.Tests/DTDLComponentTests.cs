@@ -228,8 +228,22 @@ namespace IoT.DTDL.Tests
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
             Assert.IsTrue(data.Any());
-            var components = await DTDLHelper.ExtractComponents(modelContainer);
-            Assert.IsTrue(data.Count() == 1); //TODO: replace this to make it dynamic
+
+            var rawModel = await DTDLHelper.GetDTDLFromModelIdAsync(modelId, dtdlModelPath);
+            Assert.IsNotNull(rawModel);
+
+            JArray arrayModel = null;
+            if (rawModel is JObject)
+            {
+                arrayModel = new JArray();
+                arrayModel.Add(rawModel);
+            }
+            else if (rawModel is JArray)
+                arrayModel = rawModel as JArray;
+
+            var components = DTDLHelper.ExtractComponents(arrayModel);
+            Assert.IsNotNull(components);
+            Assert.IsTrue(data.Count() == (components.Count + 1)); 
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
             Assert.IsTrue(data.Any());
