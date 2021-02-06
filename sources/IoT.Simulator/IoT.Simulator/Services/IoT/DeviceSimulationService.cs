@@ -688,6 +688,9 @@ namespace IoT.Simulator.Services
             {
                 _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sending generic reported property update:: {propertyName}-{value}.");
 
+                //TODO: send DTDL readable properties               
+                //https://docs.microsoft.com/en-us/azure/iot-central/core/concepts-telemetry-properties-commands
+
                 TwinCollection reportedProperties;
                 reportedProperties = new TwinCollection();
                 reportedProperties[propertyName] = value;
@@ -743,7 +746,11 @@ namespace IoT.Simulator.Services
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED properties changes request notification.");
 
             if (desiredproperties != null)
+            {
+                //TODO: check if the properties belong to the WritableProperties
+                //https://docs.microsoft.com/en-us/azure/iot-central/core/concepts-telemetry-properties-commands
                 _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::{JsonConvert.SerializeObject(desiredproperties, Formatting.Indented)}");
+            }
             else
                 _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED properties change is emtpy.");
 
