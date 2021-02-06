@@ -76,6 +76,12 @@
       <DependentUpon>devicesettings.json</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
     </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.full.withAdditionalItems.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DTDLModels\Components\jmi.simulator.pnp.model.full.withAdditionalItems.mixedTelemetriesInComponents.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="DTDLModels\Components\jmi.simulator.pnp.model.full2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
