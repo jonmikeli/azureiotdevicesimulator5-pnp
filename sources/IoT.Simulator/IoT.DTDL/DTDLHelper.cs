@@ -221,191 +221,6 @@ namespace IoT.DTDL
 
             return globalResult;
         }
-
-        public static JArray ExtractTelemetries(JArray contents)
-        {
-            JArray result = null;
-            var telemetries = contents.Where(i => i["@type"].Value<string>().ToLower() == "telemetry");
-            if (telemetries != null && telemetries.Any())
-            {
-                result = new JArray();
-
-                JObject tmp = null;
-                string tmpPropertyName = string.Empty;
-
-                Random random = new Random(DateTime.Now.Millisecond);
-                foreach (var item in telemetries)
-                {
-                    tmpPropertyName = item["name"].Value<string>();
-
-                    tmp = new JObject();
-
-                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
-
-                    if (jProperty != null)
-                        tmp.Add(jProperty);
-
-                    result.Add(tmp);
-                }
-            }
-
-            return result;
-        }
-
-        public static JArray ExtractWritableProperties(JArray contents)
-        {
-            JArray result = null;
-
-            var properties = contents.Where(
-               i =>
-                   (i is JObject)
-                   &&
-                   i["@type"].Value<string>().ToLower() == "property"
-                   &&
-                   ((JObject)i).ContainsKey("writable") && i["writable"].Value<bool>()
-               );
-
-
-            if (properties != null && properties.Any())
-            {
-                result = new JArray();
-
-                JObject tmp = null;
-                string tmpPropertyName = string.Empty;
-
-                Random random = new Random(DateTime.Now.Millisecond);
-                foreach (var item in properties)
-                {
-                    tmpPropertyName = item["name"].Value<string>();
-
-                    tmp = new JObject();
-
-                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
-
-                    if (jProperty != null)
-                        tmp.Add(jProperty);
-
-                    result.Add(tmp);
-                }
-            }
-
-            return result;
-        }
-
-        public static JArray ExtractReadableProperties(JArray contents)
-        {
-            JArray result = null;
-            var properties = contents.Where(
-                i =>
-                    (i is JObject)
-                    &&
-                    i["@type"].Value<string>().ToLower() == "property"
-                    &&
-                    (
-                        !((JObject)i).ContainsKey("writable")
-                        |
-                        (((JObject)i).ContainsKey("writable") && !i["writable"].Value<bool>())
-                    )
-                );
-
-            if (properties != null && properties.Any())
-            {
-                result = new JArray();
-                JObject tmp = null;
-                string tmpPropertyName = string.Empty;
-
-                Random random = new Random(DateTime.Now.Millisecond);
-                foreach (var item in properties)
-                {
-                    tmpPropertyName = item["name"].Value<string>();
-
-                    tmp = new JObject();
-
-                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
-
-                    if (jProperty != null)
-                        tmp.Add(jProperty);
-
-                    result.Add(tmp);
-                }
-            }
-
-            return result;
-        }
-
-        public static JArray ExtractCommands(JArray contents)
-        {
-            JArray result = null;
-            var commands = contents.Where(i => i["@type"].Value<string>().ToLower() == "command");
-            if (commands != null && commands.Any())
-            {
-                result = new JArray();
-
-                string tmpCommandName = string.Empty;
-                JObject tmpRequest = null;
-                JObject tmpResponse = null;
-                string tmpRequestName = string.Empty;
-                string tmpResponseName = string.Empty;
-
-                JObject tmpCreatedCommand = null;
-                JObject tmpCreatedRequestAndResponseContainer = null;
-                JObject tmpCreatedRequest = null;
-                JObject tmpCreatedResponse = null;
-
-                Random random = new Random(DateTime.Now.Millisecond);
-                foreach (var item in commands)
-                {
-                    tmpCreatedCommand = new JObject();
-                    tmpCreatedRequestAndResponseContainer = new JObject();
-                    //command
-                    tmpCommandName = item["name"].Value<string>();
-
-                    //request
-                    tmpRequest = (JObject)item["request"];
-                    if (tmpRequest != null)
-                    {
-                        tmpCreatedRequest = new JObject();
-                        tmpRequestName = tmpRequest["name"].Value<string>();
-                        JProperty jProperty = AddCreatedProperties(tmpRequestName, tmpRequest["schema"].Value<string>(), random);
-
-                        if (jProperty != null)
-                            tmpCreatedRequest.Add(jProperty);
-
-                        tmpCreatedRequestAndResponseContainer.Add("request", tmpCreatedRequest);
-                    }
-
-                    //response
-                    tmpResponse = (JObject)item["response"];
-                    if (tmpResponse != null)
-                    {
-                        tmpCreatedResponse = new JObject();
-                        tmpResponseName = tmpResponse["name"].Value<string>();
-                        JProperty jProperty = AddCreatedProperties(tmpResponseName, tmpResponse["schema"].Value<string>(), random);
-
-                        if (jProperty != null)
-                            tmpCreatedResponse.Add(jProperty);
-
-                        tmpCreatedRequestAndResponseContainer.Add("response", tmpCreatedResponse);
-                    }
-
-                    tmpCreatedCommand.Add(tmpCommandName, tmpCreatedRequestAndResponseContainer);
-
-                    result.Add(tmpCreatedCommand);
-                }
-            }
-
-            return result;
-        }
-
-        public static JArray ExtractComponents(JArray contents)
-        {
-            JArray result = null;
-            var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "component");
-            if (properties != null && properties.Any())
-                result = JArray.FromObject(properties);
-
-            return result;
-        }
         #endregion
 
         #region Private method(s)
@@ -502,6 +317,7 @@ namespace IoT.DTDL
                 componentLevelContents = null;
             }
         }
+
         private static DTDLContainer BuildDynamicContent(JObject dtdl)
         {
             if (dtdl == null)
@@ -554,7 +370,192 @@ namespace IoT.DTDL
             }
 
             return result;
-        }        
+        }
+
+        private static JArray ExtractTelemetries(JArray contents)
+        {
+            JArray result = null;
+            var telemetries = contents.Where(i => i["@type"].Value<string>().ToLower() == "telemetry");
+            if (telemetries != null && telemetries.Any())
+            {
+                result = new JArray();
+
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in telemetries)
+                {
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    tmp = new JObject();
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
+        private static JArray ExtractWritableProperties(JArray contents)
+        {
+            JArray result = null;
+
+            var properties = contents.Where(
+               i =>
+                   (i is JObject)
+                   &&
+                   i["@type"].Value<string>().ToLower() == "property"
+                   &&
+                   ((JObject)i).ContainsKey("writable") && i["writable"].Value<bool>()
+               );
+
+
+            if (properties != null && properties.Any())
+            {
+                result = new JArray();
+
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in properties)
+                {
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    tmp = new JObject();
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
+        private static JArray ExtractReadableProperties(JArray contents)
+        {
+            JArray result = null;
+            var properties = contents.Where(
+                i =>
+                    (i is JObject)
+                    &&
+                    i["@type"].Value<string>().ToLower() == "property"
+                    &&
+                    (
+                        !((JObject)i).ContainsKey("writable")
+                        |
+                        (((JObject)i).ContainsKey("writable") && !i["writable"].Value<bool>())
+                    )
+                );
+
+            if (properties != null && properties.Any())
+            {
+                result = new JArray();
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in properties)
+                {
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    tmp = new JObject();
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
+        private static JArray ExtractCommands(JArray contents)
+        {
+            JArray result = null;
+            var commands = contents.Where(i => i["@type"].Value<string>().ToLower() == "command");
+            if (commands != null && commands.Any())
+            {
+                result = new JArray();
+
+                string tmpCommandName = string.Empty;
+                JObject tmpRequest = null;
+                JObject tmpResponse = null;
+                string tmpRequestName = string.Empty;
+                string tmpResponseName = string.Empty;
+
+                JObject tmpCreatedCommand = null;
+                JObject tmpCreatedRequestAndResponseContainer = null;
+                JObject tmpCreatedRequest = null;
+                JObject tmpCreatedResponse = null;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in commands)
+                {
+                    tmpCreatedCommand = new JObject();
+                    tmpCreatedRequestAndResponseContainer = new JObject();
+                    //command
+                    tmpCommandName = item["name"].Value<string>();
+
+                    //request
+                    tmpRequest = (JObject)item["request"];
+                    if (tmpRequest != null)
+                    {
+                        tmpCreatedRequest = new JObject();
+                        tmpRequestName = tmpRequest["name"].Value<string>();
+                        JProperty jProperty = AddCreatedProperties(tmpRequestName, tmpRequest["schema"].Value<string>(), random);
+
+                        if (jProperty != null)
+                            tmpCreatedRequest.Add(jProperty);
+
+                        tmpCreatedRequestAndResponseContainer.Add("request", tmpCreatedRequest);
+                    }
+
+                    //response
+                    tmpResponse = (JObject)item["response"];
+                    if (tmpResponse != null)
+                    {
+                        tmpCreatedResponse = new JObject();
+                        tmpResponseName = tmpResponse["name"].Value<string>();
+                        JProperty jProperty = AddCreatedProperties(tmpResponseName, tmpResponse["schema"].Value<string>(), random);
+
+                        if (jProperty != null)
+                            tmpCreatedResponse.Add(jProperty);
+
+                        tmpCreatedRequestAndResponseContainer.Add("response", tmpCreatedResponse);
+                    }
+
+                    tmpCreatedCommand.Add(tmpCommandName, tmpCreatedRequestAndResponseContainer);
+
+                    result.Add(tmpCreatedCommand);
+                }
+            }
+
+            return result;
+        }
+
+        private static JArray ExtractComponents(JArray contents)
+        {
+            JArray result = null;
+            var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "component");
+            if (properties != null && properties.Any())
+                result = JArray.FromObject(properties);
+
+            return result;
+        }
 
         private static JProperty AddCreatedProperties(string propertyName, string schemaName, Random random)
         {
