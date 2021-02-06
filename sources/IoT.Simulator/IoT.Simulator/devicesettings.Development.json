@@ -14,7 +14,7 @@
     },
     {
       "modelId": "dtmi:com:jmi:simulator5;1",
-      "modelPath": "./DTDLModels/jmi.simulator.pnp.model.generic4.json",
+      "modelPath": "./DTDLModels/Components/jmi.simulator.pnp.model.full.withAdditionalItems.mixedTelemetriesInComponents.json",
       "modelType": "Telemetry"
     }
   ],
