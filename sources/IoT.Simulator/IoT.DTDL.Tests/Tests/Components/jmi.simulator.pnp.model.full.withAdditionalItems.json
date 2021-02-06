@@ -19,11 +19,6 @@
         "@type": "Component",
         "name": "deviceInteractions",
         "schema": "dtmi:com:jmi:simulator:deviceinteractions;1"
-      },
-      {
-        "@type": "Telemetry",
-        "name": "temperatureRoot",
-        "schema": "double"
       }
     ]
   },

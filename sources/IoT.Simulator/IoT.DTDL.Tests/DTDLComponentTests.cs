@@ -268,25 +268,59 @@ namespace IoT.DTDL.Tests
 
         [TestMethod()]
         [TestCategory("Components")]
-        public async Task GetModelsAndBuildDynamicContentAsync_Generic3_Components_Full_WithAdditionalItems2_OK()
+        public async Task GetModelsAndBuildDynamicContentAsync_Generic3_Components_Full_WithAdditionalItems_MixedTelemetriesInComponents_OK()
         {
-            string dtdlModelPath = @"./Tests/Components/jmi.simulator.pnp.model.full.withAdditionalItems2.json";
+            string dtdlModelPath = @"./Tests/Components/jmi.simulator.pnp.model.full.withAdditionalItems.mixedTelemetriesInComponents.json";
             string modelId = "dtmi:com:jmi:simulator5;1";
 
             var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
 
             Assert.IsNotNull(modelContainer);
 
+            //Readable properties
             var data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.ReadableProperties != null);
             Assert.IsTrue(data.Any());
 
+            //Telemetries
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
             Assert.IsTrue(data.Any());
-            Assert.IsTrue(data.Count() == 1); //TODO: replace this to make it dynamic
 
+            var rawModel = await DTDLHelper.GetDTDLFromModelIdAsync(modelId, dtdlModelPath);
+            Assert.IsNotNull(rawModel);
+
+            JArray arrayModel = null;
+            if (rawModel is JObject)
+            {
+                arrayModel = new JArray();
+                arrayModel.Add(rawModel);
+            }
+            else if (rawModel is JArray)
+                arrayModel = rawModel as JArray;
+
+            //We control the number of models / components with telemetries
+            var components = arrayModel.Single(i => i.Value<string>("@id") == modelId)["contents"].Where(i => i.Value<string>("@type").ToLower() == "component");
+            Assert.IsNotNull(components);
+            Assert.IsTrue(components.Any());
+
+            var modelsWithTelemetries = arrayModel.Where(i => ((JArray)i["contents"]).Count(i => i.Value<string>("@type").ToLower() == "telemetry") > 0);
+            Assert.IsNotNull(modelsWithTelemetries);
+            Assert.IsTrue(modelsWithTelemetries.Any());
+
+            var actualModelsWithTelemetries = components.Join(modelsWithTelemetries, c => c.Value<string>("schema"), m => m.Value<string>("@id"), (c, m) => c);
+            Assert.IsNotNull(actualModelsWithTelemetries);
+
+            Assert.IsTrue(data.Count() == actualModelsWithTelemetries.Count());
+
+            //Telemetries at root level
+            var telemetriesAtRootLevel = arrayModel.Single(i => i.Value<string>("@id") == modelId)["contents"].Where(i => i.Value<string>("@type").ToLower() == "telemetry");
+            Assert.IsNotNull(telemetriesAtRootLevel);
+            Assert.IsTrue(telemetriesAtRootLevel.Any());
+
+            //Commands
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
             Assert.IsTrue(data.Any());
 
+            //Writable properties
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.WritableProperties != null);
             Assert.IsTrue(data.Any());
         }
