@@ -255,7 +255,7 @@ namespace IoT.DTDL.Tests
             var actualModelsWithTelemetries = components.Join(modelsWithTelemetries, c => c.Value<string>("schema"), m => m.Value<string>("@id"), (c, m) => c);
             Assert.IsNotNull(actualModelsWithTelemetries);
 
-            Assert.IsTrue(data.Count() == actualModelsWithTelemetries.Count() + 1); 
+            Assert.IsTrue(data.Count() == actualModelsWithTelemetries.Count()); 
 
             //Commands
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
@@ -309,12 +309,14 @@ namespace IoT.DTDL.Tests
             var actualModelsWithTelemetries = components.Join(modelsWithTelemetries, c => c.Value<string>("schema"), m => m.Value<string>("@id"), (c, m) => c);
             Assert.IsNotNull(actualModelsWithTelemetries);
 
-            Assert.IsTrue(data.Count() == actualModelsWithTelemetries.Count());
+            Assert.IsTrue(data.Count() == actualModelsWithTelemetries.Count() + 1);
 
             //Telemetries at root level
             var telemetriesAtRootLevel = arrayModel.Single(i => i.Value<string>("@id") == modelId)["contents"].Where(i => i.Value<string>("@type").ToLower() == "telemetry");
             Assert.IsNotNull(telemetriesAtRootLevel);
             Assert.IsTrue(telemetriesAtRootLevel.Any());
+            Assert.IsNotNull(data.Single(i=>i.Key == modelId).Value.DTDLGeneratedData.Telemetries);
+            Assert.IsTrue(data.Single(i => i.Key == modelId).Value.DTDLGeneratedData.Telemetries.Count == telemetriesAtRootLevel.Count());
 
             //Commands
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
