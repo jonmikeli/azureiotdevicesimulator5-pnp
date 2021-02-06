@@ -241,9 +241,19 @@ namespace IoT.DTDL.Tests
             else if (rawModel is JArray)
                 arrayModel = rawModel as JArray;
 
-            var components = DTDLHelper.ExtractComponents(arrayModel);
+            //We control the number of models / components with telemetries
+            var components = arrayModel.Single(i => i.Value<string>("@id") == modelId)["contents"].Where(i => i.Value<string>("@type").ToLower() == "component");
             Assert.IsNotNull(components);
-            Assert.IsTrue(data.Count() == (components.Count + 1)); 
+            Assert.IsTrue(components.Any());
+
+            var modelsWithTelemetries = arrayModel.Where(i => ((JArray)i["contents"]).Count(i=>i.Value<string>("@type").ToLower()=="telemetry") > 0);
+            Assert.IsNotNull(modelsWithTelemetries);
+            Assert.IsTrue(modelsWithTelemetries.Any());
+
+            var actualModelsWithTelemetries = components.Join(modelsWithTelemetries, c => c.Value<string>("schema"), m => m.Value<string>("@id"), (c, m) => c);
+            Assert.IsNotNull(actualModelsWithTelemetries);
+
+            Assert.IsTrue(data.Count() == actualModelsWithTelemetries.Count() + 1); 
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
             Assert.IsTrue(data.Any());
