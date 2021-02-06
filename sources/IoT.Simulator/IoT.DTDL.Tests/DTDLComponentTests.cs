@@ -228,6 +228,32 @@ namespace IoT.DTDL.Tests
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
             Assert.IsTrue(data.Any());
+            var components = await DTDLHelper.ExtractComponents(modelContainer);
+            Assert.IsTrue(data.Count() == 1); //TODO: replace this to make it dynamic
+
+            data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
+            Assert.IsTrue(data.Any());
+
+            data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.WritableProperties != null);
+            Assert.IsTrue(data.Any());
+        }
+
+        [TestMethod()]
+        [TestCategory("Components")]
+        public async Task GetModelsAndBuildDynamicContentAsync_Generic3_Components_Full_WithAdditionalItems2_OK()
+        {
+            string dtdlModelPath = @"./Tests/Components/jmi.simulator.pnp.model.full.withAdditionalItems2.json";
+            string modelId = "dtmi:com:jmi:simulator5;1";
+
+            var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
+
+            Assert.IsNotNull(modelContainer);
+
+            var data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.ReadableProperties != null);
+            Assert.IsTrue(data.Any());
+
+            data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
+            Assert.IsTrue(data.Any());
             Assert.IsTrue(data.Count() == 1); //TODO: replace this to make it dynamic
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
