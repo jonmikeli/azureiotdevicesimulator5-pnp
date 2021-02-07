@@ -221,6 +221,16 @@ namespace IoT.DTDL
 
             return globalResult;
         }
+
+        public static async Task<IReadOnlyDictionary<Dtmi, DTEntityInfo>> ParseDTDLAsync(JArray dtdlArray)
+        {
+            if (dtdlArray == null)
+                throw new ArgumentNullException(nameof(dtdlArray));
+
+            ModelParser parser = new ModelParser();
+
+            return await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
+        }
         #endregion
 
         #region Private method(s)
