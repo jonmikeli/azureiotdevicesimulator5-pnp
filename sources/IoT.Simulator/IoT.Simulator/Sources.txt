@@ -15,3 +15,6 @@ https://docs.microsoft.com/en-us/azure/iot-pnp/concepts-model-repository
 
 Model parsing and validating
 https://docs.microsoft.com/en-us/azure/digital-twins/how-to-parse-models
+
+Single file and selfcontainned application
+dotnet publish -o ./bin/selfcontained/win -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true -r win-x64
