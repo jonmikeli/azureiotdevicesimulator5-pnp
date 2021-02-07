@@ -1,10 +1,12 @@
-﻿using IoT.Simulator.Extensions;
+﻿using IoT.DTDL;
+using IoT.Simulator.Extensions;
 using IoT.Simulator.Models;
 using IoT.Simulator.Settings;
 using IoT.Simulator.Tools;
 
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
+using Microsoft.Azure.DigitalTwins.Parser;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -746,10 +748,38 @@ namespace IoT.Simulator.Services
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED properties changes request notification.");
 
             if (desiredproperties != null)
-            {
+            {                
+                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::{JsonConvert.SerializeObject(desiredproperties, Formatting.Indented)}");
+
                 //TODO: check if the properties belong to the WritableProperties
                 //https://docs.microsoft.com/en-us/azure/iot-central/core/concepts-telemetry-properties-commands
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::{JsonConvert.SerializeObject(desiredproperties, Formatting.Indented)}");
+                
+                var dtdlParsedMode = await DTDLHelper.GetAndParseDTDLAsync(_defaultModel.ModelId, _defaultModel.ModelPath);
+
+                if (dtdlParsedMode != null && dtdlParsedMode.Any())
+                {
+                    //Writable properties
+                    var writableProperties = dtdlParsedMode.Where(i => i.Value.EntityKind == DTEntityKind.Property && ((DTPropertyInfo)i.Value).Writable)?.Select(i=>i.Value as DTPropertyInfo).AsQueryable();
+                    if (writableProperties != null && writableProperties.Any())
+                    {
+                        JObject objectDesiredProperties = JObject.Parse(desiredproperties.ToJson(Formatting.Indented));
+                        var intersection = writableProperties.Join<DTPropertyInfo, JProperty, string, DTPropertyInfo>(objectDesiredProperties.Properties(), w => w.Name, o => o.Name, (w,o) => w);
+
+                        if (intersection != null && intersection.Any())
+                        {
+                            StringBuilder builder = new StringBuilder();
+                            foreach (var item in intersection)
+                            {
+                                builder.Append($"Desired property:{item.Name}-Value:{desiredproperties[item.Name]}.");
+                            }
+
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED INCLUDED IN DTDL-CHANGED: {builder.ToString()}");
+                        }
+                        else
+                            _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::None of the properties sent by the solution is defined in the DTDL model:{objectDesiredProperties.Properties().ToString().}");
+
+                    }
+                }
             }
             else
                 _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED properties change is emtpy.");
