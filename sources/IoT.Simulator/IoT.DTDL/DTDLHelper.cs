@@ -40,7 +40,7 @@ namespace IoT.DTDL
             return BuildCleanDependencies(data, modelId);
         }
 
-        private static Dictionary<string, DTDLContainer>  BuildCleanDependencies(Dictionary<string, DTDLContainer> data, string modelId)
+        private static Dictionary<string, DTDLContainer> BuildCleanDependencies(Dictionary<string, DTDLContainer> data, string modelId)
         {
             Dictionary<string, DTDLContainer> result = null;
 
@@ -126,8 +126,8 @@ namespace IoT.DTDL
             DTDLContainer itemResult = null;
 
             ModelParser parser = new ModelParser();
-            
-            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));            
+
+            IReadOnlyDictionary<Dtmi, DTEntityInfo> parseResult = await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
 
             foreach (JObject dtdl in dtdlArray)
             {
@@ -164,7 +164,7 @@ namespace IoT.DTDL
 
 
             return globalResult;
-        }        
+        }
 
         public static async Task<Dictionary<string, DTDLCommandContainer>> ParseDTDLAndGetCommandsAsync(JArray dtdlArray)
         {
@@ -173,7 +173,7 @@ namespace IoT.DTDL
 
             Dictionary<string, DTDLCommandContainer> globalResult = new Dictionary<string, DTDLCommandContainer>();
             DTDLCommandContainer itemResult = null;
-            
+
             ModelParser parser = new ModelParser();
             JArray contents = null;
 
@@ -185,14 +185,14 @@ namespace IoT.DTDL
                 {
                     //PROCESS COMPONENTS
                     await ProcessComponentsWithCommands(dtdlArray, dtdl, globalResult);
-                    
+
                     //CONTENT
                     if (!dtdl.ContainsKey("contents"))
                         throw new Exception("The DTDL model does not contain any 'content' property.");
 
                     contents = (JArray)dtdl["contents"];
 
-                    itemResult = new DTDLCommandContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };                    
+                    itemResult = new DTDLCommandContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };
                     itemResult.Commands = ExtractCommands(contents);
                 }
                 catch (ParsingException pex)
@@ -231,6 +231,35 @@ namespace IoT.DTDL
 
             return await parser.ParseAsync(dtdlArray.Select(i => JsonConvert.SerializeObject(i)));
         }
+
+        public static async Task<IReadOnlyDictionary<Dtmi, DTEntityInfo>> GetAndParseDTDLAsync(string modelId, string modelPath)
+        {
+            if (string.IsNullOrEmpty(modelId))
+                throw new ArgumentNullException(nameof(modelId));
+
+            if (string.IsNullOrEmpty(modelPath))
+                throw new ArgumentNullException(nameof(modelPath));
+
+            JToken rawData = await GetDTDLFromModelIdAsync(modelId, modelPath);
+
+            if (rawData != null)
+            {
+                JArray jArray = null;
+                if (rawData is JObject)
+                {
+                    jArray = new JArray();
+                    jArray.Add(rawData);
+                }
+                else
+                    jArray = rawData as JArray;
+
+                return await ParseDTDLAsync(jArray);
+            }
+            else
+                return null;
+            
+        }
+
         #endregion
 
         #region Private method(s)
@@ -333,7 +362,7 @@ namespace IoT.DTDL
             if (dtdl == null)
                 throw new ArgumentNullException(nameof(dtdl));
 
-            DTDLContainer result = new DTDLContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };            
+            DTDLContainer result = new DTDLContainer { ModelId = dtdl["@id"].Value<string>(), DTDL = dtdl };
 
             //CONTENT
             if (!dtdl.ContainsKey("contents"))
