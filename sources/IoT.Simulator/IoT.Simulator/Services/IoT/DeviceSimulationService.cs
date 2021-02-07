@@ -776,7 +776,7 @@ namespace IoT.Simulator.Services
                             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED INCLUDED IN DTDL-CHANGED: {builder.ToString()}");
                         }
                         else
-                            _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::None of the properties sent by the solution is defined in the DTDL model:{objectDesiredProperties.Properties().ToString().}");
+                            _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::None of the properties sent by the solution is defined in the DTDL model:{objectDesiredProperties.Properties().ToString()}");
 
                     }
                 }
