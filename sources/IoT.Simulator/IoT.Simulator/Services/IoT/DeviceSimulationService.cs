@@ -751,7 +751,7 @@ namespace IoT.Simulator.Services
             {                
                 _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::{JsonConvert.SerializeObject(desiredproperties, Formatting.Indented)}");
 
-                //TODO: check if the properties belong to the WritableProperties
+                //Check if the properties belong to the WritableProperties
                 //https://docs.microsoft.com/en-us/azure/iot-central/core/concepts-telemetry-properties-commands
                 
                 var dtdlParsedMode = await DTDLHelper.GetAndParseDTDLAsync(_defaultModel.ModelId, _defaultModel.ModelPath);
