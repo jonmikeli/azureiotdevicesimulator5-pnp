@@ -770,13 +770,13 @@ namespace IoT.Simulator.Services
                             StringBuilder builder = new StringBuilder();
                             foreach (var item in intersection)
                             {
-                                builder.Append($"Desired property:{item.Name}-Value:{desiredproperties[item.Name]}.");
+                                builder.Append($"Desired property:'{item.Name}'-Value:{desiredproperties[item.Name]}.");
                             }
 
                             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED INCLUDED IN DTDL-CHANGED: {builder.ToString()}");
                         }
                         else
-                            _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::None of the properties sent by the solution is defined in the DTDL model:{objectDesiredProperties.Properties().ToString()}");
+                            _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::None of the properties sent by the solution is defined in the DTDL model.}");
 
                     }
                 }
