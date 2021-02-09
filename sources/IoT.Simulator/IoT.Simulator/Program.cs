@@ -3,7 +3,6 @@ using IoT.Simulator.Services;
 using IoT.Simulator.Settings;
 using IoT.Simulator.Tools;
 
-using Microsoft.Azure.Devices.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
