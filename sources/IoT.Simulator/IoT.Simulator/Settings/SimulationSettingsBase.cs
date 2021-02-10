@@ -1,6 +1,4 @@
-﻿using IoT.Simulator.Tools;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
 
 namespace IoT.Simulator.Settings
 {
