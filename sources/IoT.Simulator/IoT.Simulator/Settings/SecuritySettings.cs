@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IoT.Simulator.Settings
 {
-    
+
     public class SecuritySettings
     {
         public const string IOTHUB_DEVICE_SECURITY_TYPE_ENV_KEY = "IOTHUB_DEVICE_SECURITY_TYPE";
