@@ -1,14 +1,14 @@
-﻿using IoT.Simulator.Extensions;
-using IoT.Simulator.Tools;
+﻿using IoT.DTDL;
+using IoT.Simulator.Extensions;
+
 using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using System.Threading.Tasks;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using IoT.DTDL;
+
+using System;
 using System.Linq;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace IoT.Simulator.Services
 {
