@@ -1,18 +1,21 @@
-﻿using IoT.Simulator.Extensions;
+﻿using IoT.DTDL;
+using IoT.Simulator.Extensions;
+using IoT.Simulator.Models;
 using IoT.Simulator.Settings;
 using IoT.Simulator.Tools;
+
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
+using Microsoft.Azure.DigitalTwins.Parser;
 using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
-using IoT.Simulator.Models;
-using IoT.DTDL;
-using Microsoft.Azure.DigitalTwins.Parser;
 
 namespace IoT.Simulator.Services
 {
