@@ -6,7 +6,6 @@ This version of the simulator is based on the [regular version of the simulator]
  - [.Net Core 2.1](https://github.com/jonmikeli/azureiotdevicesimulator)
  - [.Net Core 3.1](https://github.com/jonmikeli/azureiotdevicesimulator3)
 
-*Azure IoT Device Simulator 5 PnP* is a [IoT Plug and Play](https://docs.microsoft.com/en-us/azure/iot-pnp/overview-iot-plug-and-play) version of [Azure IoT Device Simulator 5](https://github.com/jonmikeli/azureiotdevicesimulator5).
 
 IoT Plug and Play is meant to facilitate the integration of IoT devices with IoT solutions, trying to imitate the concept of the already known Plug and Play experience.
 
