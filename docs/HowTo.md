@@ -11,20 +11,16 @@ If you need detailed documentation about what Azure IoT Device Simulator is, you
  - [Help](Help.md)
 
 
-## How to get a Docker image?
-### Prerequisites
-In order to use a Docker container, you need to check [Docker](https://www.docker.com/) prerequisites.
+## Prerequisites
 
-Do not forget you will need an internet connection with specific open ports:
+Ports used by the simulator:
  - 8883
  - 5671
  - 443
 [Ports](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-protocols) required to communicate with Microsoft Azure IoT Hub.
 
-The new .NET 5 docker images are smaller and offer better performances.
 
-
-### Steps to follow
+### Step by step
 The Azure IoT Device Simulator needs two basic prerequisites before starting:
  - settings (do not forget to update the connection strings)
  - the referenced **DTDL models** have to be **reachable** (from the device as well as from the cloud solution)
