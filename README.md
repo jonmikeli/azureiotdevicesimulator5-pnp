@@ -28,7 +28,7 @@ DTDL is based on open standards (JSON-LD and RDF).
 The concepts integrated in this simulator are:
  - components
  - interfaces
- - properties (the parser processes writable and readble properties. Only the writable properties are included in the automatic processes.)
+ - properties (the parser extracts writable and readble properties. The desired properties are checked with the writable properties to verify if they are coherent.)
  - telemetries
  - commands
 
