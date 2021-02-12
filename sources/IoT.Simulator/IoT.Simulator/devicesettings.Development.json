@@ -1,5 +1,5 @@
 {
-  "connectionString": "HostName=iothubtestsedgepnp.azure-devices.net;DeviceId=simulator5;SharedAccessKey=9PUl2lovvijycVlibTPTbp5lemiI1LX522HbjB587cc=",
+  "connectionString": "",
   "defaultModelId": "dtmi:com:jmi:simulator5;1",
   "supportedModels": [
     {
@@ -14,7 +14,7 @@
     },
     {
       "modelId": "dtmi:com:jmi:simulator5;1",
-      "modelPath": "./DTDLModels/Components/jmi.simulator.pnp.model.full.withAdditionalItems.mixedTelemetriesInComponents.json",
+      "modelPath": "./DTDLModels/Components/jmi.simulator.pnp.model.full.withAdditionalItems.mixedTelemetriesInComponents2.json",
       "modelType": "Telemetry"
     }
   ],
