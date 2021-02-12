@@ -33,7 +33,11 @@ The concepts integrated in this simulator are:
  - commands
 
 ## Models
-In order to keep coherence in the whole solution (Cloud IoT part and the simulator/devices part), the used DTDL models have to be reachable from both sides.
+DTDL v2 does not allow using more than a schema per model.
+However, some devices may need sending different types of messages.
+To overcome this limitation, the similator may be used with a list of DTDL models.
+Only one model is charged at the time (default model) to keep coherence and integrity.
+
 
 ## Additional details
  - [*How to (Quickstart)*](sources/IoT.Simulator/IoT.Simulator/docs/HowTo.md)
