@@ -7,7 +7,7 @@ The IoT simulator can easily be containerized in order to simplify its delivery 
 Also, .NET 5 includes interesting capabilities to build lighter and/or selfsufficient applications (ex: selfcontained with trim build options).
 
 If you need detailed documentation about what Azure IoT Device Simulator is, you can find additional information at:
- - [Readme](../../../../Readme.md)
+ - [Readme](../Readme.md)
  - [Help](Help.md)
 
 
@@ -28,8 +28,6 @@ The new .NET 5 docker images are smaller and offer better performances.
 The Azure IoT Device Simulator needs two basic prerequisites before starting:
  - settings (do not forget to update the connection strings)
  - the referenced **DTDL models** have to be **reachable** (from the device as well as from the cloud solution)
-
- Once these items are ready, the simulator can be run with a single command.
 
 #### Settings
 Settings are based on 3 files:
@@ -89,7 +87,7 @@ Detailed logs settings.
 ```
 
 ##### devicesettings.json
-This file allows configuring the device simulation settings.
+This file allows to configure the device simulation settings.
 
 ```json
 {
@@ -130,7 +128,7 @@ This file allows configuring the device simulation settings.
 ```
 
 ##### modulessettings.json
-This file allows configuring module(s) simulation settings.
+This file allows to configure the module(s) simulation settings.
 
 ```json
 {
