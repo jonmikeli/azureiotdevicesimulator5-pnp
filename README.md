@@ -143,28 +143,6 @@ Functional features are based on these generic technical features:
  - Twin Reported properties updates from a module.
 
 
-### D2C
-#### Device level
- - IoT Messages
- - Twins (Reported)
-
-#### Module level (M2C)
- - IoT Messages
- - Twins (Reported)
-
-### C2D
-#### Device level
- - Twins (Desired)
- - Twins (Tags)
- - Direct Methods
- - Messages
-
-#### Module level (C2M)
- - Twins (Desired)
- - Twins (Tags)
- - Direct Methods
- - Messages
-
 ## More information
 
 - Details about **HOW the solution WORKS** are provided in the [help](sources/IoT.Simulator/IoT.Simulator/docs/Help.md) section.
