@@ -46,33 +46,10 @@ They can be defined with other types of model items or separated in referenced m
 THe simulator uses them to create dynamic messages with random values according to the types defined in the DTDL model.
 
 ### Commands
+Commands are extracted from the provided model.
+They are processed as IoT Direct Commands. The simulator creates a handler for each command defined in the DTDL.
 
-
-
-### Device
-#### D2C
-##### Messages
-The regular version of the simulator proposes a fully and open customizable process to create messages. The examples provided prebuilt messages such as:
-1. `Commissioning` messages
-2. `Telemetry` data messages
-3. `Error` messages (functional errors sent by devices)
-
-This version of the simulator follows a different approach: the messages are dynamically built according to the definition included in the referenced DTDL model.
-
-##### Twins
-The device sends updated Reported Properties (Twins) after many operations/commands.
-
-> [!NOTE]
-> 
-> Example: after an OnOff Direct Method request, the device sends its status to the cloud solution (Microsoft Azure IoT Hub) using the Twin Reported Properties.
-
-#### C2D
-##### Direct Methods
-
-Even though this simulator is meant to implement the contract defined in the DTDL model, it includes a default set of commands that can be used as Direct Methods.
-
-Part of those Direct Methods may help in developing stages of the solution.
-If it comes to be misleading, these Direct Methods may be deleted in upcoming updates.
+In addition to the commands defined in the DTDL model, the simulator includes amny other Direct Method handlers for developing purposes.
 
 |Method name|Description|Request|Response|Comments|
 |:-|:-|:-|:-|:-|
@@ -84,27 +61,6 @@ If it comes to be misleading, these Direct Methods may be deleted in upcoming up
 | GenericJToken | Generic method | JSON Token | <ul><li>message notifying that the GenericJToken Direct Method has been called (string).</li><li> result code, 200</li></ul>|
 | Generic | Generic method | string | <ul><li>message notifying that the Generic Direct Method has been called (string).</li><li> result code, 200</li></ul>|
 | SetTelemetryInterval | Updates the time rate used to send telemetry data. | seconds (int) | <ul><li>message notifying that the SetTelemetryInterval Direct Method has been called (string).</li><li> result code, 200</li></ul>|
-
-Similarly to the messages, this IoT Plug and Play simulator adds commands that whould be defined in the DTDL referenced model.
-
-> NOTE
->
-> This illustrates that the DTDL may be combined with elements not defined in the models. However, be aware that all the elements not declared in the models will be unknown to the IoT Solutions that use the models to integrate your devices.
-
-##### Messages
-The device can be configured to receive generic **messages** coming from the cloud (Microsoft Azure IoT Hub C2D Messages).
-
-##### Twins
-###### Desired
-Any change in a **Desired Property** (device level) is notified to the device and it can be handled.
-
-
-> ![NOTE]
-> 
-> ###### Tags and Microsoft IoT Hub Jobs
->
-> The simulator can benefit from the use of **Microsoft IoT Hub Jobs** for operations based in property queries.
-> A typical example of this would be a **FOTA** (Firmware Over The Air) update according to criteria based in **Twin.Properties.Desired properties* (ex: firmwareVersion, location, environment, etc).
 
 
 ### Modules
