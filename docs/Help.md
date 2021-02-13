@@ -40,6 +40,10 @@ Readable properties (a.k.a. reported properties) are parsed and listed. The simu
 Writable properties are parsed and listed. They are compared to the received desired properties to control if the received values are coherent with the model.
 
 ### Telemtries
+Telemetries are extracted from the provided model.
+They can be defined with other types of model items or separated in referenced models (through components).
+
+THe simulator uses them to create dynamic messages with random values according to the types defined in the DTDL model.
 
 ### Commands
 
