@@ -21,16 +21,39 @@ The application consists of:
 <br/>
 
 ## Features
+
+The simulator parses and processes the provided DTDL model.
+It extracts the:
+ - components
+ - properties
+ - telemetries
+ - commands
+
+
+### Components
+Components are processed looking for propertie, telemetries and/or commands.
+
+### Properties
+Readable and writable properties are extracted from the provided model.
+
+Readable properties (a.k.a. reported properties) are parsed and listed. The simulator does not use them for now.
+Writable properties are parsed and listed. They are compared to the received desired properties to control if the received values are coherent with the model.
+
+### Telemtries
+
+### Commands
+
+
+
 ### Device
 #### D2C
 ##### Messages
-The regular version of the simulator proposes a fully and open customizable process to create messages. The examples provided include messages such as:
+The regular version of the simulator proposes a fully and open customizable process to create messages. The examples provided prebuilt messages such as:
 1. `Commissioning` messages
 2. `Telemetry` data messages
 3. `Error` messages (functional errors sent by devices)
 
-This version of the simulator follows another approach: the messages should be built according to the definition included in the referenced DTDL model.
-
+This version of the simulator follows a different approach: the messages are dynamically built according to the definition included in the referenced DTDL model.
 
 ##### Twins
 The device sends updated Reported Properties (Twins) after many operations/commands.
