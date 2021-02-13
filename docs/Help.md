@@ -324,8 +324,7 @@ Maintenability and evolutivity will be improved.
 
 Additionnally, I guess parts of the code may be reviewed or improved.
 
-A `DTDLHelper` has been created to factorize and facilitate working with DTDL models. It will probably be worth to make it stronger and publish it independently.
-
+The DTDL parsing has been encapsulated in an external library, packaged in turn in a NuGet package.
 
 # Glossary
 A few word explanations to be sure they are understood in the context of this document.
