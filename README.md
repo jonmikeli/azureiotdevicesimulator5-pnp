@@ -123,7 +123,6 @@ Commands have also been implemented at device module level.
 >
 >Latency tests will not be included at modules level.
 
-
   
 ## Global technical features
 
