@@ -69,13 +69,6 @@ In addition to the commands defined in the DTDL model, the simulator includes am
 ##### Messages
 The approach at modules level is exactly the same that the approach at the device level.
 
-##### Twins
-Modules may send updated **Reported Properties (Twins)** at some point during or after many operations/commands.
-
-> [!NOTE]
-> 
-> Example: after a OnOff Direct Method request, a given module sends its status to the cloud solution (Microsoft Azure IoT Hub) using the Twin Reported Properties.
-
 #### C2M
 ##### Direct Methods
 
@@ -92,22 +85,15 @@ The simulator includes a default set of commands that can be used as Direct Meth
 
 The approach at modules level is exactly the same that the approach at the device level.
 
-##### Messages
-Each module can be configured to receive generic **messages** coming from the cloud (Microsoft Azure IoT Hub).
-
-##### Twins
-###### Desired
-Any change in a **Desired property** (***module level***) is notified to the module and it can be handled.
-
-
 
 ## How does the simulator work?
 ### Description
 The application is configurable by an ***appsettings.json*** file.
 
-The features of the application rely on two main components:
+The features of the application rely on the components below:
  - device (**one single device per application**)
  - modules (**none, one or many modules per device**)
+ - DTDL v2 models
  
  The device component is configured by a ***devicesettings.json*** file while the modules are configured by a ***modulessettings.json*** file.
 
