@@ -40,8 +40,8 @@ Only one model is charged at the time (default model) to keep coherence and inte
 
 
 ## Additional details
- - [*How to (Quickstart)*](sources/IoT.Simulator/IoT.Simulator/docs/HowTo.md)
- - [*Help and details*](sources/IoT.Simulator/IoT.Simulator/docs/Help.md) 
+ - [*How to (Quickstart)*](docs/HowTo.md)
+ - [*Help and details*](docs/Help.md) 
  
 ## Examples of use
  - development tool for developers working on Microsoft Azure IoT solutions (cloud)
