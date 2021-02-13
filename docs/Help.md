@@ -110,17 +110,6 @@ The features of the application rely on the components below:
  To run the simulator, there are two alternatives:
   1. running the simulator as a **.NET 5 Console application** (selfcontained or depending on an installed framework)
   1. running the *Docker container* (which contains in turn the .NET 5 binaries, packages and other required prerequisites)
-  
- > ![NOTE]
- > 
- > See [Docker](https://www.docker.com) and container oriented development for those who are not familiar with.
- 
- Whatever the alternative will be, check that all the **3 configuration** files are set properly.
-
- > ![IMPORTANT]
- > 
- > The 3 configurations files have to be present and contain the proper Microsoft Azure IoT Hub connection strings, IDs or keys.
-
  
  #### Runing .NET Core application
  Run the command below:
@@ -325,119 +314,13 @@ Behaviors of modules are configured by the *modulessettings.json* configuration 
 
 _The IoT PnP integration with modules has not been implemented yet. However, the approach should be exactly the same than with devices_.
 
-### Configuration files reminder
-#### appsettings.json
- ```json
- {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Warning"
-    }
-  }
-}
- ```
-
-#### devicesettings.json
-
-```json
-{
-  "connectionString": "HostName=[IOTHUB NAME].azure-devices.net;DeviceId=[DEVICE ID];SharedAccessKey=[KEY]",
-  "defaultModelId": "dtmi:com:example:thermostat;1",
-  "supportedModels": [
-    {
-      "modelId": "dtmi:com:example:thermostat;1",
-      "modelPath": "[HTTP path or local physical path to the model definition]",
-      "modelType": "Telemetry" //Telemetry, Error, Warning
-    },
-    {
-      "modelId": "dtmi:com:jmi:simulator:devicemessages;1",
-      "modelPath": "[HTTP path or local physical path to the model definition]",
-      "modelType": "Telemetry" //Telemetry, Error, Warning
-    }
-  ],
-  "simulationSettings": {
-    "enableLatencyTests": false,
-    "latencyTestsFrecuency": 10,
-    "enableDevice": true,
-    "enableModules": true,
-    "enableTelemetryMessages": false,
-    "telemetryFrecuency": 60,
-    "enableErrorMessages": false,
-    "errorFrecuency": 60,
-    "enableCommissioningMessages": false,
-    "commissioningFrecuency": 60,
-    "enableTwinReportedMessages": false,
-    "twinReportedMessagesFrecuency": 60,
-    "enableReadingTwinProperties": false,
-    "enableC2DDirectMethods": true,
-    "enableC2DMessages": true,
-    "enableTwinPropertiesDesiredChangesNotifications": true
-  }
-}
-```
-Properties are quite self-explanatory.
-
-> [!NOTE]
-> 
-> Emission intervals are set in seconds.
-
-#### modulessettings.json
-```json
-{
- "modules":[
-    {
-        "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
-        "defaultModelId": "dtmi:com:example:thermostat;1",
-        "supportedModels": [
-          {
-            "modelId": "dtmi:com:example:thermostat;1",
-            "modelPath": "./DTDLModels/thermostat.json",
-            "modelType": "Telemetry"
-          }
-        ],
-        "simulationSettings": {
-          "enableTelemetryMessages": true,
-          "telemetryFrecuency": 20,
-          "enableTwinReportedMessages": false,
-          "twinReportedMessagesFrecuency": 60,
-          "enableReadingTwinProperties": true,
-          "enableC2DDirectMethods": true,
-          "enableC2DMessages": true,
-          "enableTwinPropertiesDesiredChangesNotifications": true
-        }
-    },
-    {
-        "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
-        "defaultModelId": "dtmi:com:example:thermostat;1",
-        "supportedModels": [
-          {
-            "modelId": "dtmi:com:example:thermostat;1",
-            "modelPath": "./DTDLModels/thermostat.json",
-            "modelType": "Telemetry"
-          }
-        ],
-        "simulationSettings": {
-          "enableTelemetryMessages": true,
-          "telemetryFrecuency": 20,
-          "enableTwinReportedMessages": false,
-          "twinReportedMessagesFrecuency": 60,
-          "enableReadingTwinProperties": true,
-          "enableC2DDirectMethods": true,
-          "enableC2DMessages": true,
-          "enableTwinPropertiesDesiredChangesNotifications": true
-        }
-    }
-  ]
-}
-```
-
-> [!NOTE]
-> 
-> Emission intervals are set in seconds.
 
 ## Evolutivity
 
-This version of the IoT PnP simulator does not process properly the `component` concept of DTDL. This would be a good point to work on and totally cover DTDL features.
+This version of the IoT PnP simulator relies on a generic approach to protect the developments against possible DTDL evolutions.
+It turns out that the DTDL definition remains quite stable.
+In this case, it is maybe worth considering rewriting the simulator with a strong typed approach.
+Maintenability and evolutivity will be improved.
 
 Additionnally, I guess parts of the code may be reviewed or improved.
 
