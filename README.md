@@ -7,7 +7,7 @@ This version of the simulator is based on the [regular version of the simulator]
  - [.Net Core 3.1](https://github.com/jonmikeli/azureiotdevicesimulator3)
 
 
-IoT Plug and Play is meant to facilitate the integration of IoT devices with IoT solutions, trying to imitate the concept of the already known Plug and Play experience.
+IoT Plug and Play facilitates the integration of IoT devices with IoT solutions, trying to imitate the concept of the already known Plug and Play experience.
 
 Besides all these simulators, a version implementing [Device Provisioning Service (DPS) features](https://github.com/jonmikeli/azureiotdevicesimulator5-dps) completes the family of simulators.
 
