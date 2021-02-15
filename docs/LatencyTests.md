@@ -1,7 +1,7 @@
 ﻿# Azure IoT Device Simulator - Latency Tests
 
 
-This section describes a way to measure first level latency between a given device and the cloud solution (Microsoft Azure IoT Hub and Azure Function).
+This section describes a way to measure raw response time between a given device and the cloud solution (Microsoft Azure IoT Hub and Azure Function).
 
 For details about how the simulator works, see the [help](Help.md) file.
 
