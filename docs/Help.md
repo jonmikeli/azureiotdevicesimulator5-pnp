@@ -327,6 +327,7 @@ Additionnally, I guess parts of the code may be reviewed or improved.
 The DTDL parsing has been encapsulated in an external library, packaged in turn in a NuGet package.
 
 # Glossary
+
 A few explanations about specific vocabulary to be sure all the terms are understood in the context of this document.
 
 ## Commissioning
