@@ -14,9 +14,9 @@ If you need detailed documentation about what Azure IoT Device Simulator is, you
 ## Prerequisites
 
 Ports used by the simulator:
- - 8883
- - 5671
- - 443
+ - 8883 (MQTT)
+ - 5671 (AMQP)
+ - 443 (HTTPS)
 [Ports](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-protocols) required to communicate with Microsoft Azure IoT Hub.
 
 
