@@ -36,4 +36,3 @@ The structure of the latency message is specific.
 ## Azure Function
 
 You will find the Azure Function project [here](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp/tree/master/sources/IoT.Simulator/IoT.Simulator.AF) with the source code.
-
