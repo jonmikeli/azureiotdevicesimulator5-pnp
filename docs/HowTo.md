@@ -25,6 +25,7 @@ The Azure IoT Device Simulator needs two basic prerequisites before starting:
  - settings (do not forget to update the connection strings)
  - the referenced **DTDL models** have to be **reachable** (from the device as well as from the cloud solution)
 
+
 #### Settings
 Settings are based on 3 files:
  - [appsettings.json](#appsettings.json)
@@ -39,6 +40,7 @@ For details and explanations, see [help](Help.md).
 > It can be set trough the environment variable ENVIRONMENT.
 > The solution looks for settings files following the pattern *file.ENVIRONMENT.json* (similar to the former transformation files).
 > Default setting files will be loaded first in case no environment file is found.
+
 
 ##### appsettings.json
 This file allows configuring system related items (logs, etc).
@@ -55,6 +57,7 @@ Minimal logs settings.
   }
 }
 ```
+
 
 **Development (appsettings.Development.json)**
 
@@ -81,6 +84,7 @@ Detailed logs settings.
   }
 }
 ```
+
 
 ##### devicesettings.json
 This file allows to configure the device simulation settings.
@@ -122,6 +126,7 @@ This file allows to configure the device simulation settings.
 }
 
 ```
+
 
 ##### modulessettings.json
 This file allows to configure the module(s) simulation settings.
