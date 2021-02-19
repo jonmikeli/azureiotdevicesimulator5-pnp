@@ -360,4 +360,3 @@ Used along with reported properties to synchronize device configuration or condi
 
 ## Twin Reported properties
 Used along with desired properties to synchronize device configuration or conditions. The device app can set reported properties, and the solution back end can read and query them.
-
