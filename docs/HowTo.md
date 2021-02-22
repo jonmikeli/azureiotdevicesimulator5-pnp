@@ -183,7 +183,7 @@ This file allows to configure the module(s) simulation settings.
 
 > [!IMPORTANT]
 >
-> Do not forget to set your own values for `connectionString`. 
+> Do not forget to set your own values for the `connectionString` parameter. 
 
 
 #### Commands
