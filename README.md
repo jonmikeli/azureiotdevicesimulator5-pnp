@@ -13,6 +13,7 @@ Besides all these simulators, a version implementing [Device Provisioning Servic
 
 
 ## DTDL
+
 This simulator allows to use [DTDL, Digital Twins Definition Language](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md) models. These models describe the device capabilities via the next concepts:
  - components
  - interfaces
@@ -33,6 +34,7 @@ The concepts integrated in this simulator are:
  - commands
 
 ## Models
+
 DTDL v2 does not allow using more than a schema per model.
 However, some devices may need sending different types of messages.
 To overcome this limitation, the similator may be used with a list of DTDL models.
@@ -40,10 +42,12 @@ Only one model is charged at the time (default model) to keep coherence and inte
 
 
 ## Additional details
+
  - [*How to (Quickstart)*](docs/HowTo.md)
  - [*Help and details*](docs/Help.md) 
  
 ## Examples of use
+
  - development tool for developers working on Microsoft Azure IoT solutions (cloud)
  - tester tool in IoT-oriented projects
  - scalable IoT simulation platforms
@@ -51,6 +55,7 @@ Only one model is charged at the time (default model) to keep coherence and inte
  - etc
 
 ## Technical information
+
  - .NET 5 (C#)
  - Microsoft Azure IoT SDK (Device capabilities, including IoT Hub modules, a.k.a. module identities)
  - IoT Plug and Play
@@ -85,6 +90,7 @@ Only one model is charged at the time (default model) to keep coherence and inte
 <br/>
 
 ## Global features
+
  - device level simulation (C2D/D2C)
  - module level simulation (C2M/M2C)
  - device simulation configuration based on JSON files
@@ -117,6 +123,7 @@ Only one model is charged at the time (default model) to keep coherence and inte
 
 
 ### Module level (C2M/M2C)
+
 Commands have also been implemented at device module level.
 
 >NOTE
