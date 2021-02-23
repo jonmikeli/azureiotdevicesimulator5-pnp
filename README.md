@@ -151,5 +151,5 @@ Functional features are based on these generic technical features:
 
 ## More information
 
-- Details about **HOW the solution WORKS** are provided in the [help](sources/IoT.Simulator/IoT.Simulator/docs/Help.md) section.
-- Details about **HOW the solution can be USED** are provided in the [how to](sources/IoT.Simulator/IoT.Simulator/docs/HowTo.md) section.
+- Details about **HOW the solution WORKS** are provided in the [help](docs/Help.md) section.
+- Details about **HOW the solution can be USED** are provided in the [how to](docs/HowTo.md) section.
