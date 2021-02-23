@@ -85,7 +85,7 @@ Only one model is charged at the time (default model) to keep coherence and inte
 
 *Azure IoT Device Simulator logs*
 
-![Azure IoT Device Simulator Logs](sources/IoT.Simulator/IoT.Simulator/docs/images/AzureIoTDeviceSimulatorLos.gif)
+![Azure IoT Device Simulator Logs](sources/docs/images/AzureIoTDeviceSimulatorLos.gif)
 
 <br/>
 
