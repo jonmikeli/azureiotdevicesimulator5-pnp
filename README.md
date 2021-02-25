@@ -33,6 +33,10 @@ The concepts integrated in this simulator are:
  - telemetries
  - commands
 
+
+![Simulator process](docs/images/DTDLv2.png)
+
+
 ## Models
 
 DTDL v2 does not allow using more than a schema per model.
