@@ -9,6 +9,8 @@ This version of the simulator is based on the [regular version of the simulator]
 
 IoT Plug and Play is meant to facilitate the integration of IoT devices with IoT solutions. It tries to imitate the concept of the already known Plug and Play experience at computers level.
 
+The implementation follows a no-typped approach when it comes to DTDL parsing. The initial purpose was to protect the solution against possible changes in the DTDL definition. A not typed approach is less prone to structural updates when the model evolves frequently. However, DTDL v2 seems quite stable. So, I guess a new implementation following a typed approach would be more appropriate now.
+
 Besides all these simulators, a version implementing [Device Provisioning Service (DPS) features](https://github.com/jonmikeli/azureiotdevicesimulator5-dps) completes the family of simulators.
 
 
