@@ -11,7 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:
+    steps:      
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
@@ -24,4 +24,6 @@ jobs:
     - name: Pack
       run: dotnet pack --configuration Release sources/IoT.Simulator/IoT.DTDL/IoT.DTDL.csproj
     - name: Push
+      env:
+        PACKAGE_PAT=${{ secrets.SuperSecret }}
       run: dotnet nuget push "bin/Release/*.nupkg"  --api-key $PACKAGE_PAT --source "github" sources/IoT.Simulator/IoT.DTDL/IoT.DTDL.csproj
