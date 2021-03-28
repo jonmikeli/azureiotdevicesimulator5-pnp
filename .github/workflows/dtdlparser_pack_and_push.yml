@@ -18,12 +18,10 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore sources/IoT.Simulator/IoT.DTDL/IoT.DTDL.csproj
     - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet build --no-restore sources/IoT.Simulator/IoT.DTDL/IoT.DTDL.csproj
     - name: Pack
-      run: dotnet pack --configuration Release
+      run: dotnet pack --configuration Release sources/IoT.Simulator/IoT.DTDL/IoT.DTDL.csproj
     - name: Push
-      run: dotnet nuget push "bin/Release/*.nupkg"  --api-key $PACKAGE_PAT --source "github"
+      run: dotnet nuget push "bin/Release/*.nupkg"  --api-key $PACKAGE_PAT --source "github" sources/IoT.Simulator/IoT.DTDL/IoT.DTDL.csproj
