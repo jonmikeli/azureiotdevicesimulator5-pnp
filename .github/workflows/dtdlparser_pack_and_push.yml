@@ -27,5 +27,5 @@ jobs:
       run: dotnet pack --configuration Release sources/IoT.Simulator/IoT.DTDL/IoT.DTDL.csproj
     - name: Push
       env:
-        PACKAGE_PAT=${{ secrets.SuperSecret }}
+        PACKAGE_PAT: ${{ secrets.SuperSecret }}
       run: dotnet nuget push "bin/Release/*.nupkg"  --api-key $PACKAGE_PAT --source "github" sources/IoT.Simulator/IoT.DTDL/IoT.DTDL.csproj
