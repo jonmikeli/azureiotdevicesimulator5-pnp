@@ -9,6 +9,7 @@
     <Copyright>Jon Mikel Inza</Copyright>
     <PackageTags>IoT Plug and Play, IoT PnP, DTDL</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/jonmikeli/azureiotdevicesimulator5-pnp</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
