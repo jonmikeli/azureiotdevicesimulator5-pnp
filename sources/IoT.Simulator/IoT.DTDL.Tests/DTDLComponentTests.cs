@@ -38,6 +38,30 @@ namespace IoT.DTDL.Tests
 
         [TestMethod()]
         [TestCategory("Components")]
+        public async Task GetModelsAndBuildDynamicContentAsync_Generic3_Components_Telemetries_With_Units_OK()
+        {
+            string dtdlModelPath = @"./Tests/Components/jmi.simulator.pnp.model.telemetries-type-with-units.json";
+            string modelId = "dtmi:com:jmi:simulator5;1";
+
+            var modelContainer = await DTDLHelper.GetModelsAndBuildDynamicContentAsync(modelId, dtdlModelPath);
+
+            Assert.IsNotNull(modelContainer);
+
+            var data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.ReadableProperties != null);
+            Assert.IsTrue(!data.Any());
+
+            data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
+            Assert.IsTrue(data.Any());
+
+            data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
+            Assert.IsTrue(!data.Any());
+
+            data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.WritableProperties != null);
+            Assert.IsTrue(!data.Any());
+        }
+
+        [TestMethod()]
+        [TestCategory("Components")]
         public async Task GetModelsAndBuildDynamicContentAsync_Generic3_Components_ReadableProperties_OK()
         {
             string dtdlModelPath = @"./Tests/Components/jmi.simulator.pnp.model.readableproperties.json";

@@ -257,7 +257,7 @@ namespace IoT.DTDL
             }
             else
                 return null;
-            
+
         }
 
         #endregion
@@ -380,6 +380,23 @@ namespace IoT.DTDL
                 result.DTDLGeneratedData.Telemetries = telemetries;
             }
 
+            telemetries = ExtractTelemetriesWithUnit(contents);
+            if (telemetries != null && telemetries.Any())
+            {
+                if (result.DTDLGeneratedData == null)
+                    result.DTDLGeneratedData = new DTDLGeneratedData();
+
+                if (result.DTDLGeneratedData.Telemetries == null)
+                    result.DTDLGeneratedData.Telemetries = telemetries;
+                else
+                {
+                    foreach (var item in telemetries)
+                    {
+                        result.DTDLGeneratedData.Telemetries.Add(item);
+                    }
+                }
+            }
+
             //Look for properties (JSON)
             JArray readableProperties = ExtractReadableProperties(contents);
             if (readableProperties != null && readableProperties.Any())
@@ -390,6 +407,23 @@ namespace IoT.DTDL
                 result.DTDLGeneratedData.ReadableProperties = readableProperties;
             }
 
+            readableProperties = ExtractReadablePropertiesWithUnit(contents);
+            if (readableProperties != null && readableProperties.Any())
+            {
+                if (result.DTDLGeneratedData == null)
+                    result.DTDLGeneratedData = new DTDLGeneratedData();
+
+                if (result.DTDLGeneratedData.ReadableProperties == null)
+                    result.DTDLGeneratedData.ReadableProperties = readableProperties;
+                else
+                {
+                    foreach (var item in readableProperties)
+                    {
+                        result.DTDLGeneratedData.ReadableProperties.Add(item);
+                    }
+                }
+            }
+
             JArray writableProperties = ExtractWritableProperties(contents);
             if (writableProperties != null && writableProperties.Any())
             {
@@ -397,6 +431,23 @@ namespace IoT.DTDL
                     result.DTDLGeneratedData = new DTDLGeneratedData();
 
                 result.DTDLGeneratedData.WritableProperties = writableProperties;
+            }
+
+            writableProperties = ExtractWritablePropertiesWithUnit(contents);
+            if (writableProperties != null && writableProperties.Any())
+            {
+                if (result.DTDLGeneratedData == null)
+                    result.DTDLGeneratedData = new DTDLGeneratedData();
+
+                if (result.DTDLGeneratedData.WritableProperties == null)
+                    result.DTDLGeneratedData.WritableProperties = writableProperties;
+                else
+                {
+                    foreach (var item in writableProperties)
+                    {
+                        result.DTDLGeneratedData.WritableProperties.Add(item);
+                    }
+                }
             }
 
             //Commands
@@ -414,7 +465,37 @@ namespace IoT.DTDL
         private static JArray ExtractTelemetries(JArray contents)
         {
             JArray result = null;
-            var telemetries = contents.Where(i => i["@type"].Value<string>().ToLower() == "telemetry");
+            var telemetries = contents.Where(i => i["@type"] is not JArray && i["@type"].Value<string>().ToLower() == "telemetry");
+            if (telemetries != null && telemetries.Any())
+            {
+                result = new JArray();
+
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in telemetries)
+                {
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    tmp = new JObject();
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
+        private static JArray ExtractTelemetriesWithUnit(JArray contents)
+        {
+            JArray result = null;
+            var telemetries = contents.Where(i => i["@type"] is JArray && ((JArray)i["@type"])[0].Value<string>().ToLower() == "telemetry");
             if (telemetries != null && telemetries.Any())
             {
                 result = new JArray();
@@ -449,7 +530,51 @@ namespace IoT.DTDL
                i =>
                    (i is JObject)
                    &&
+                   (i["@type"] is not JArray)
+                   &&
                    i["@type"].Value<string>().ToLower() == "property"
+                   &&
+                   ((JObject)i).ContainsKey("writable") && i["writable"].Value<bool>()
+               );
+
+
+            if (properties != null && properties.Any())
+            {
+                result = new JArray();
+
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in properties)
+                {
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    tmp = new JObject();
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
+        private static JArray ExtractWritablePropertiesWithUnit(JArray contents)
+        {
+            JArray result = null;
+
+            var properties = contents.Where(
+               i =>
+                   (i is JObject)
+                   &&
+                   (i["@type"] is JArray)
+                   &&
+                   ((JArray)i["@type"])[0].Value<string>().ToLower() == "property"
                    &&
                    ((JObject)i).ContainsKey("writable") && i["writable"].Value<bool>()
                );
@@ -488,7 +613,52 @@ namespace IoT.DTDL
                 i =>
                     (i is JObject)
                     &&
+                    i["@type"] is not JArray
+                    &&
                     i["@type"].Value<string>().ToLower() == "property"
+                    &&
+                    (
+                        !((JObject)i).ContainsKey("writable")
+                        |
+                        (((JObject)i).ContainsKey("writable") && !i["writable"].Value<bool>())
+                    )
+                );
+
+            if (properties != null && properties.Any())
+            {
+                result = new JArray();
+                JObject tmp = null;
+                string tmpPropertyName = string.Empty;
+
+                Random random = new Random(DateTime.Now.Millisecond);
+                foreach (var item in properties)
+                {
+                    tmpPropertyName = item["name"].Value<string>();
+
+                    tmp = new JObject();
+
+                    JProperty jProperty = AddCreatedProperties(tmpPropertyName, item["schema"].Value<string>(), random);
+
+                    if (jProperty != null)
+                        tmp.Add(jProperty);
+
+                    result.Add(tmp);
+                }
+            }
+
+            return result;
+        }
+
+        private static JArray ExtractReadablePropertiesWithUnit(JArray contents)
+        {
+            JArray result = null;
+            var properties = contents.Where(
+                i =>
+                    (i is JObject)
+                    &&
+                    i["@type"] is JArray
+                    &&
+                    ((JArray)i["@type"])[0].Value<string>().ToLower() == "property"
                     &&
                     (
                         !((JObject)i).ContainsKey("writable")
@@ -525,7 +695,7 @@ namespace IoT.DTDL
         private static JArray ExtractCommands(JArray contents)
         {
             JArray result = null;
-            var commands = contents.Where(i => i["@type"].Value<string>().ToLower() == "command");
+            var commands = contents.Where(i => i["@type"] is not JArray && i["@type"].Value<string>().ToLower() == "command");
             if (commands != null && commands.Any())
             {
                 result = new JArray();
@@ -589,7 +759,7 @@ namespace IoT.DTDL
         private static JArray ExtractComponents(JArray contents)
         {
             JArray result = null;
-            var properties = contents.Where(i => i["@type"].Value<string>().ToLower() == "component");
+            var properties = contents.Where(i => i["@type"] is not JArray && i["@type"].Value<string>().ToLower() == "component");
             if (properties != null && properties.Any())
                 result = JArray.FromObject(properties);
 
