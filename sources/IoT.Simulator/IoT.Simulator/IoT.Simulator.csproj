@@ -115,6 +115,9 @@
     <None Update="DTDLModels\jmi.simulator.pnp.model.generic4.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="DTDLModels\simulator5-1 - Copy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="modulessettings - Copy.Development.json">
       <TransformOnBuild>true</TransformOnBuild>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
