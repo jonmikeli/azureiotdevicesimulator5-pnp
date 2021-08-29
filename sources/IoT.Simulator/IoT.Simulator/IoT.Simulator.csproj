@@ -11,9 +11,9 @@
     <Description>IoT simulator covering most of the common functional scenarios (device and module level). This version includes IoT Plug and Play features.</Description>
     <Copyright>Jon Mikel Inza</Copyright>
     <PackageTags>iot, simulator, Azure IoT, IoT Hub, docker, device, modules, IoT PnP, DTDL v2, Plug and Play</PackageTags>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
-    <Version>0.1.0.0</Version>
+    <AssemblyVersion>0.1.1.0</AssemblyVersion>
+    <FileVersion>0.1.1.0</FileVersion>
+    <Version>0.1.1.0</Version>
     <PackageId>IoT.Simulator.PnP</PackageId>
   </PropertyGroup>
 

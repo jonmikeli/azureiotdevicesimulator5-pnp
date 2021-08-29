@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Version>0.3.0.0</Version>
+    <Version>0.3.2.0</Version>
     <Authors>Jon Mikel Inza</Authors>
     <Description>Basic DTDL v2 reader/parser to help to work in IoT Plug and Play solutions.</Description>
     <Company>JMI</Company>
@@ -10,6 +10,8 @@
     <PackageTags>IoT Plug and Play, IoT PnP, DTDL</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/jonmikeli/azureiotdevicesimulator5-pnp</RepositoryUrl>
+    <AssemblyVersion>0.3.2.0</AssemblyVersion>
+    <FileVersion>0.3.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
