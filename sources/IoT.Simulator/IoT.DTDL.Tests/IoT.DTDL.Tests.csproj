@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Tests\Avnet\mt3620starterkit-1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Tests\Components\jmi.simulator.pnp.model.full.withAdditionalItems.mixedTelemetriesInComponents.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -72,6 +75,10 @@
     <None Update="Tests\thermostat.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tests\Avnet\" />
   </ItemGroup>
 
 </Project>
