@@ -25,16 +25,16 @@ namespace IoT.DTDL.Tests
             Assert.IsNotNull(modelContainer);
 
             var data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.ReadableProperties != null);
-            Assert.IsTrue(!data.Any());
+            Assert.IsTrue(data.Any());
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
             Assert.IsTrue(data.Any());
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
-            Assert.IsTrue(!data.Any());
+            Assert.IsTrue(data.Any());
 
             data = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.WritableProperties != null);
-            Assert.IsTrue(!data.Any());
+            Assert.IsTrue(data.Any());
         }
         #endregion
     }
