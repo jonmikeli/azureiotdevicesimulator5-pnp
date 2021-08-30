@@ -52,8 +52,21 @@ namespace IoT.DTDL
                 //Filter by only the required models (initial model and dependencies)
                 var entryModel = data.Single(i => i.Key == modelId);
 
-                var referencedModelsIds = ((JObject)(entryModel.Value.DTDL)).Value<JArray>("contents").Where(i => i.Value<string>("@type").ToLower() == "component").Select(i => i.Value<string>("schema")).ToList();
-                referencedModelsIds.Add(modelId);
+                var components = ((JObject)(entryModel.Value.DTDL)).Value<JArray>("contents").Where(i => i is JValue && i.Value<string>("@type").ToLower() == "component");
+                IList<string> referencedModelsIds = null;
+
+                if (components != null)
+                {
+                    var schemas = components.Select(i => i.Value<string>("schema"));
+
+                    if (schemas != null && schemas.Any())
+                    {
+                        referencedModelsIds = schemas.ToList();
+                        referencedModelsIds.Add(modelId);
+                    }
+                    else
+                        referencedModelsIds = new List<string> { modelId };
+                }
 
                 var entreModelAndReferences = data.Join(referencedModelsIds, arrayItem => arrayItem.Value.ModelId, referenceIdItem => referenceIdItem, (arrayItem, referenceIdItem) => arrayItem);
 
@@ -725,7 +738,13 @@ namespace IoT.DTDL
                     {
                         tmpCreatedRequest = new JObject();
                         tmpRequestName = tmpRequest["name"].Value<string>();
-                        JProperty jProperty = AddCreatedProperties(tmpRequestName, tmpRequest["schema"].Value<string>(), random);
+
+                        var schema = tmpRequest["schema"];
+                        JProperty jProperty = null;
+                        if (schema is JValue)
+                            jProperty = AddCreatedProperties(tmpRequestName, schema.Value<string>(), random);
+                        else if (schema is JObject)
+                            jProperty = AddCreatedProperties(tmpRequestName, (JObject)schema, random);                        
 
                         if (jProperty != null)
                             tmpCreatedRequest.Add(jProperty);
@@ -739,7 +758,13 @@ namespace IoT.DTDL
                     {
                         tmpCreatedResponse = new JObject();
                         tmpResponseName = tmpResponse["name"].Value<string>();
-                        JProperty jProperty = AddCreatedProperties(tmpResponseName, tmpResponse["schema"].Value<string>(), random);
+
+                        var schema = tmpResponse["schema"];
+                        JProperty jProperty = null;
+                        if (schema is JValue)
+                            jProperty = AddCreatedProperties(tmpResponseName, schema.Value<string>(), random);
+                        else if (schema is JObject)
+                            jProperty = AddCreatedProperties(tmpResponseName, (JObject)schema, random);
 
                         if (jProperty != null)
                             tmpCreatedResponse.Add(jProperty);
@@ -808,6 +833,71 @@ namespace IoT.DTDL
                 default:
                     jProperty = new JProperty(propertyName, "Coplex or not identified schema");
                     break;
+            }
+
+            return jProperty;
+        }
+
+        private static JProperty AddCreatedProperties(string propertyName, JObject schema, Random random)
+        {
+            if (random == null)
+                throw new ArgumentNullException(nameof(random));
+
+            JProperty jProperty = null;
+            JObject jObjectValue = null;
+
+            if (((string)schema["@type"]).ToLower() == "object")
+            {
+                var fields = schema["fields"] as JArray;
+                if (fields != null && fields.HasValues)
+                {
+                    jObjectValue = new JObject();
+                    dynamic propertyValue;
+
+                    foreach (var item in fields)
+                    {                       
+                        switch (((string)item["schema"]).ToLower())
+                        {
+                            case "double":
+                                propertyValue = random.NextDouble();
+                                break;
+                            case "datetime":
+                                propertyValue = DateTime.Now.AddHours(random.Next(0, 148));
+                                break;
+                            case "string":
+                                propertyValue = "string to be randomized";
+                                break;
+                            case "integer":
+                                propertyValue = random.Next();
+                                break;
+                            case "boolean":
+                                propertyValue = random.Next(0, 1) == 1 ? true : false;
+                                break;
+                            case "date":
+                                propertyValue = DateTime.Now.AddHours(random.Next(0, 148)).Date;
+                                break;
+                            case "duration":
+                                propertyValue = random.Next();
+                                break;
+                            case "float":
+                                propertyValue = random.NextDouble();
+                                break;
+                            case "long":
+                                propertyValue = random.Next();
+                                break;
+                            case "time":
+                                propertyValue = DateTime.Now.AddHours(random.Next(0, 148)).TimeOfDay;
+                                break;
+                            default:
+                                propertyValue = "Coplex or not identified schema";
+                                break;
+                        }
+
+                        jObjectValue.Add((string)item["name"], propertyValue);
+                    }
+
+                    jProperty = new JProperty(propertyName, jObjectValue);
+                }                
             }
 
             return jProperty;
