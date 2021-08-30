@@ -52,8 +52,21 @@ namespace IoT.DTDL
                 //Filter by only the required models (initial model and dependencies)
                 var entryModel = data.Single(i => i.Key == modelId);
 
-                var referencedModelsIds = ((JObject)(entryModel.Value.DTDL)).Value<JArray>("contents").Where(i => i.Value<string>("@type").ToLower() == "component").Select(i => i.Value<string>("schema")).ToList();
-                referencedModelsIds.Add(modelId);
+                var components = ((JObject)(entryModel.Value.DTDL)).Value<JArray>("contents").Where(i => i is JValue && i.Value<string>("@type").ToLower() == "component");
+                IList<string> referencedModelsIds = null;
+
+                if (components != null)
+                {
+                    var schemas = components.Select(i => i.Value<string>("schema"));
+
+                    if (schemas != null && schemas.Any())
+                    {
+                        referencedModelsIds = schemas.ToList();
+                        referencedModelsIds.Add(modelId);
+                    }
+                    else
+                        referencedModelsIds = new List<string> { modelId };
+                }
 
                 var entreModelAndReferences = data.Join(referencedModelsIds, arrayItem => arrayItem.Value.ModelId, referenceIdItem => referenceIdItem, (arrayItem, referenceIdItem) => arrayItem);
 
@@ -728,7 +741,7 @@ namespace IoT.DTDL
 
                         var schema = tmpRequest["schema"];
                         JProperty jProperty = null;
-                        if (schema is JToken)
+                        if (schema is JValue)
                             jProperty = AddCreatedProperties(tmpRequestName, schema.Value<string>(), random);
                         else if (schema is JObject)
                             jProperty = AddCreatedProperties(tmpRequestName, (JObject)schema, random);                        
@@ -748,7 +761,7 @@ namespace IoT.DTDL
 
                         var schema = tmpResponse["schema"];
                         JProperty jProperty = null;
-                        if (schema is JToken)
+                        if (schema is JValue)
                             jProperty = AddCreatedProperties(tmpResponseName, schema.Value<string>(), random);
                         else if (schema is JObject)
                             jProperty = AddCreatedProperties(tmpResponseName, (JObject)schema, random);
