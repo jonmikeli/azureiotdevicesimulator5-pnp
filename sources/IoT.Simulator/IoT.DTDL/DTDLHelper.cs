@@ -52,7 +52,9 @@ namespace IoT.DTDL
                 //Filter by only the required models (initial model and dependencies)
                 var entryModel = data.Single(i => i.Key == modelId);
 
-                var components = ((JObject)(entryModel.Value.DTDL)).Value<JArray>("contents").Where(i => i is JValue && i.Value<string>("@type").ToLower() == "component");
+
+                //With no semantics
+                var components = ((JObject)(entryModel.Value.DTDL)).Value<JArray>("contents").Where(i => i["@type"] is not JArray && i.Value<string>("@type").ToLower() == "component");
                 IList<string> referencedModelsIds = null;
 
                 if (components != null)
@@ -67,6 +69,42 @@ namespace IoT.DTDL
                     else
                         referencedModelsIds = new List<string> { modelId };
                 }
+
+                //With semantics
+                components = ((JObject)(entryModel.Value.DTDL)).Value<JArray>("contents").Where(i => i["@type"] is JArray && ((JArray)i["@type"])[0].Value<string>().ToLower() == "component");
+                if (components != null)
+                {
+                    var schemas = components.Select(i => i.Value<string>("schema"));
+
+                    if (schemas != null && schemas.Any())
+                    {
+                        if (referencedModelsIds == null)
+                            referencedModelsIds = schemas.ToList();
+                        else
+                        {
+                            foreach (var item in schemas)
+                            {
+                                if (!referencedModelsIds.Contains(item))
+                                    referencedModelsIds.Add(item);
+                            }
+                        }
+
+                        if (!referencedModelsIds.Contains(modelId))
+                            referencedModelsIds.Add(modelId);
+                    }
+                    else
+                    {
+                        if (referencedModelsIds == null)
+                            referencedModelsIds = new List<string> { modelId };
+                        else
+                        {
+                            if (!referencedModelsIds.Contains(modelId))
+                                referencedModelsIds.Add(modelId);
+                        }
+                    }
+
+                }
+
 
                 var entreModelAndReferences = data.Join(referencedModelsIds, arrayItem => arrayItem.Value.ModelId, referenceIdItem => referenceIdItem, (arrayItem, referenceIdItem) => arrayItem);
 
@@ -472,6 +510,23 @@ namespace IoT.DTDL
                 result.DTDLGeneratedData.Commands = commands;
             }
 
+            commands = ExtractCommandsWithSemantic(contents);
+            if (commands != null && commands.Any())
+            {
+                if (result.DTDLGeneratedData == null)
+                    result.DTDLGeneratedData = new DTDLGeneratedData();
+
+                if (result.DTDLGeneratedData.Commands == null)
+                    result.DTDLGeneratedData.Commands = commands;
+                else
+                {
+                    foreach (var item in commands)
+                    {
+                        result.DTDLGeneratedData.Commands.Add(item);
+                    }
+                }
+            }
+
             return result;
         }
 
@@ -708,7 +763,29 @@ namespace IoT.DTDL
         private static JArray ExtractCommands(JArray contents)
         {
             JArray result = null;
-            var commands = contents.Where(i => i["@type"] is not JArray && i["@type"].Value<string>().ToLower() == "command");
+            var commands = contents.Where(i =>
+            i is JObject &&
+            i["@type"] is not JArray &&
+            i["@type"].Value<string>().ToLower() == "command");
+
+            return ProcessCommands(commands);
+        }
+
+        private static JArray ExtractCommandsWithSemantic(JArray contents)
+        {
+            JArray result = null;
+            var commands = contents.Where(i =>
+            i is JObject &&
+            i["@type"] is JArray &&
+            ((JArray)i["@type"])[0].Value<string>().ToLower() == "command");
+
+            return ProcessCommands(commands);
+        }
+
+        static JArray ProcessCommands(IEnumerable<JToken> commands)
+        {
+            JArray result = null;
+
             if (commands != null && commands.Any())
             {
                 result = new JArray();
@@ -744,7 +821,7 @@ namespace IoT.DTDL
                         if (schema is JValue)
                             jProperty = AddCreatedProperties(tmpRequestName, schema.Value<string>(), random);
                         else if (schema is JObject)
-                            jProperty = AddCreatedProperties(tmpRequestName, (JObject)schema, random);                        
+                            jProperty = AddCreatedProperties(tmpRequestName, (JObject)schema, random);
 
                         if (jProperty != null)
                             tmpCreatedRequest.Add(jProperty);
@@ -780,6 +857,9 @@ namespace IoT.DTDL
 
             return result;
         }
+
+
+
 
         private static JArray ExtractComponents(JArray contents)
         {
@@ -855,7 +935,7 @@ namespace IoT.DTDL
                     dynamic propertyValue;
 
                     foreach (var item in fields)
-                    {                       
+                    {
                         switch (((string)item["schema"]).ToLower())
                         {
                             case "double":
@@ -897,7 +977,7 @@ namespace IoT.DTDL
                     }
 
                     jProperty = new JProperty(propertyName, jObjectValue);
-                }                
+                }
             }
 
             return jProperty;
