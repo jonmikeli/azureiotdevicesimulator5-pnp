@@ -17,7 +17,7 @@ namespace IoT.DTDL.Tests
         [TestMethod()]
         [TestCategory("Interface")]
         [TestCategory("mt3620starterkit")]
-        public async Task MT3620StarterKit_Telemetries_With_Units_OK()
+        public async Task MT3620StarterKit_Simple_OK()
         {
             string dtdlModelPath = @"./Tests/Avnet/mt3620starterkit-1.json";
             string modelId = "dtmi:avnet:mt3620Starterkit;1";
@@ -42,7 +42,7 @@ namespace IoT.DTDL.Tests
         [TestMethod()]
         [TestCategory("Interface")]
         [TestCategory("mt3620starterkit")]
-        public async Task MT3620StarterKit_Telemetries_With_Semantics_And_Units_OK()
+        public async Task MT3620StarterKit_DTDL_With_Semantics_And_Units_OK()
         {
             string dtdlModelPath = @"./Tests/Avnet/mt3620starterkit-1.json";
             string modelId = "dtmi:avnet:mt3620Starterkit;1";
