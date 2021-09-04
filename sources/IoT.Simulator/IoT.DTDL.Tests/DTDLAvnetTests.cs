@@ -53,17 +53,17 @@ namespace IoT.DTDL.Tests
 
             Assert.IsNotNull(modelContainer);
 
-            var readableProperties = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.ReadableProperties != null);
-            Assert.IsTrue(readableProperties.Any());
+            var readablePropertiesGenerated = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.ReadableProperties != null);
+            Assert.IsTrue(readablePropertiesGenerated.Any());
 
             var telemetriesGenerated = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
             Assert.IsTrue(telemetriesGenerated.Any());
 
-            var commands = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
-            Assert.IsTrue(commands.Any());
+            var commandsGenerated = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
+            Assert.IsTrue(commandsGenerated.Any());
 
-            var writableProperties = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.WritableProperties != null);
-            Assert.IsTrue(writableProperties.Any());
+            var writablePropertiesGenerated = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.WritableProperties != null);
+            Assert.IsTrue(writablePropertiesGenerated.Any());
 
             //Additional assets
             string stringModel = await File.ReadAllTextAsync(dtdlModelPath);
@@ -82,19 +82,27 @@ namespace IoT.DTDL.Tests
             var telemetriesParsed = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Telemetry);
             Assert.IsNotNull(telemetriesParsed);
 
-            var single = telemetriesGenerated.SingleOrDefault();
-            Assert.IsNotNull(single.Value);
-            Assert.IsNotNull(single.Value.DTDLGeneratedData);
+            var parsedTelemetriesContainer = telemetriesGenerated.SingleOrDefault();
+            Assert.IsNotNull(parsedTelemetriesContainer.Value);
+            Assert.IsNotNull(parsedTelemetriesContainer.Value.DTDLGeneratedData);
 
-            var generatedContent = single.Value.DTDLGeneratedData.Telemetries;
-            Assert.IsNotNull(generatedContent);
-            Assert.IsTrue(generatedContent.Count() == telemetriesParsed.Count());
+            var parsedTelemetriesContent = parsedTelemetriesContainer.Value.DTDLGeneratedData.Telemetries;
+            Assert.IsNotNull(parsedTelemetriesContent);
+            Assert.IsTrue(parsedTelemetriesContent.Count() == telemetriesParsed.Count());
 
             //Commands
-            var commands2 = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Command);
-            Assert.IsNotNull(commands2);
-            Assert.IsTrue(commands.Count() == commands2.Count());
+            var commandsParsed = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Command);
+            Assert.IsNotNull(commandsParsed);
 
+            var parsedCommandContainer = commandsGenerated.SingleOrDefault();
+            Assert.IsNotNull(parsedCommandContainer.Value);
+            Assert.IsNotNull(parsedCommandContainer.Value.DTDLGeneratedData);
+
+            var parsedCommandsContent = parsedCommandContainer.Value.DTDLGeneratedData.Commands;
+            Assert.IsNotNull(parsedCommandsContent);
+            Assert.IsTrue(parsedCommandsContent.Count() == commandsParsed.Count());
+
+            //Properties
             var properties2 = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Property);
             Assert.IsNotNull(properties2);
             Assert.IsTrue(writableProperties.Count() + readableProperties.Count() == commands2.Count());
