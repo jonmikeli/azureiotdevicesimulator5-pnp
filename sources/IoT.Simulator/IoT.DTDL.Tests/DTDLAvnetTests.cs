@@ -87,6 +87,7 @@ namespace IoT.DTDL.Tests
             Assert.IsNotNull(single.Value.DTDLGeneratedData);
 
             var generatedContent = single.Value.DTDLGeneratedData.Telemetries;
+            Assert.IsNotNull(generatedContent);
             Assert.IsTrue(generatedContent.Count() == telemetriesParsed.Count());
 
             //Commands
