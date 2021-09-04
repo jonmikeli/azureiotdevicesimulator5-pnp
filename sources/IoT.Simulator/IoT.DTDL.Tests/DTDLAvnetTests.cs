@@ -109,10 +109,17 @@ namespace IoT.DTDL.Tests
             var generatedWritablePropertiesContainer = writablePropertiesGenerated.SingleOrDefault();
             Assert.IsNotNull(generatedWritablePropertiesContainer.Value);
             Assert.IsNotNull(generatedWritablePropertiesContainer.Value.DTDLGeneratedData);
+            var generatedWritableContent = generatedWritablePropertiesContainer.Value.DTDLGeneratedData.WritableProperties;
 
-            var generateddWritableContent = generatedWritablePropertiesContainer.Value.DTDLGeneratedData.WritableProperties;
-            Assert.IsNotNull(generateddWritableContent);
-            Assert.IsTrue(generateddWritableContent.Count() == commandsParsed.Count());
+            int propertiesCounter = generatedWritableContent != null ? generatedWritableContent.Count : 0;
+
+            var generatedReadablePropertiesContainer = readablePropertiesGenerated.SingleOrDefault();
+            Assert.IsNotNull(generatedReadablePropertiesContainer.Value);
+            Assert.IsNotNull(generatedReadablePropertiesContainer.Value.DTDLGeneratedData);
+            var generatedReadableContent = generatedReadablePropertiesContainer.Value.DTDLGeneratedData.WritableProperties;
+            propertiesCounter = propertiesCounter + ((generatedReadableContent != null) ? generatedReadableContent.Count : 0);
+
+            Assert.IsTrue(propertiesCounter == propertiesParsed.Count());
         }
         #endregion
     }
