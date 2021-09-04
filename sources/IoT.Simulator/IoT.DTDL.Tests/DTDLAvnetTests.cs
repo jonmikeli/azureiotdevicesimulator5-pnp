@@ -82,13 +82,13 @@ namespace IoT.DTDL.Tests
             var telemetriesParsed = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Telemetry);
             Assert.IsNotNull(telemetriesParsed);
 
-            var parsedTelemetriesContainer = telemetriesGenerated.SingleOrDefault();
-            Assert.IsNotNull(parsedTelemetriesContainer.Value);
-            Assert.IsNotNull(parsedTelemetriesContainer.Value.DTDLGeneratedData);
+            var generatedTelemetriesContainer = telemetriesGenerated.SingleOrDefault();
+            Assert.IsNotNull(generatedTelemetriesContainer.Value);
+            Assert.IsNotNull(generatedTelemetriesContainer.Value.DTDLGeneratedData);
 
-            var parsedTelemetriesContent = parsedTelemetriesContainer.Value.DTDLGeneratedData.Telemetries;
-            Assert.IsNotNull(parsedTelemetriesContent);
-            Assert.IsTrue(parsedTelemetriesContent.Count() == telemetriesParsed.Count());
+            var generatedTelemetriesContent = generatedTelemetriesContainer.Value.DTDLGeneratedData.Telemetries;
+            Assert.IsNotNull(generatedTelemetriesContent);
+            Assert.IsTrue(generatedTelemetriesContent.Count() == telemetriesParsed.Count());
 
             //Commands
             var commandsParsed = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Command);
