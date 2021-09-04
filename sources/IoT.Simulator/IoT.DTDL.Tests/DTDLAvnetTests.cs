@@ -94,18 +94,25 @@ namespace IoT.DTDL.Tests
             var commandsParsed = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Command);
             Assert.IsNotNull(commandsParsed);
 
-            var parsedCommandContainer = commandsGenerated.SingleOrDefault();
-            Assert.IsNotNull(parsedCommandContainer.Value);
-            Assert.IsNotNull(parsedCommandContainer.Value.DTDLGeneratedData);
+            var generatedCommandContainer = commandsGenerated.SingleOrDefault();
+            Assert.IsNotNull(generatedCommandContainer.Value);
+            Assert.IsNotNull(generatedCommandContainer.Value.DTDLGeneratedData);
 
-            var parsedCommandsContent = parsedCommandContainer.Value.DTDLGeneratedData.Commands;
-            Assert.IsNotNull(parsedCommandsContent);
-            Assert.IsTrue(parsedCommandsContent.Count() == commandsParsed.Count());
+            var generatedCommandsContent = generatedCommandContainer.Value.DTDLGeneratedData.Commands;
+            Assert.IsNotNull(generatedCommandsContent);
+            Assert.IsTrue(generatedCommandsContent.Count() == commandsParsed.Count());
 
             //Properties
-            var properties2 = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Property);
-            Assert.IsNotNull(properties2);
-            Assert.IsTrue(writableProperties.Count() + readableProperties.Count() == commands2.Count());
+            var propertiesParsed = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Property);
+            Assert.IsNotNull(propertiesParsed);
+
+            var generatedWritablePropertiesContainer = writablePropertiesGenerated.SingleOrDefault();
+            Assert.IsNotNull(generatedWritablePropertiesContainer.Value);
+            Assert.IsNotNull(generatedWritablePropertiesContainer.Value.DTDLGeneratedData);
+
+            var generateddWritableContent = generatedWritablePropertiesContainer.Value.DTDLGeneratedData.WritableProperties;
+            Assert.IsNotNull(generateddWritableContent);
+            Assert.IsTrue(generateddWritableContent.Count() == commandsParsed.Count());
         }
         #endregion
     }
