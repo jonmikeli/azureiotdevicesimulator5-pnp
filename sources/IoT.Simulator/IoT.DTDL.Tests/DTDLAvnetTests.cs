@@ -56,8 +56,8 @@ namespace IoT.DTDL.Tests
             var readableProperties = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.ReadableProperties != null);
             Assert.IsTrue(readableProperties.Any());
 
-            var telemetries = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
-            Assert.IsTrue(telemetries.Any());
+            var telemetriesGenerated = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Telemetries != null);
+            Assert.IsTrue(telemetriesGenerated.Any());
 
             var commands = modelContainer.Where(i => i.Value != null && i.Value.DTDLGeneratedData != null && i.Value.DTDLGeneratedData.Commands != null);
             Assert.IsTrue(commands.Any());
@@ -78,10 +78,18 @@ namespace IoT.DTDL.Tests
             var interfaces = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Interface);
             Assert.IsNotNull(interfaces);
 
-            var telemetries2 = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Telemetry);
-            Assert.IsNotNull(telemetries2);
-            Assert.IsTrue(telemetries.Count() == telemetries2.Count());
+            //Telemetries
+            var telemetriesParsed = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Telemetry);
+            Assert.IsNotNull(telemetriesParsed);
 
+            var single = telemetriesGenerated.SingleOrDefault();
+            Assert.IsNotNull(single.Value);
+            Assert.IsNotNull(single.Value.DTDLGeneratedData);
+
+            var generatedContent = single.Value.DTDLGeneratedData.Telemetries;
+            Assert.IsTrue(generatedContent.Count() == telemetriesParsed.Count());
+
+            //Commands
             var commands2 = dtdl.Values.Where(i => i.EntityKind == DTEntityKind.Command);
             Assert.IsNotNull(commands2);
             Assert.IsTrue(commands.Count() == commands2.Count());
